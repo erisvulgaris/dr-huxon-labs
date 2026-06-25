@@ -61,8 +61,9 @@ import { cn } from "@/lib/utils";
  * Image carousel, offers section, rewards, nutrition, reviews, similar, sticky CTA.
  */
 export function ProductView() {
-  const { activeProductId, setRoute, openProduct } = useNav();
+  const { activeProductId, setRoute, openProduct, setShareProductId, setReviewProductId, toggleCompare, compareIds } = useNav();
   const product = PRODUCTS.find((p) => p.id === activeProductId) ?? PRODUCTS[0];
+  const inCompare = compareIds.includes(product.id);
   const pushRecent = useRecent((s) => s.push);
 
   const [qty, setQty] = React.useState(1);
@@ -140,6 +141,7 @@ export function ProductView() {
       {/* Share + favorite (floating) */}
       <div className="fixed right-4 top-[calc(env(safe-area-inset-top)+52px)] z-30 flex gap-2">
         <button
+          onClick={() => setShareProductId(product.id)}
           className="grid h-10 w-10 place-items-center rounded-full glass-dark"
           aria-label="Share"
         >
@@ -405,7 +407,12 @@ export function ProductView() {
 
         {/* Reviews */}
         <Reveal className="mt-6">
-          <ReviewsSection productId={product.id} rating={product.rating} reviewCount={product.reviewCount} />
+          <ReviewsSection
+            productId={product.id}
+            rating={product.rating}
+            reviewCount={product.reviewCount}
+            onWriteReview={() => setReviewProductId(product.id)}
+          />
         </Reveal>
 
         {/* Q&A Section */}
@@ -818,10 +825,12 @@ function ReviewsSection({
   productId,
   rating,
   reviewCount,
+  onWriteReview,
 }: {
   productId: string;
   rating: number;
   reviewCount: number;
+  onWriteReview: () => void;
 }) {
   const reviews = [
     {
@@ -860,7 +869,12 @@ function ReviewsSection({
     <div>
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-[15px] font-semibold">Reviews & ratings</h2>
-        <button className="text-[11px] text-gold-gradient">Write a review</button>
+        <button
+          onClick={onWriteReview}
+          className="text-[11px] text-gold-gradient"
+        >
+          Write a review
+        </button>
       </div>
 
       {/* Rating summary */}

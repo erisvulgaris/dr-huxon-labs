@@ -313,3 +313,45 @@ Unresolved / Next phase:
 - Could add PWA install prompt + push notifications
 - Could add a "Share" sheet for products (IconShare exists but no handler)
 - Could add more product images per product for carousel
+
+---
+Task ID: 10 (Phase 5 — webDevReview cron round)
+Agent: main (Z.ai Code)
+Task: Fix checkout→orders gap, add share sheet + review submission, styling polish
+
+Work Log:
+- Performed full QA via agent-browser. Confirmed the critical gap: checkout succeeded but orders didn't persist to the Orders view (only seeded sample orders showed). Both themes stable, no console errors.
+
+Critical fix:
+1. **Checkout → Orders connection FIXED** — Updated `submitOrder()` in cart-drawer.tsx to create a `TrackedOrder` object (with orderNumber, items, total, status="placed", placedAt, eta=+28h, timeline with initial "placed" entry) and call `useOrders.addOrder()` before showing success. Now real orders from checkout appear in the Orders view with live tracking. Verified: checked out 2 items → order #HUX-MQU49S1T-FK4X appeared at top of Orders view with "Order Placed" status. Orders store persisted to localStorage (3 orders: 2 seeded + 1 new).
+
+New features:
+2. **Share Sheet** (`src/components/share-sheet.tsx`) — premium bottom sheet for sharing products with: product preview card, prominent "Share via…" native Web Share API button (falls back to copy), "Copy link" with URL preview + copied state, 4 social channel tiles (WhatsApp, Instagram, X/Twitter, More) with brand-colored icons, quick actions (Wishlist, Compare). Spring-animated entrance/exit. Wired to PDP share button (was: dead button).
+
+3. **Review Submission Sheet** (`src/components/review-sheet.tsx`) — premium bottom sheet for writing product reviews with: product name + "earn 50 points" subtitle, interactive 5-star rating (hover lift + glow, rating labels: Poor/Fair/Good/Very good/Excellent), floating-label title input with 80-char counter, review body textarea with 500-char counter, photo upload area (simulated), submit button with live validation (disabled until rating+title+body complete), loading state, success screen with confetti burst + 50 points confirmation. Posts to /api/reviews with graceful error handling. Wired to PDP "Write a review" button (was: dead button).
+
+4. **Nav store extended** — added `shareProductId`/`setShareProductId` and `reviewProductId`/`setReviewProductId` state for controlling the new sheets.
+
+Styling polish:
+- PDP share button now functional (was dead)
+- PDP "Write a review" button now functional (was dead)
+- Both new sheets use theme-aware CSS variables (work in light & dark)
+- Review success screen has celebratory confetti animation matching the checkout success burst
+- Social channel icons use authentic brand colors (WhatsApp green, Instagram pink, X black, gold for More)
+
+Stage Summary:
+- ✅ `bun run lint` passes clean (no errors, no warnings)
+- ✅ HTTP 200, no console errors, no hydration errors
+- ✅ Checkout → Orders: VERIFIED — new order #HUX-MQU49S1T-FK4X appears in Orders view after checkout with "Order Placed" status + live tracking timeline
+- ✅ Share sheet: opens from PDP share button, shows native share + copy link + 4 social channels (VLM: "sleek dark theme... premium, modern feel... well-organized")
+- ✅ Review sheet: opens from PDP "Write a review" button, interactive star rating, form validation, success with confetti + 50 points (VLM: "sleek, modern design with clear hierarchy... intuitive form fields")
+- ✅ POST /api/orders returns 201 with real orderNumber
+- ✅ Both sheets fully theme-aware
+
+Unresolved / Next phase:
+- Could connect review submission to actually fetch and display new reviews in the ReviewsSection (currently reviews are static)
+- Could enhance shop category navigation with sticky category cards (VLM noted missing category exploration)
+- Could add PWA install prompt + push notifications
+- Could add a "track on map" real map visualization in Orders view
+- Could add subscription management page (PDP has Subscribe & Save but no management view)
+- Could add more product images per product for the carousel

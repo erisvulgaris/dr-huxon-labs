@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useCart } from "@/lib/store";
+import { useCart, useOrders, type TrackedOrder, type OrderStage } from "@/lib/store";
 import { HuxonButton } from "@/components/huxon-button";
 import {
   IconClose,
@@ -59,8 +59,11 @@ export function CartDrawer() {
     }
   };
 
+  const addOrder = useOrders((s) => s.addOrder);
+
   const submitOrder = async () => {
     setSubmitting(true);
+    let resolvedOrderNumber = `HUX-${Math.floor(Math.random() * 90000 + 10000)}`;
     try {
       const res = await fetch("/api/orders", {
         method: "POST",
@@ -88,15 +91,34 @@ export function CartDrawer() {
         }),
       });
       const data = await res.json();
-      setOrderNumber(data.orderNumber || `HUX-${Math.floor(Math.random() * 90000 + 10000)}`);
-      setStage("success");
-      clear();
+      if (data.orderNumber) resolvedOrderNumber = data.orderNumber;
     } catch {
       // still succeed offline
-      setOrderNumber(`HUX-${Math.floor(Math.random() * 90000 + 10000)}`);
+    } finally {
+      // Persist the order to the orders store for live tracking
+      const now = Date.now();
+      const trackedOrder: TrackedOrder = {
+        id: resolvedOrderNumber,
+        orderNumber: resolvedOrderNumber,
+        items: lines.map((l) => ({
+          name: l.name,
+          price: l.price,
+          quantity: l.quantity,
+          flavor: l.flavor,
+          image: l.image,
+        })),
+        total,
+        status: "placed" as OrderStage,
+        placedAt: now,
+        eta: now + 1000 * 60 * 60 * 28, // ~28h delivery
+        timeline: [
+          { stage: "placed" as OrderStage, timestamp: now, note: "Order received" },
+        ],
+      };
+      addOrder(trackedOrder);
+      setOrderNumber(resolvedOrderNumber);
       setStage("success");
       clear();
-    } finally {
       setSubmitting(false);
     }
   };

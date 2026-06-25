@@ -187,6 +187,10 @@ type NavState = {
   clearCompare: () => void;
   compareOpen: boolean;
   setCompareOpen: (v: boolean) => void;
+  shareProductId: string | null;
+  setShareProductId: (id: string | null) => void;
+  reviewProductId: string | null;
+  setReviewProductId: (id: string | null) => void;
 };
 
 export const useNav = create<NavState>((set) => ({
@@ -210,6 +214,10 @@ export const useNav = create<NavState>((set) => ({
   clearCompare: () => set({ compareIds: [] }),
   compareOpen: false,
   setCompareOpen: (v) => set({ compareOpen: v }),
+  shareProductId: null,
+  setShareProductId: (id) => set({ shareProductId: id }),
+  reviewProductId: null,
+  setReviewProductId: (id) => set({ reviewProductId: id }),
 }));
 
 type Toast = { id: string; title: string; description?: string };

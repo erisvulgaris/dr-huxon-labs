@@ -19,6 +19,8 @@ import { CartDrawer } from "@/components/cart-drawer";
 import { SearchOverlay } from "@/components/search-overlay";
 import { RewardToasts } from "@/components/reward-toasts";
 import { CompareBar } from "@/components/compare-bar";
+import { ShareSheet } from "@/components/share-sheet";
+import { ReviewSheet } from "@/components/review-sheet";
 import { useNav } from "@/lib/store";
 
 export default function Home() {
@@ -54,6 +56,8 @@ export default function Home() {
       <SearchOverlay />
       <RewardToasts />
       <CompareBar />
+      <ShareSheet />
+      <ReviewSheet />
     </AppShell>
   );
 }
