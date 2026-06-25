@@ -168,7 +168,10 @@ export type Route =
   | "rewards"
   | "cart"
   | "profile"
-  | "product";
+  | "product"
+  | "wishlist"
+  | "orders"
+  | "compare";
 
 type NavState = {
   route: Route;
@@ -179,6 +182,11 @@ type NavState = {
   setIngredientSheet: (id: string | null) => void;
   activeProductId: string | null;
   openProduct: (id: string) => void;
+  compareIds: string[];
+  toggleCompare: (id: string) => void;
+  clearCompare: () => void;
+  compareOpen: boolean;
+  setCompareOpen: (v: boolean) => void;
 };
 
 export const useNav = create<NavState>((set) => ({
@@ -190,6 +198,18 @@ export const useNav = create<NavState>((set) => ({
   setIngredientSheet: (id) => set({ ingredientSheetId: id }),
   activeProductId: null,
   openProduct: (id) => set({ route: "product", activeProductId: id }),
+  compareIds: [],
+  toggleCompare: (id) =>
+    set((s) => ({
+      compareIds: s.compareIds.includes(id)
+        ? s.compareIds.filter((x) => x !== id)
+        : s.compareIds.length >= 3
+        ? [s.compareIds[1], s.compareIds[2], id]
+        : [...s.compareIds, id],
+    })),
+  clearCompare: () => set({ compareIds: [] }),
+  compareOpen: false,
+  setCompareOpen: (v) => set({ compareOpen: v }),
 }));
 
 type Toast = { id: string; title: string; description?: string };
@@ -237,6 +257,115 @@ export const useReward = create<RewardState>()(
       name: "huxon-reward",
       storage: createJSONStorage(() => localStorage),
       partialize: (s) => ({ points: s.points, tier: s.tier, streak: s.streak }),
+    }
+  )
+);
+
+/* ============================================================
+   Orders store — persisted order history with live tracking
+   ============================================================ */
+export type OrderStage =
+  | "placed"
+  | "packed"
+  | "shipped"
+  | "out_for_delivery"
+  | "delivered";
+
+export type TrackedOrder = {
+  id: string;
+  orderNumber: string;
+  items: { name: string; price: number; quantity: number; flavor?: string; image?: string }[];
+  total: number;
+  status: OrderStage;
+  placedAt: number; // epoch ms
+  eta: number; // epoch ms
+  timeline: { stage: OrderStage; timestamp: number; note: string }[];
+};
+
+type OrdersState = {
+  orders: TrackedOrder[];
+  addOrder: (order: TrackedOrder) => void;
+  advanceStage: (orderId: string) => void;
+  removeOrder: (orderId: string) => void;
+};
+
+export const useOrders = create<OrdersState>()(
+  persist(
+    (set) => ({
+      orders: [
+        {
+          id: "seed-1",
+          orderNumber: "HUX-48291",
+          items: [
+            { name: "Huxon Gold Isolate", price: 2499, quantity: 1, flavor: "Belgian Cocoa", image: "/products/gold-isolate.png" },
+            { name: "Huxon Protein Bars", price: 1299, quantity: 1, flavor: "Salted Caramel", image: "/products/protein-bars.png" },
+          ],
+          total: 3798,
+          status: "out_for_delivery",
+          placedAt: Date.now() - 1000 * 60 * 60 * 26,
+          eta: Date.now() + 1000 * 60 * 60 * 4,
+          timeline: [
+            { stage: "placed", timestamp: Date.now() - 1000 * 60 * 60 * 26, note: "Order received" },
+            { stage: "packed", timestamp: Date.now() - 1000 * 60 * 60 * 24, note: "Packed at Bengaluru facility" },
+            { stage: "shipped", timestamp: Date.now() - 1000 * 60 * 60 * 12, note: "Handed to Delhivery" },
+            { stage: "out_for_delivery", timestamp: Date.now() - 1000 * 60 * 60 * 2, note: "Out for delivery · Bengaluru 560038" },
+          ],
+        },
+        {
+          id: "seed-2",
+          orderNumber: "HUX-47820",
+          items: [
+            { name: "Recovery Matrix", price: 2199, quantity: 1, flavor: "Tart Cherry", image: "/products/recovery-matrix.png" },
+          ],
+          total: 2199,
+          status: "delivered",
+          placedAt: Date.now() - 1000 * 60 * 60 * 24 * 14,
+          eta: Date.now() - 1000 * 60 * 60 * 24 * 12,
+          timeline: [
+            { stage: "placed", timestamp: Date.now() - 1000 * 60 * 60 * 24 * 14, note: "Order received" },
+            { stage: "packed", timestamp: Date.now() - 1000 * 60 * 60 * 24 * 14 + 1000 * 60 * 60 * 2, note: "Packed" },
+            { stage: "shipped", timestamp: Date.now() - 1000 * 60 * 60 * 24 * 13, note: "Shipped" },
+            { stage: "out_for_delivery", timestamp: Date.now() - 1000 * 60 * 60 * 24 * 12, note: "Out for delivery" },
+            { stage: "delivered", timestamp: Date.now() - 1000 * 60 * 60 * 24 * 12 + 1000 * 60 * 60 * 3, note: "Delivered · Bengaluru 560038" },
+          ],
+        },
+      ],
+      addOrder: (order) => set((s) => ({ orders: [order, ...s.orders] })),
+      advanceStage: (orderId) =>
+        set((s) => ({
+          orders: s.orders.map((o) => {
+            if (o.id !== orderId) return o;
+            const stages: OrderStage[] = ["placed", "packed", "shipped", "out_for_delivery", "delivered"];
+            const idx = stages.indexOf(o.status);
+            if (idx >= stages.length - 1) return o;
+            const next = stages[idx + 1];
+            return {
+              ...o,
+              status: next,
+              timeline: [
+                ...o.timeline,
+                {
+                  stage: next,
+                  timestamp: Date.now(),
+                  note:
+                    next === "packed"
+                      ? "Packed at Bengaluru facility"
+                      : next === "shipped"
+                      ? "Handed to Delhivery"
+                      : next === "out_for_delivery"
+                      ? "Out for delivery"
+                      : "Delivered",
+                },
+              ],
+            };
+          }),
+        })),
+      removeOrder: (orderId) =>
+        set((s) => ({ orders: s.orders.filter((o) => o.id !== orderId) })),
+    }),
+    {
+      name: "huxon-orders",
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );

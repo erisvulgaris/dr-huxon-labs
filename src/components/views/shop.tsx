@@ -9,6 +9,7 @@ import {
   IconHeart,
   IconPlus,
   IconEye,
+  IconCompare,
   IconStar,
 } from "@/components/icons";
 import { HuxonButton } from "@/components/huxon-button";
@@ -138,7 +139,8 @@ function ShopCard({
   index: number;
 }) {
   const { addItem } = useCart();
-  const { setQuickView, openProduct } = useNav();
+  const { setQuickView, openProduct, toggleCompare, compareIds } = useNav();
+  const inCompare = compareIds.includes(product.id);
   const wishlist = useWishlist();
   const fav = wishlist.ids.includes(product.id);
   const discount = discountPercent(product.price, product.mrp);
@@ -163,6 +165,8 @@ function ShopCard({
           className="absolute inset-0 blur-2xl"
           style={{ background: `${product.accent.replace(")", " / 0.25)")}` }}
         />
+        {/* Subtle gradient overlay for depth */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[oklch(var(--charcoal)/0.4)] via-transparent to-transparent" />
         <img
           src={product.heroImage}
           alt={product.name}
@@ -195,6 +199,20 @@ function ShopCard({
           role="button"
         >
           <IconEye size={14} />
+        </span>
+        {/* Compare */}
+        <span
+          onClick={(e) => { e.stopPropagation(); toggleCompare(product.id); }}
+          className={
+            "absolute bottom-2 left-2 grid h-8 w-8 cursor-pointer place-items-center rounded-full backdrop-blur-md " +
+            (inCompare
+              ? "bg-[oklch(var(--gold)/0.3)] text-gold-gradient"
+              : "bg-black/40 text-cream/80")
+          }
+          aria-label="Compare"
+          role="button"
+        >
+          <IconCompare size={14} active={inCompare} />
         </span>
       </div>
 

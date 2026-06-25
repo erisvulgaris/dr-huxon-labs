@@ -98,7 +98,7 @@ function TopNav({ scrolled }: { scrolled: boolean }) {
             <IconSearch size={20} />
           </NavAction>
           <NavAction
-            onClick={() => setRoute("profile")}
+            onClick={() => setRoute("wishlist")}
             label="Wishlist"
             badge={wishCount}
           >

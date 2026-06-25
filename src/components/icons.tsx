@@ -241,6 +241,22 @@ export function IconArrowDown({ size = 24, active, ...p }: IconProps) {
   );
 }
 
+export function IconCompare({ size = 24, active, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <Defs />
+      <path
+        d="M5 7v10M19 7v10M5 9h14M5 15h14"
+        stroke={active ? "url(#huxon-gold)" : "currentColor"}
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      <circle cx="5" cy="7" r="2" fill={active ? "url(#huxon-gold)" : "currentColor"} />
+      <circle cx="19" cy="17" r="2" fill={active ? "url(#huxon-gold)" : "currentColor"} />
+    </svg>
+  );
+}
+
 export function IconArrowUpRight({ size = 24, active, ...p }: IconProps) {
   return (
     <svg {...base(size)} {...p}>

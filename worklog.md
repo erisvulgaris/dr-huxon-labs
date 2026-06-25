@@ -261,3 +261,55 @@ Unresolved / Next phase:
 - Could add push notifications / PWA install prompt
 - Could add more product images per product for the carousel (currently reuses other product images)
 - Consider adding a wishlist page (currently wishlist only shows count in nav)
+
+---
+Task ID: 9 (Phase 4 — webDevReview cron round)
+Agent: main (Z.ai Code)
+Task: QA, add Wishlist/Orders/Compare views, persistent compare bar, styling polish
+
+Work Log:
+- Performed full QA via agent-browser across all views. No console errors, no hydration errors. All ingredient images present (6/6). Both themes stable.
+- VLM analysis identified product card gradient overlays and quantity micro-interactions as polish opportunities.
+
+New features added:
+1. **Wishlist View** (`src/components/views/wishlist.tsx`) — full page for saved products with: product thumbnails (tap to open PDP), star ratings, protein info, price with discount badges, per-item actions (add to cart, compare, remove), "Add all to cart" bulk action, empty state with illustration + CTA, inline compare bar when ≥2 selected. Wired to `useWishlist` persisted store. Nav wishlist button now navigates to this view (was: profile).
+
+2. **Orders/Tracking View** (`src/components/views/orders.tsx`) — full order history + live tracking with: order list (thumbnails, order number, date, item count, status pill, total), active order tracker with ETA banner (animated countdown of hours left), progress bar (0-100% across 5 stages), vertical timeline with 5 stages (placed→packed→shipped→out_for_delivery→delivered) each with icon, timestamp, note, pulse animation on current stage, items list with thumbnails, "Simulate next stage" button (advances order status), "Track on map" / "Buy again" / "Leave review" actions. Seeded with 2 sample orders (1 active, 1 delivered). Wired to new `useOrders` persisted store.
+
+3. **Compare View** (`src/components/views/compare.tsx`) — side-by-side product comparison with: product headers (image, name, rating, remove button), performance radar chart (6 axes: Protein/Rating/Reviews/Servings/Value/Trust) with per-product colored polygons + legend, spec table (7 rows: protein/servings/rating/reviews/price/cost-per-serving/calories) with "best value" gold highlight + underline, per-product add-to-cart buttons, value score rings. Empty state with illustration + hint to tap compare icon.
+
+4. **Compare Bar** (`src/components/compare-bar.tsx`) — persistent floating bar shown when ≥2 products selected for comparison, on any route except compare view itself. Shows compare icon, product thumbnails, "N selected" label, clear button, and "Compare" CTA. Spring-animated entrance/exit.
+
+5. **Orders store** (`useOrders` in store.ts) — persisted Zustand store with `TrackedOrder` type (id, orderNumber, items, total, status, placedAt, eta, timeline), `addOrder`, `advanceStage`, `removeOrder` actions. Seeded with 2 realistic orders with full timelines.
+
+6. **Nav store extended** — added `wishlist`, `orders`, `compare` routes; `compareIds`, `toggleCompare`, `clearCompare`, `compareOpen`, `setCompareOpen` state for persistent compare selection across views.
+
+7. **Compare buttons on product cards** — shop cards now have a compare toggle span (bottom-left, next to quick-view) with active/inactive gold styling. Wishlist cards have compare buttons in the actions column. Profile quick actions include Compare with live count badge.
+
+8. **Profile quick actions upgraded** — replaced generic actions with: My Orders (badge: 2, → orders view), Wishlist (badge: live count, → wishlist view), Compare (badge: live count, → compare view), Notifications. ActionTile now accepts onClick. Colors updated to theme-aware gold-gradient.
+
+New icons:
+- `IconCompare` — dual-arrows comparison icon with gold active state
+
+Styling polish:
+- Product card gradient overlay (subtle charcoal-to-transparent from bottom) for depth on shop cards
+- ActionTile badge colors updated to theme-aware gold-gradient
+- All new views use theme-aware CSS variables (work in both light & dark)
+
+Stage Summary:
+- ✅ `bun run lint` passes clean (no errors, no warnings)
+- ✅ HTTP 200, no console errors, no hydration errors
+- ✅ Wishlist view: renders with saved items, add-to-cart, compare, remove, empty state (VLM: "sleek, dark-themed... premium feel... upscale shopping experience")
+- ✅ Orders view: 2 seeded orders, live tracker with 5-stage timeline, ETA countdown, progress bar, "Simulate next stage" works
+- ✅ Compare view: radar chart + spec table with best-value highlights, value score rings (VLM: "design quality is high... radar chart for at-a-glance comparisons... spec table for detailed, organized information")
+- ✅ Compare bar: appears when ≥2 products selected, spring-animated, navigates to compare view
+- ✅ Compare buttons on shop cards + wishlist cards + profile quick actions
+- ✅ All 3 new views accessible via profile quick actions + nav
+
+Unresolved / Next phase:
+- Connect cart checkout success → useOrders.addOrder() so real orders appear in Orders view (currently seeded sample orders only)
+- Wishlist compare button click not registering reliably via agent-browser (works in shop) — may be a nested-element click issue worth investigating
+- Could add product reviews submission (POST /api/reviews)
+- Could add PWA install prompt + push notifications
+- Could add a "Share" sheet for products (IconShare exists but no handler)
+- Could add more product images per product for carousel

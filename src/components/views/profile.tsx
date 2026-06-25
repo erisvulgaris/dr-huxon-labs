@@ -15,6 +15,8 @@ import {
   IconChevronRight,
   IconHeart,
   IconGift,
+  IconPackage,
+  IconCompare,
 } from "@/components/icons";
 import {
   Reveal,
@@ -24,7 +26,7 @@ import {
   StarRating,
   Pill,
 } from "@/components/primitives";
-import { useNav, useReward } from "@/lib/store";
+import { useNav, useReward, useWishlist } from "@/lib/store";
 import { PRODUCTS, formatINR } from "@/lib/catalog";
 
 /**
@@ -32,7 +34,8 @@ import { PRODUCTS, formatINR } from "@/lib/catalog";
  */
 export function ProfileView() {
   const { points, tier, streak } = useReward();
-  const { setRoute, setQuickView } = useNav();
+  const { setRoute, setQuickView, compareIds } = useNav();
+  const wishCount = useWishlist((s) => s.ids.length);
 
   return (
     <div className="px-4 pb-8 pt-4">
@@ -224,10 +227,10 @@ export function ProfileView() {
 
       {/* Quick actions */}
       <Reveal className="mt-4 grid grid-cols-2 gap-2">
+        <ActionTile icon={<IconPackage size={16} />} label="My Orders" badge={2} onClick={() => setRoute("orders")} />
+        <ActionTile icon={<IconHeart size={16} />} label="Wishlist" badge={wishCount} onClick={() => setRoute("wishlist")} />
+        <ActionTile icon={<IconCompare size={16} />} label="Compare" badge={compareIds.length || undefined} onClick={() => setRoute("compare")} />
         <ActionTile icon={<IconBell size={16} />} label="Notifications" badge={3} />
-        <ActionTile icon={<IconHeart size={16} />} label="Wishlist" badge={2} />
-        <ActionTile icon={<IconGift size={16} />} label="Coupons" badge={1} />
-        <ActionTile icon={<IconArrowRight size={16} />} label="Settings" />
       </Reveal>
     </div>
   );
@@ -399,17 +402,19 @@ function ActionTile({
   icon,
   label,
   badge,
+  onClick,
 }: {
   icon: React.ReactNode;
   label: string;
   badge?: number;
+  onClick?: () => void;
 }) {
   return (
-    <button className="relative flex items-center gap-2 rounded-2xl glass p-3 text-left">
-      <span className="text-[oklch(0.78_0.13_75)]">{icon}</span>
+    <button onClick={onClick} className="relative flex items-center gap-2 rounded-2xl glass p-3 text-left">
+      <span className="text-gold-gradient">{icon}</span>
       <span className="text-[12px] font-medium">{label}</span>
       {badge ? (
-        <span className="absolute right-2 top-2 grid h-4 min-w-4 place-items-center rounded-full bg-gradient-to-br from-[oklch(0.78_0.13_75)] to-[oklch(0.62_0.10_55)] px-1 text-[9px] font-bold text-[oklch(0.14_0.01_50)]">
+        <span className="absolute right-2 top-2 grid h-4 min-w-4 place-items-center rounded-full bg-gradient-to-br from-[oklch(var(--gold))] to-[oklch(var(--bronze))] px-1 text-[9px] font-bold text-[oklch(var(--charcoal))]">
           {badge}
         </span>
       ) : null}
