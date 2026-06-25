@@ -217,3 +217,47 @@ Unresolved / Next phase:
 - Could replace static product data in views with fetch calls to /api/products (currently catalog.ts is used directly for instant render; API routes available when ready)
 - Ingredient images: 4/6 generated, 2 still missing (ashwagandha, spirulina) with graceful fallback
 - Could add more PDP sections (lab reports download, subscription option on PDP, Q&A)
+
+---
+Task ID: 8 (Phase 3 — webDevReview cron round)
+Agent: main (Z.ai Code)
+Task: QA the current project, fix bugs, add new features (PDP lab reports/subscription/Q&A), connect checkout to API, wire up recently viewed, improve styling
+
+Work Log:
+- Performed full QA via agent-browser across all views (home/shop/explore/rewards/cart/profile/product). No console errors, no hydration errors, no runtime errors. All ingredient images now present (6/6).
+- VLM analysis of dark + light themes confirmed premium quality; identified cart drawer spacing/contrast as minor polish area.
+
+New features added:
+1. **PDP: Q&A Section** (`QASection` component) — 5 customer questions with expandable answers, brand/verified badges, helpful vote button with count, "Ask a question" CTA. Data in `PRODUCT_QAS` in catalog.ts.
+2. **PDP: Lab Reports / Certificate of Analysis** (`LabReportsSection` component) — 14 tests across 4 categories (Heavy Metals, Microbial, Protein Assay, Contaminants) with category tabs, pass/ND status indicators, result vs limit table, batch number + test date, "All tests passed" summary banner, COA PDF download button, and a Certificates bottom-sheet modal showing 6 certifications (FSSAI, ISO 22000, GMP, NABL, Vegan Society, Halal India) with license numbers. Data in `LAB_REPORTS` + `CERTIFICATIONS`.
+3. **PDP: Subscribe & Save** (`SubscribeSection` component) — One-time vs Subscription toggle with animated layoutId background, 4 delivery frequencies (2wk/monthly/6wk/bi-monthly) with "POPULAR" badge, quantity selector (1-6 tubs), live savings breakdown (one-time price, 15% discount, per-delivery total), annual savings highlight, perks grid (pause/swap/free shipping), subscribe CTA with per-delivery price. Awards 100 reward points on subscribe.
+4. **Recently Viewed on Home** (`src/components/sections/recently-viewed.tsx`) — horizontal strip of recently browsed products, wired to `useRecent` Zustand store (persisted). PDP now pushes product IDs to recent on visit + scrolls to top on product change. Appears on home between Trust Widgets and Product Explorer (only shows when ≥2 products viewed).
+5. **Cart checkout connected to /api/orders API** — `submitOrder()` async function POSTs full order payload (customer info, items, totals, payment method) to `/api/orders`, receives `{orderId, orderNumber, status}` from Appwrite-backed API, displays the real order number on success screen. Graceful fallback to generated order number if API unreachable. Cart clears on successful order. Added loading state on checkout button.
+6. **Coupon validation connected to /api/coupons/validate API** — `applyCoupon()` now POSTs to the API endpoint first, falls back to local logic on error.
+7. **Footer CTA upgrade** — Home footer CTA now uses theme-aware gradient colors (espresso/cocoa/charcoal via CSS vars), added dual ambient glow blobs with glow-pulse animation, Shop Now + Explore buttons.
+
+New icons added:
+- `IconArrowDown` (for download buttons)
+
+New catalog data:
+- `LAB_REPORTS` (14 test results across 4 categories)
+- `CERTIFICATIONS` (6 certification bodies with license numbers)
+- `PRODUCT_QAS` (5 customer Q&A entries)
+
+Stage Summary:
+- ✅ `bun run lint` passes clean (no errors, no warnings)
+- ✅ HTTP 200, no console errors, no hydration errors
+- ✅ All 3 new PDP sections render correctly (verified via agent-browser snapshot: "Questions & answers", "Lab reports", "Heavy Metals" tabs all present)
+- ✅ Recently Viewed appears on home after visiting a PDP ("Recently viewed" heading confirmed in snapshot)
+- ✅ Checkout API integration works: `POST /api/orders` returns 201 `{orderId:"HUX-...", orderNumber:"HUX-...", status:"placed"}`
+- ✅ Coupon validation API integration works: `POST /api/coupons/validate` returns `{valid:true, discount:250, message:"..."}`
+- ✅ VLM confirms Lab Reports section: "high quality, sleek modern aesthetic... table format enhances trust by transparently presenting test results"
+- ✅ All 6 ingredient images now generated (ashwagandha + spirulina were missing in Phase 2, now complete)
+
+Unresolved / Next phase:
+- Could add product reviews submission (POST /api/reviews) — currently reviews are read-only
+- Could add live order tracking page (separate route) pulling from GET /api/orders
+- Could add a "compare" drawer that persists across views
+- Could add push notifications / PWA install prompt
+- Could add more product images per product for the carousel (currently reuses other product images)
+- Consider adding a wishlist page (currently wishlist only shows count in nav)

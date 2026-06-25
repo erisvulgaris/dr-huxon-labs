@@ -812,3 +812,109 @@ export const RATING_BREAKDOWN = [
   { stars: 2, count: 18, pct: 1 },
   { stars: 1, count: 10, pct: 0 },
 ];
+
+/* ============================================================
+   LAB REPORTS / CERTIFICATE OF ANALYSIS — for PDP
+   ============================================================ */
+
+export type LabTest = {
+  id: string;
+  category: "heavy-metals" | "microbial" | "protein-assay" | "contaminants";
+  testName: string;
+  result: string;
+  unit: string;
+  limit: string;
+  status: "pass" | "nd"; // pass or "not detected"
+};
+
+export const LAB_REPORTS: LabTest[] = [
+  // Heavy metals
+  { id: "hm1", category: "heavy-metals", testName: "Lead (Pb)", result: "ND", unit: "ppm", limit: "< 0.5", status: "nd" },
+  { id: "hm2", category: "heavy-metals", testName: "Arsenic (As)", result: "ND", unit: "ppm", limit: "< 0.3", status: "nd" },
+  { id: "hm3", category: "heavy-metals", testName: "Cadmium (Cd)", result: "ND", unit: "ppm", limit: "< 0.1", status: "nd" },
+  { id: "hm4", category: "heavy-metals", testName: "Mercury (Hg)", result: "ND", unit: "ppm", limit: "< 0.1", status: "nd" },
+  // Microbial
+  { id: "mb1", category: "microbial", testName: "Total Plate Count", result: "120", unit: "CFU/g", limit: "< 10,000", status: "pass" },
+  { id: "mb2", category: "microbial", testName: "E. coli", result: "Absent", unit: "/ 25g", limit: "Absent", status: "pass" },
+  { id: "mb3", category: "microbial", testName: "Salmonella", result: "Absent", unit: "/ 25g", limit: "Absent", status: "pass" },
+  { id: "mb4", category: "microbial", testName: "Yeast & Mould", result: "40", unit: "CFU/g", limit: "< 100", status: "pass" },
+  // Protein assay
+  { id: "pa1", category: "protein-assay", testName: "Protein Content (Dumas)", result: "90.2", unit: "%", limit: "≥ 85", status: "pass" },
+  { id: "pa2", category: "protein-assay", testName: "Amino Acid Score", result: "1.0", unit: "PDCAAS", limit: "≥ 1.0", status: "pass" },
+  { id: "pa3", category: "protein-assay", testName: "Solubility", result: "98", unit: "%", limit: "≥ 95", status: "pass" },
+  // Contaminants
+  { id: "ct1", category: "contaminants", testName: "Melamine", result: "ND", unit: "ppm", limit: "< 2.5", status: "nd" },
+  { id: "ct2", category: "contaminants", testName: "Pesticide Residue", result: "ND", unit: "ppm", limit: "MRL", status: "nd" },
+  { id: "ct3", category: "contaminants", testName: "Aflatoxin B1", result: "ND", unit: "ppb", limit: "< 5", status: "nd" },
+];
+
+export const CERTIFICATIONS = [
+  { id: "cert1", name: "FSSAI", license: "10024031000234", image: "shield" },
+  { id: "cert2", name: "ISO 22000:2018", license: "HXL-ISO-2024", image: "certificate" },
+  { id: "cert3", name: "GMP Certified", license: "GMP-IN-2023-0891", image: "check" },
+  { id: "cert4", name: "NABL Accredited", license: "LAB-NABL-1145", image: "flask" },
+  { id: "cert5", name: "Vegan Society", license: "VS-IND-44820", image: "leaf" },
+  { id: "cert6", name: "Halal India", license: "HI-2024-1129", image: "check" },
+];
+
+/* ============================================================
+   Q&A — Customer Questions for PDP
+   ============================================================ */
+
+export type QA = {
+  id: string;
+  question: string;
+  answer: string;
+  author: string;
+  date: string;
+  helpful: number;
+  answeredBy: "verified" | "brand";
+};
+
+export const PRODUCT_QAS: QA[] = [
+  {
+    id: "qa1",
+    question: "Is this safe for people with lactose intolerance?",
+    answer: "Absolutely. Our Gold Isolate is 100% plant-based (pea + rice), contains zero dairy, and is produced in a dairy-free facility. It's ideal for lactose-intolerant and vegan consumers.",
+    author: "Sneha I.",
+    date: "3 weeks ago",
+    helpful: 28,
+    answeredBy: "brand",
+  },
+  {
+    id: "qa2",
+    question: "How does this compare to whey protein for muscle building?",
+    answer: "Our pea + sprouted rice blend achieves a PDCAAS of 1.0, matching whey's amino acid score. Independent studies show equivalent muscle protein synthesis. We add DigeZyme® enzymes for maximum absorption. Honestly, you won't notice a difference in results.",
+    author: "Rohan K.",
+    date: "1 month ago",
+    helpful: 45,
+    answeredBy: "verified",
+  },
+  {
+    id: "qa3",
+    question: "Can I mix this with hot water or only cold?",
+    answer: "Both work! Cold water or plant milk gives the best flavor. Hot water (up to 70°C) is fine and won't denature the protein. Avoid boiling water. Try it with oat milk and a banana for a killer smoothie.",
+    author: "Priya S.",
+    date: "2 weeks ago",
+    helpful: 19,
+    answeredBy: "verified",
+  },
+  {
+    id: "qa4",
+    question: "What's the shelf life after opening?",
+    answer: "12 months unopened (see date on tub). After opening, consume within 90 days for best freshness — our nitrogen-flushed packaging keeps it stable. The desiccant pack inside absorbs moisture.",
+    author: "Customer Care",
+    date: "1 week ago",
+    helpful: 12,
+    answeredBy: "brand",
+  },
+  {
+    id: "qa5",
+    question: "Does it contain any artificial sweeteners or colors?",
+    answer: "No. We use only stevia and monk fruit for sweetness. Zero sucralose, aspartame, or artificial colors/flavors. The cocoa color comes from real Belgian cocoa powder.",
+    author: "Arjun M.",
+    date: "5 days ago",
+    helpful: 8,
+    answeredBy: "verified",
+  },
+];

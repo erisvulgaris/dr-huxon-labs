@@ -10,6 +10,9 @@ import {
   calcProductReward,
   NUTRITION_HIGHLIGHTS,
   RATING_BREAKDOWN,
+  LAB_REPORTS,
+  CERTIFICATIONS,
+  PRODUCT_QAS,
   type Offer,
 } from "@/lib/catalog";
 import { ICON_MAP } from "@/components/icons";
@@ -20,6 +23,7 @@ import {
   IconStar,
   IconArrowRight,
   IconArrowLeft,
+  IconArrowDown,
   IconCheck,
   IconFlask,
   IconLeaf,
@@ -29,11 +33,15 @@ import {
   IconClock,
   IconShare,
   IconChevronRight,
+  IconChevronDown,
   IconSpark,
   IconCrown,
   IconFlame,
   IconTruck,
   IconLocation,
+  IconRefresh,
+  IconCertificate,
+  IconClose,
 } from "@/components/icons";
 import { HuxonButton } from "@/components/huxon-button";
 import {
@@ -45,7 +53,7 @@ import {
   Stagger,
   StaggerItem,
 } from "@/components/primitives";
-import { useCart, useNav, useWishlist, useReward } from "@/lib/store";
+import { useCart, useNav, useWishlist, useReward, useRecent } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
 /**
@@ -55,17 +63,22 @@ import { cn } from "@/lib/utils";
 export function ProductView() {
   const { activeProductId, setRoute, openProduct } = useNav();
   const product = PRODUCTS.find((p) => p.id === activeProductId) ?? PRODUCTS[0];
+  const pushRecent = useRecent((s) => s.push);
 
   const [qty, setQty] = React.useState(1);
   const [flavor, setFlavor] = React.useState(product.flavor);
   const [activeImg, setActiveImg] = React.useState(0);
 
-  // Reset state when product changes
+  // Reset state when product changes + track recently viewed
   React.useEffect(() => {
     setQty(1);
     setFlavor(product.flavor);
     setActiveImg(0);
-  }, [product.id]);
+    pushRecent(product.id);
+    // scroll to top on product change
+    const main = document.querySelector(".app-scroll") as HTMLElement | null;
+    if (main) main.scrollTo({ top: 0, behavior: "smooth" });
+  }, [product.id, pushRecent]);
 
   const { addItem, openCart } = useCart();
   const wishlist = useWishlist();
@@ -393,6 +406,31 @@ export function ProductView() {
         {/* Reviews */}
         <Reveal className="mt-6">
           <ReviewsSection productId={product.id} rating={product.rating} reviewCount={product.reviewCount} />
+        </Reveal>
+
+        {/* Q&A Section */}
+        <Reveal className="mt-6">
+          <QASection />
+        </Reveal>
+
+        {/* Lab Reports / Certificate of Analysis */}
+        <Reveal className="mt-6">
+          <LabReportsSection productPrice={product.price} />
+        </Reveal>
+
+        {/* Subscribe & Save */}
+        <Reveal className="mt-6">
+          <SubscribeSection
+            price={product.price}
+            onSubscribe={() => {
+              addPoints(100);
+              pushToast({
+                title: "+100 reward points",
+                description: "Subscription activated — 15% off every order",
+              });
+              addItem(product, flavor, qty);
+            }}
+          />
         </Reveal>
 
         {/* Pairings */}
@@ -941,6 +979,502 @@ function TrustChip({ icon, label }: { icon: React.ReactNode; label: string }) {
     <div className="flex flex-col items-center gap-1 rounded-xl bg-[oklch(var(--glass-tint)/0.04)] py-2.5 text-[10px] text-muted-foreground">
       <span className="text-gold-gradient">{icon}</span>
       {label}
+    </div>
+  );
+}
+
+/* ============================================================
+   Q&A Section — customer questions & answers
+   ============================================================ */
+function QASection() {
+  const [expanded, setExpanded] = React.useState<string | null>(PRODUCT_QAS[0]?.id ?? null);
+  const [helpful, setHelpful] = React.useState<Record<string, boolean>>({});
+
+  return (
+    <div>
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="text-[15px] font-semibold">Questions & answers</h2>
+        <button className="text-[11px] text-gold-gradient">Ask a question</button>
+      </div>
+
+      <Stagger className="space-y-2" staggerChildren={0.06}>
+        {PRODUCT_QAS.map((qa) => {
+          const isOpen = expanded === qa.id;
+          const isHelpful = helpful[qa.id];
+          return (
+            <StaggerItem key={qa.id}>
+              <div
+                className={cn(
+                  "overflow-hidden rounded-2xl border transition-colors",
+                  isOpen
+                    ? "border-[oklch(var(--gold)/0.25)] bg-[oklch(var(--gold)/0.04)]"
+                    : "border-border glass"
+                )}
+              >
+                <button
+                  onClick={() => setExpanded(isOpen ? null : qa.id)}
+                  className="flex w-full items-start justify-between gap-3 px-4 py-3 text-left"
+                  aria-expanded={isOpen}
+                >
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[10px] font-semibold text-gold-gradient">Q</span>
+                      {qa.answeredBy === "brand" ? (
+                        <Pill tone="gold">Brand answer</Pill>
+                      ) : (
+                        <Pill>Verified buyer</Pill>
+                      )}
+                    </div>
+                    <p className="mt-1 text-[13px] font-medium leading-snug text-cream-gradient">
+                      {qa.question}
+                    </p>
+                  </div>
+                  <motion.span
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                    className={cn(
+                      "grid h-6 w-6 shrink-0 place-items-center rounded-full",
+                      isOpen ? "bg-[oklch(var(--gold)/0.18)] text-gold-gradient" : "bg-[oklch(var(--glass-tint)/0.06)] text-muted-foreground"
+                    )}
+                  >
+                    <IconChevronDown size={12} />
+                  </motion.span>
+                </button>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-4 pb-4">
+                        <div className="flex gap-2">
+                          <span className="text-[10px] font-semibold text-[oklch(var(--jade))]">A</span>
+                          <div className="flex-1">
+                            <p className="text-[12.5px] leading-relaxed text-foreground/80 text-pretty">
+                              {qa.answer}
+                            </p>
+                            <div className="mt-2 flex items-center justify-between">
+                              <span className="text-[10px] text-muted-foreground">
+                                — {qa.author} · {qa.date}
+                              </span>
+                              <button
+                                onClick={() =>
+                                  setHelpful((h) => ({ ...h, [qa.id]: !h[qa.id] }))
+                                }
+                                className={cn(
+                                  "flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-medium transition-colors",
+                                  isHelpful
+                                    ? "bg-[oklch(var(--jade)/0.18)] text-[oklch(var(--jade))]"
+                                    : "bg-[oklch(var(--glass-tint)/0.06)] text-muted-foreground"
+                                )}
+                              >
+                                <IconCheck size={10} />
+                                Helpful · {qa.helpful + (isHelpful ? 1 : 0)}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </StaggerItem>
+          );
+        })}
+      </Stagger>
+      <button className="mt-3 w-full rounded-full glass py-2.5 text-[12px] font-medium text-muted-foreground">
+        See all {PRODUCT_QAS.length + 47} questions
+      </button>
+    </div>
+  );
+}
+
+/* ============================================================
+   Lab Reports / Certificate of Analysis
+   ============================================================ */
+function LabReportsSection({ productPrice }: { productPrice: number }) {
+  const [activeCategory, setActiveCategory] = React.useState<
+    "heavy-metals" | "microbial" | "protein-assay" | "contaminants"
+  >("heavy-metals");
+  const [showCert, setShowCert] = React.useState(false);
+
+  const categories = [
+    { id: "heavy-metals" as const, label: "Heavy Metals", icon: "shield" },
+    { id: "microbial" as const, label: "Microbial", icon: "flask" },
+    { id: "protein-assay" as const, label: "Protein Assay", icon: "dumbbell" },
+    { id: "contaminants" as const, label: "Contaminants", icon: "check" },
+  ];
+
+  const tests = LAB_REPORTS.filter((t) => t.category === activeCategory);
+  const allPass = LAB_REPORTS.every((t) => t.status === "pass" || t.status === "nd");
+
+  return (
+    <div>
+      <div className="mb-3 flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <IconFlask size={14} className="text-gold-gradient" />
+          <h2 className="text-[15px] font-semibold">Lab reports</h2>
+        </div>
+        <button
+          onClick={() => setShowCert(true)}
+          className="flex items-center gap-1 text-[11px] text-gold-gradient"
+        >
+          <IconCertificate size={12} />
+          Certificates
+        </button>
+      </div>
+
+      {/* Summary banner */}
+      <div className="mb-3 flex items-center gap-3 rounded-2xl border border-[oklch(var(--jade)/0.25)] bg-[oklch(var(--jade)/0.06)] p-3">
+        <div className="grid h-10 w-10 place-items-center rounded-full bg-[oklch(var(--jade)/0.18)]">
+          <IconCheck size={20} className="text-[oklch(var(--jade))]" />
+        </div>
+        <div className="flex-1">
+          <div className="text-[13px] font-semibold text-cream-gradient">
+            All {LAB_REPORTS.length} tests passed
+          </div>
+          <div className="text-[10px] text-muted-foreground">
+            Batch #HXL-2025-{Math.floor(Math.random() * 9000 + 1000)} · Tested {new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+          </div>
+        </div>
+        <button className="flex items-center gap-1 rounded-full bg-[oklch(var(--glass-tint)/0.08)] px-2.5 py-1.5 text-[10px] font-medium">
+          <IconArrowDown size={11} />
+          COA PDF
+        </button>
+      </div>
+
+      {/* Category tabs */}
+      <div className="no-scrollbar mb-3 flex gap-1.5 overflow-x-auto">
+        {categories.map((cat) => {
+          const Icon = ICON_MAP[cat.icon] ?? IconShield;
+          const active = cat.id === activeCategory;
+          return (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.id)}
+              className={cn(
+                "flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-medium transition-all",
+                active
+                  ? "border-[oklch(var(--gold)/0.5)] bg-[oklch(var(--gold)/0.14)] text-gold-gradient"
+                  : "border-border bg-transparent text-muted-foreground"
+              )}
+            >
+              <Icon size={12} active={active} />
+              {cat.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Test results table */}
+      <div className="overflow-hidden rounded-2xl glass">
+        <div className="grid grid-cols-[1fr_auto_auto] gap-2 border-b border-border px-3 py-2 text-[9px] uppercase tracking-wide text-muted-foreground">
+          <span>Test</span>
+          <span className="text-right">Result</span>
+          <span className="text-right">Limit</span>
+        </div>
+        <Stagger className="divide-y divide-border/40" staggerChildren={0.04}>
+          {tests.map((test) => (
+            <StaggerItem key={test.id}>
+              <div className="grid grid-cols-[1fr_auto_auto] items-center gap-2 px-3 py-2.5">
+                <div className="flex items-center gap-2">
+                  <span
+                    className={cn(
+                      "grid h-5 w-5 shrink-0 place-items-center rounded-full",
+                      test.status === "nd"
+                        ? "bg-[oklch(var(--jade)/0.18)]"
+                        : "bg-[oklch(var(--jade)/0.18)]"
+                    )}
+                  >
+                    <IconCheck size={10} className="text-[oklch(var(--jade))]" />
+                  </span>
+                  <span className="text-[12px] text-foreground/85">{test.testName}</span>
+                </div>
+                <div className="text-right">
+                  <span
+                    className={cn(
+                      "text-[12px] font-semibold tabular",
+                      test.status === "nd" ? "text-[oklch(var(--jade))]" : "text-cream-gradient"
+                    )}
+                  >
+                    {test.result}
+                  </span>
+                  <span className="ml-0.5 text-[9px] text-muted-foreground">{test.unit}</span>
+                </div>
+                <span className="text-right text-[10px] text-muted-foreground tabular">
+                  {test.limit}
+                </span>
+              </div>
+            </StaggerItem>
+          ))}
+        </Stagger>
+      </div>
+
+      <p className="mt-2 px-1 text-[10px] text-muted-foreground">
+        ND = Not Detected · Tests conducted at our NABL-accredited in-house lab and verified by an independent third party.
+      </p>
+
+      {/* Certificates modal */}
+      <AnimatePresence>
+        {showCert && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowCert(false)}
+            className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-md"
+          >
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", stiffness: 260, damping: 30 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative z-10 flex max-h-[80dvh] w-full max-w-[460px] flex-col overflow-hidden rounded-t-[28px] border-t border-border bg-background"
+            >
+              <div className="mx-auto my-3 h-1 w-10 rounded-full bg-[oklch(var(--glass-border)/0.2)]" />
+              <button
+                onClick={() => setShowCert(false)}
+                aria-label="Close"
+                className="absolute right-4 top-4 z-20 grid h-9 w-9 place-items-center rounded-full glass"
+              >
+                <IconClose size={16} />
+              </button>
+              <div className="no-scrollbar flex-1 overflow-y-auto px-5 pb-8">
+                <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-gold-gradient">
+                  <IconCertificate size={12} />
+                  Certifications
+                </div>
+                <h2 className="mt-1 font-display text-[22px] font-semibold text-cream-gradient">
+                  Verified by 6 bodies
+                </h2>
+                <p className="mt-1 text-[12px] text-muted-foreground">
+                  Every batch is audited quarterly.
+                </p>
+                <div className="mt-4 grid grid-cols-2 gap-2.5">
+                  {CERTIFICATIONS.map((cert, i) => {
+                    const Icon = ICON_MAP[cert.image] ?? IconShield;
+                    return (
+                      <motion.div
+                        key={cert.id}
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.05 }}
+                        className="rounded-2xl glass p-3"
+                      >
+                        <div className="grid h-10 w-10 place-items-center rounded-xl bg-[oklch(var(--gold)/0.14)]">
+                          <Icon size={18} active />
+                        </div>
+                        <div className="mt-2 text-[13px] font-semibold text-cream-gradient">
+                          {cert.name}
+                        </div>
+                        <div className="text-[9px] text-muted-foreground">
+                          License: {cert.license}
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+                <button className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-full glass py-3 text-[12px] font-medium">
+                  <IconArrowDown size={14} />
+                  Download all certificates (PDF, 2.4MB)
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/* ============================================================
+   Subscribe & Save Section
+   ============================================================ */
+function SubscribeSection({
+  price,
+  onSubscribe,
+}: {
+  price: number;
+  onSubscribe: () => void;
+}) {
+  const [mode, setMode] = React.useState<"one-time" | "subscription">("subscription");
+  const [frequency, setFrequency] = React.useState(30);
+  const [quantities, setQuantities] = React.useState(2);
+
+  const discount = mode === "subscription" ? 0.15 : 0;
+  const discountedPrice = Math.round(price * (1 - discount));
+  const perDelivery = discountedPrice * quantities;
+  const deliveriesPerYear = Math.round(365 / frequency);
+  const annualSavings = mode === "subscription"
+    ? (price - discountedPrice) * quantities * deliveriesPerYear
+    : 0;
+
+  const frequencies = [
+    { days: 15, label: "Every 2 weeks", recommended: false },
+    { days: 30, label: "Monthly", recommended: true },
+    { days: 45, label: "Every 6 weeks", recommended: false },
+    { days: 60, label: "Bi-monthly", recommended: false },
+  ];
+
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-[oklch(var(--gold)/0.25)] bg-gradient-to-br from-[oklch(var(--gold)/0.08)] to-[oklch(var(--gold)/0.02)] p-4">
+      <div className="bg-molecular absolute inset-0 opacity-30" />
+      <div className="relative">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <IconRefresh size={14} className="text-gold-gradient" />
+            <span className="text-[11px] uppercase tracking-[0.16em] text-gold-gradient">
+              Subscribe & save
+            </span>
+          </div>
+          <Pill tone="green">15% off forever</Pill>
+        </div>
+
+        {/* Mode toggle */}
+        <div className="mt-3 flex gap-1 rounded-full bg-[oklch(var(--glass-tint)/0.06)] p-1">
+          <button
+            onClick={() => setMode("one-time")}
+            className={cn(
+              "relative flex-1 rounded-full px-3 py-2 text-[12px] font-medium",
+              mode === "one-time" ? "text-foreground" : "text-muted-foreground"
+            )}
+          >
+            {mode === "one-time" && (
+              <motion.span layoutId="sub-mode" className="absolute inset-0 rounded-full bg-[oklch(var(--glass-tint)/0.12)]" />
+            )}
+            <span className="relative z-10">One-time</span>
+          </button>
+          <button
+            onClick={() => setMode("subscription")}
+            className={cn(
+              "relative flex-1 rounded-full px-3 py-2 text-[12px] font-medium",
+              mode === "subscription" ? "text-gold-gradient" : "text-muted-foreground"
+            )}
+          >
+            {mode === "subscription" && (
+              <motion.span layoutId="sub-mode" className="absolute inset-0 rounded-full bg-[oklch(var(--gold)/0.18)]" />
+            )}
+            <span className="relative z-10 flex items-center justify-center gap-1">
+              Subscription
+              <span className="rounded-full bg-[oklch(var(--jade)/0.2)] px-1.5 py-0.5 text-[8px] font-bold text-[oklch(var(--jade))]">
+                -15%
+              </span>
+            </span>
+          </button>
+        </div>
+
+        {mode === "subscription" ? (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            transition={{ duration: 0.3 }}
+          >
+            {/* Frequency selector */}
+            <div className="mt-3">
+              <div className="mb-1.5 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                Delivery frequency
+              </div>
+              <div className="grid grid-cols-2 gap-1.5">
+                {frequencies.map((f) => (
+                  <button
+                    key={f.days}
+                    onClick={() => setFrequency(f.days)}
+                    className={cn(
+                      "relative rounded-xl border px-2 py-2 text-[11px] font-medium transition-all",
+                      frequency === f.days
+                        ? "border-[oklch(var(--gold)/0.5)] bg-[oklch(var(--gold)/0.14)] text-gold-gradient"
+                        : "border-border bg-transparent text-muted-foreground"
+                    )}
+                  >
+                    {f.recommended ? (
+                      <span className="absolute -top-1.5 right-1.5 rounded-full bg-[oklch(var(--jade))] px-1.5 py-0.5 text-[7px] font-bold text-background">
+                        POPULAR
+                      </span>
+                    ) : null}
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Quantity */}
+            <div className="mt-3 flex items-center justify-between rounded-xl bg-[oklch(var(--glass-tint)/0.06)] p-2.5">
+              <span className="text-[11px] text-muted-foreground">Tubs per delivery</span>
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => setQuantities((q) => Math.max(1, q - 1))}
+                  className="grid h-7 w-7 place-items-center rounded-full bg-[oklch(var(--glass-tint)/0.1)]"
+                  aria-label="Decrease"
+                >
+                  <IconMinus size={12} />
+                </button>
+                <span className="w-6 text-center text-[13px] font-semibold tabular">{quantities}</span>
+                <button
+                  onClick={() => setQuantities((q) => Math.min(6, q + 1))}
+                  className="grid h-7 w-7 place-items-center rounded-full bg-[oklch(var(--glass-tint)/0.1)]"
+                  aria-label="Increase"
+                >
+                  <IconPlus size={12} />
+                </button>
+              </div>
+            </div>
+
+            {/* Savings breakdown */}
+            <div className="mt-3 space-y-1.5">
+              <div className="flex items-center justify-between text-[12px]">
+                <span className="text-muted-foreground">One-time price</span>
+                <span className="text-muted-foreground line-through tabular">{formatINR(price * quantities)}</span>
+              </div>
+              <div className="flex items-center justify-between text-[12px]">
+                <span className="text-muted-foreground">Subscriber discount (15%)</span>
+                <span className="text-[oklch(var(--jade))] tabular">−{formatINR(price * quantities - perDelivery)}</span>
+              </div>
+              <div className="flex items-center justify-between border-t border-border/50 pt-1.5">
+                <span className="text-[13px] font-semibold">Per delivery</span>
+                <span className="font-display text-[18px] font-semibold text-gold-gradient tabular">
+                  {formatINR(perDelivery)}
+                </span>
+              </div>
+            </div>
+
+            {/* Annual savings highlight */}
+            <div className="mt-3 flex items-center gap-2 rounded-xl bg-[oklch(var(--jade)/0.1)] p-2.5">
+              <IconBolt size={14} className="text-[oklch(var(--jade))]" />
+              <span className="text-[11px] text-foreground/85">
+                You save <span className="font-bold text-[oklch(var(--jade))]">{formatINR(annualSavings)}</span> per year vs one-time
+              </span>
+            </div>
+
+            {/* Perks */}
+            <div className="mt-3 grid grid-cols-3 gap-1.5">
+              {["Pause anytime", "Swap flavors", "Free shipping"].map((perk) => (
+                <div key={perk} className="flex flex-col items-center gap-1 rounded-lg bg-[oklch(var(--glass-tint)/0.04)] py-2 text-center text-[9px] text-muted-foreground">
+                  <IconCheck size={11} className="text-[oklch(var(--jade))]" />
+                  {perk}
+                </div>
+              ))}
+            </div>
+
+            <HuxonButton size="md" glow className="mt-3 w-full" onClick={onSubscribe}>
+              <IconRefresh size={14} />
+              Start subscription · {formatINR(perDelivery)}/delivery
+            </HuxonButton>
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mt-3 rounded-xl bg-[oklch(var(--glass-tint)/0.06)] p-3 text-center text-[12px] text-muted-foreground"
+          >
+            Switch to subscription to save <span className="font-bold text-gold-gradient">15%</span> on every order.
+          </motion.div>
+        )}
+      </div>
     </div>
   );
 }
