@@ -3,6 +3,7 @@
 import * as React from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { BrandedLogo } from "@/components/branded-logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import {
   IconHome,
   IconShop,
@@ -79,7 +80,7 @@ function TopNav({ scrolled }: { scrolled: boolean }) {
       className={cn(
         "sticky top-0 z-40 w-full pt-safe",
         scrolled
-          ? "glass-dark border-b border-[oklch(0.96_0.012_80_/_0.06)]"
+          ? "glass-dark border-b border-border"
           : "bg-transparent"
       )}
     >
@@ -109,6 +110,7 @@ function TopNav({ scrolled }: { scrolled: boolean }) {
           <NavAction onClick={openCart} label="Cart" badge={cartCount}>
             <IconCart size={20} />
           </NavAction>
+          <ThemeToggle size={38} />
         </div>
       </div>
     </motion.header>

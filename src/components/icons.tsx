@@ -225,6 +225,14 @@ export function IconArrowRight({ size = 24, active, ...p }: IconProps) {
   );
 }
 
+export function IconArrowLeft({ size = 24, active, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 export function IconArrowUpRight({ size = 24, active, ...p }: IconProps) {
   return (
     <svg {...base(size)} {...p}>

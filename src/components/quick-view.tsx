@@ -369,13 +369,23 @@ function QuickViewContent({
         </div>
 
         {/* Sticky purchase area */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-[oklch(0.96_0.012_80_/_0.08)] bg-background/95 backdrop-blur-xl px-4 py-3 pb-safe">
+        <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-border bg-background/95 backdrop-blur-xl px-4 py-3 pb-safe">
+          <button
+            onClick={() => {
+              useNav.getState().openProduct(product.id);
+              onClose();
+            }}
+            className="mb-2 flex w-full items-center justify-center gap-1 text-[11px] font-medium text-gold-gradient"
+          >
+            View full details
+            <IconArrowRight size={12} />
+          </button>
           <div className="flex items-center gap-3">
             {/* Quantity selector */}
             <div className="flex items-center gap-1 rounded-full glass p-1">
               <button
                 onClick={() => setQty((q) => Math.max(1, q - 1))}
-                className="grid h-9 w-9 place-items-center rounded-full hover:bg-[oklch(0.96_0.012_80_/_0.08)]"
+                className="grid h-9 w-9 place-items-center rounded-full hover:bg-[oklch(var(--glass-tint)/0.1)]"
                 aria-label="Decrease"
               >
                 <IconMinus size={14} />
@@ -385,7 +395,7 @@ function QuickViewContent({
               </span>
               <button
                 onClick={() => setQty((q) => q + 1)}
-                className="grid h-9 w-9 place-items-center rounded-full hover:bg-[oklch(0.96_0.012_80_/_0.08)]"
+                className="grid h-9 w-9 place-items-center rounded-full hover:bg-[oklch(var(--glass-tint)/0.1)]"
                 aria-label="Increase"
               >
                 <IconPlus size={14} />

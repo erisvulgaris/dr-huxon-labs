@@ -138,7 +138,7 @@ function ShopCard({
   index: number;
 }) {
   const { addItem } = useCart();
-  const { setQuickView } = useNav();
+  const { setQuickView, openProduct } = useNav();
   const wishlist = useWishlist();
   const fav = wishlist.ids.includes(product.id);
   const discount = discountPercent(product.price, product.mrp);
@@ -152,7 +152,13 @@ function ShopCard({
       className="group relative overflow-hidden rounded-2xl glass p-3"
     >
       {/* Image */}
-      <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[oklch(0.13_0.008_50)]">
+      <div
+        onClick={() => openProduct(product.id)}
+        className="relative aspect-square w-full cursor-pointer overflow-hidden rounded-xl bg-[oklch(var(--charcoal))]"
+        role="button"
+        tabIndex={0}
+        aria-label={`View ${product.name}`}
+      >
         <div
           className="absolute inset-0 blur-2xl"
           style={{ background: `${product.accent.replace(")", " / 0.25)")}` }}
@@ -182,18 +188,22 @@ function ShopCard({
           <IconHeart size={14} active={fav} />
         </button>
         {/* Quick view */}
-        <button
-          onClick={() => setQuickView(product.id)}
-          className="absolute bottom-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-black/40 text-cream/80 backdrop-blur-md"
+        <span
+          onClick={(e) => { e.stopPropagation(); setQuickView(product.id); }}
+          className="absolute bottom-2 right-2 grid h-8 w-8 cursor-pointer place-items-center rounded-full bg-black/40 text-cream/80 backdrop-blur-md"
           aria-label="Quick view"
+          role="button"
         >
           <IconEye size={14} />
-        </button>
+        </span>
       </div>
 
       {/* Info */}
       <div className="mt-2.5">
-        <h3 className="truncate text-[13px] font-semibold text-cream-gradient">
+        <h3
+          onClick={() => openProduct(product.id)}
+          className="truncate cursor-pointer text-[13px] font-semibold text-cream-gradient"
+        >
           {product.name}
         </h3>
         <div className="mt-1 flex items-center gap-1.5">

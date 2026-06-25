@@ -167,7 +167,8 @@ export type Route =
   | "explore"
   | "rewards"
   | "cart"
-  | "profile";
+  | "profile"
+  | "product";
 
 type NavState = {
   route: Route;
@@ -176,6 +177,8 @@ type NavState = {
   setQuickView: (id: string | null) => void;
   ingredientSheetId: string | null;
   setIngredientSheet: (id: string | null) => void;
+  activeProductId: string | null;
+  openProduct: (id: string) => void;
 };
 
 export const useNav = create<NavState>((set) => ({
@@ -185,6 +188,8 @@ export const useNav = create<NavState>((set) => ({
   setQuickView: (id) => set({ quickViewProductId: id }),
   ingredientSheetId: null,
   setIngredientSheet: (id) => set({ ingredientSheetId: id }),
+  activeProductId: null,
+  openProduct: (id) => set({ route: "product", activeProductId: id }),
 }));
 
 type Toast = { id: string; title: string; description?: string };

@@ -9,6 +9,7 @@ import { ExploreView } from "@/components/views/explore";
 import { RewardsView } from "@/components/views/rewards";
 import { CartView } from "@/components/views/cart";
 import { ProfileView } from "@/components/views/profile";
+import { ProductView } from "@/components/views/product";
 import { QuickView } from "@/components/quick-view";
 import { IngredientSheet } from "@/components/sections/ingredients";
 import { CartDrawer } from "@/components/cart-drawer";
@@ -35,6 +36,7 @@ export default function Home() {
           {route === "rewards" && <RewardsView />}
           {route === "cart" && <CartView />}
           {route === "profile" && <ProfileView />}
+          {route === "product" && <ProductView />}
         </motion.div>
       </AnimatePresence>
 

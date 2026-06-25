@@ -665,3 +665,150 @@ export const formatINR = (n: number) =>
 
 export const discountPercent = (price: number, mrp: number) =>
   Math.round(((mrp - price) / mrp) * 100);
+
+/* ============================================================
+   OFFERS & REWARDS — for Product Detail Page
+   ============================================================ */
+
+export type Offer =
+  | {
+      id: string;
+      type: "flash";
+      title: string;
+      description: string;
+      endsAt: number; // epoch ms
+      badge: string;
+    }
+  | {
+      id: string;
+      type: "bundle";
+      title: string;
+      description: string;
+      items: string[];
+      bundlePrice: number;
+      originalPrice: number;
+      badge: string;
+    }
+  | {
+      id: string;
+      type: "coupon";
+      code: string;
+      title: string;
+      description: string;
+      discount: string;
+      badge: string;
+    }
+  | {
+      id: string;
+      type: "bank";
+      title: string;
+      description: string;
+      discount: string;
+      badge: string;
+    }
+  | {
+      id: string;
+      type: "first-order";
+      title: string;
+      description: string;
+      discount: string;
+      badge: string;
+    };
+
+export const PRODUCT_OFFERS: Offer[] = [
+  {
+    id: "o1",
+    type: "flash",
+    title: "Flash Sale — 22% off",
+    description: "Ends soon. Limited stock at this price.",
+    endsAt: Date.now() + 1000 * 60 * 60 * 5 + 1000 * 60 * 42, // ~5h 42m from now
+    badge: "🔥 Flash",
+  },
+  {
+    id: "o2",
+    type: "bundle",
+    title: "Complete Stack — Save ₹1,098",
+    description: "Gold Isolate + Recovery Matrix + Protein Bars",
+    items: ["Huxon Gold Isolate", "Recovery Matrix", "Protein Bars (12-pack)"],
+    bundlePrice: 5398,
+    originalPrice: 6496,
+    badge: "📦 Bundle",
+  },
+  {
+    id: "o3",
+    type: "coupon",
+    code: "HUXON10",
+    title: "10% off your order",
+    description: "Apply code HUXON10 at checkout. Min order ₹1,499.",
+    discount: "10%",
+    badge: "🎫 Coupon",
+  },
+  {
+    id: "o4",
+    type: "bank",
+    title: "5% instant discount on Axis Bank cards",
+    description: "Up to ₹250 off on orders above ₹2,000.",
+    discount: "5%",
+    badge: "🏦 Bank",
+  },
+  {
+    id: "o5",
+    type: "first-order",
+    title: "First order? Get ₹200 off",
+    description: "Auto-applied at checkout for new customers.",
+    discount: "₹200",
+    badge: "✨ First",
+  },
+];
+
+export type ProductReward = {
+  basePoints: number;
+  tierBonus: number;
+  streakBonus: number;
+  totalPoints: number;
+  unlocks: string[];
+};
+
+export function calcProductReward(
+  price: number,
+  tier: string,
+  streak: number
+): ProductReward {
+  // 1 point per ₹10 spent
+  const base = Math.round(price / 10);
+  const tierMult =
+    tier === "platinum"
+      ? 0.15
+      : tier === "gold"
+      ? 0.12
+      : tier === "silver"
+      ? 0.08
+      : 0.05;
+  const tierBonus = Math.round(base * tierMult);
+  const streakBonus = streak >= 7 ? 50 : streak >= 3 ? 25 : 0;
+  return {
+    basePoints: base,
+    tierBonus,
+    streakBonus,
+    totalPoints: base + tierBonus + streakBonus,
+    unlocks:
+      base + tierBonus + streakBonus > 250
+        ? ["Free shipping unlocked", "Early access to new drops"]
+        : ["Free shipping unlocked"],
+  };
+}
+
+export const NUTRITION_HIGHLIGHTS = [
+  { label: "Protein Density", value: "90%", icon: "dumbbell" },
+  { label: "BCAAs", value: "5.5g", icon: "bolt" },
+  { label: "Absorption", value: "96%", icon: "drop" },
+  { label: "Sugar", value: "0.4g", icon: "leaf" },
+];
+
+export const RATING_BREAKDOWN = [
+  { stars: 5, count: 1820, pct: 85 },
+  { stars: 4, count: 248, pct: 11 },
+  { stars: 3, count: 52, pct: 3 },
+  { stars: 2, count: 18, pct: 1 },
+  { stars: 1, count: 10, pct: 0 },
+];

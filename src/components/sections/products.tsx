@@ -67,7 +67,7 @@ function ProductCard({
   index: number;
 }) {
   const { addItem } = useCart();
-  const { setQuickView } = useNav();
+  const { setQuickView, openProduct } = useNav();
   const wishlist = useWishlist();
   const fav = wishlist.ids.includes(product.id);
   const discount = discountPercent(product.price, product.mrp);
@@ -119,7 +119,8 @@ function ProductCard({
           <motion.img
             src={product.heroImage}
             alt={product.name}
-            className="relative z-10 h-full w-auto object-contain drop-shadow-[0_20px_40px_oklch(0.05_0.01_50_/_0.6)]"
+            onClick={() => openProduct(product.id)}
+            className="relative z-10 h-full w-auto cursor-pointer object-contain drop-shadow-[0_20px_40px_oklch(var(--shadow-color)/0.6)]"
             onError={(e) => {
               (e.currentTarget as HTMLImageElement).style.opacity = "0";
             }}

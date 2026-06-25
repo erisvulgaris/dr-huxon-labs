@@ -120,3 +120,100 @@ Stage Summary:
 - Design system, custom icons, branded logo, custom buttons all in place
 - Product images generated; ingredient images generating in background
 - Next phase: ingredient images completion, additional polish, more micro-interactions, potential API integration for real checkout
+
+---
+
+Task ID: 6
+Agent: Appwrite backend sub-agent
+Task: Build the Appwrite backend layer (resilient, with local-catalog fallback)
+
+Work Log:
+- Installed `node-appwrite@26.2.0` (server SDK) and `appwrite@26.1.0` (client SDK) via `bun add`.
+- Created `src/lib/appwrite/server.ts`:
+  - Reads `APPWRITE_ENDPOINT` (default `http://localhost:8080/v1`), `APPWRITE_PROJECT_ID`, `APPWRITE_API_KEY` from env.
+  - Lazy singleton `Client` + `Databases` instances (safe to import even when unused).
+  - Exported constants: `HUXON_DB_ID = "huxon_labs"` + `PRODUCTS_COLLECTION`, `INGREDIENTS_COLLECTION`, `REVIEWS_COLLECTION`, `COUPONS_COLLECTION`, `ORDERS_COLLECTION`, `REWARD_MEMBERS_COLLECTION`.
+  - `isAppwriteConfigured()` checks env presence; `isAppwriteReachable()` does a live `listDocuments(limit:1)` ping.
+- Created `src/lib/appwrite/service.ts` — the KEY resilient data layer:
+  - Public typed async functions: `fetchProducts()`, `fetchProduct(slug)`, `fetchIngredients()`, `fetchReviews(productId?)`, `fetchCoupons()`, `validateCoupon(code, subtotal)`, `submitOrder(payload)`, `fetchRewardMember(email)`.
+  - Each read method: tries Appwrite when configured + reachable, falls back to `src/lib/catalog.ts` static data on ANY error (offline, auth, schema drift, empty result). Connection result is cached per-process to avoid a round-trip on every request.
+  - Mutations (`submitOrder`) always return an `orderNumber` even if persistence fails — checkout never blocks on infra.
+  - Document → typed mappers (`docToProduct`, `docToIngredient`, `docToReview`, `docToCoupon`, `docToRewardMember`) with JSON-aware string parsing for `features`, `ingredients`, `nutritionFacts`, `pairings`, `galleryImages`, `benefits`, `achievements`.
+  - Local fallback data for coupons (`HUXON10`, `WELCOME500`, `PLANT15`) and a sample reward member (`arjun@example.com`).
+- Created 8 Next.js 16 App-Router API routes (all `dynamic = "force-dynamic"`, all return JSON):
+  - `GET /api/products` → `{ products: BrandProduct[] }`
+  - `GET /api/products/[slug]` → `{ product: BrandProduct }` (404 if missing)
+  - `GET /api/ingredients` → `{ ingredients: BrandIngredient[] }`
+  - `GET /api/reviews?productId=p1` → `{ reviews: Review[] }`
+  - `GET /api/coupons` → `{ coupons: Coupon[] }`
+  - `POST /api/coupons/validate` body `{code, subtotal}` → `{valid, discount, message}` (400 on bad input, 200 otherwise)
+  - `POST /api/orders` body = `OrderPayload` → `{orderId, orderNumber, status}` (201 on success, 400 on validation errors)
+  - `GET /api/rewards/member?email=` → `{ member: RewardMember }` (404 if unknown)
+- Created `scripts/setup-appwrite.ts` (runnable via `bun scripts/setup-appwrite.ts`):
+  - Creates the `huxon_labs` database and 6 collections (Products, Ingredients, Reviews, Coupons, Orders, Reward Members) with full attribute schemas + indexes (`slug_idx`, `product_idx`, `code_idx`, `order_number_idx`, unique `email_idx`).
+  - Polls `getAttribute` until each attribute is `available` before continuing (Appwrite attribute creation is async).
+  - Seeds products (6), ingredients (6), reviews (4), and 3 coupons from `catalog.ts` when collections are empty (idempotent — safe to re-run).
+  - Graceful exit 0 in all "can't proceed" cases: env vars missing → friendly skip message; server unreachable → friendly "Could not reach Appwrite" message; any unexpected error → caught at top level, exit 0.
+- Updated `.env` (added 3 empty Appwrite vars alongside existing `DATABASE_URL`) and created `.env.example` with full documentation of what each var does and how to enable a live backend.
+
+Files created:
+- `src/lib/appwrite/server.ts`
+- `src/lib/appwrite/service.ts`
+- `src/app/api/products/route.ts`
+- `src/app/api/products/[slug]/route.ts`
+- `src/app/api/ingredients/route.ts`
+- `src/app/api/reviews/route.ts`
+- `src/app/api/coupons/route.ts`
+- `src/app/api/coupons/validate/route.ts`
+- `src/app/api/orders/route.ts`
+- `src/app/api/rewards/member/route.ts`
+- `scripts/setup-appwrite.ts`
+- `.env.example` (new), `.env` (extended — 3 lines added, no existing lines modified)
+
+Stage Summary:
+- ✅ `bun run lint` passes clean (no errors, no warnings).
+- ✅ App keeps working with NO Appwrite server running — every API route hit during smoke test returned 200 with local-catalog data.
+- ✅ Home page still returns HTTP 200, no console errors in dev.log.
+- ✅ All 8 new API routes smoke-tested via curl:
+    - `curl http://localhost:3000/api/products` → 200, full 6-product catalogue
+    - `curl http://localhost:3000/api/products/huxon-gold-isolate` → 200, single product
+    - `curl http://localhost:3000/api/ingredients` → 200, 6 ingredients
+    - `curl http://localhost:3000/api/reviews?productId=p1` → 200, filtered reviews
+    - `curl http://localhost:3000/api/coupons` → 200, 3 coupons
+    - `curl -X POST http://localhost:3000/api/coupons/validate -H 'Content-Type: application/json' -d '{"code":"HUXON10","subtotal":2499}'` → `{"valid":true,"discount":250,"message":"Coupon applied — you saved ₹250."}`
+    - `curl -X POST http://localhost:3000/api/orders -H 'Content-Type: application/json' -d '{...}'` → 201 `{"orderId":"HUX-...","orderNumber":"HUX-...","status":"placed"}`
+    - `curl 'http://localhost:3000/api/rewards/member?email=arjun@example.com'` → 200 reward member record; unknown email → 404.
+- ✅ `bun scripts/setup-appwrite.ts` exits 0 with helpful messages for: (a) missing env, (b) unreachable server with fake creds.
+- ✅ Zero existing frontend components modified — only new files added under `src/lib/appwrite/`, `src/app/api/`, `scripts/`, and the two `.env` files.
+- Next: When a real Appwrite instance is available, set the 3 env vars, run `bun scripts/setup-appwrite.ts`, and the API routes will transparently start serving from Appwrite with no code changes.
+
+---
+Task ID: 7 (Phase 2)
+Agent: main (Z.ai Code)
+Task: Add Product Detail Page with offers/rewards, build light theme from scratch, integrate Appwrite backend
+
+Work Log:
+- Rewrote globals.css: moved dark tokens from :root to .dark; :root now = light theme (warm ivory/espresso/bronze). Added theme-aware CSS variables for glass (--glass-tint, --glass-border, --glass-dark-tint), text gradients (--grad-gold-*, --grad-cream-*), shadows (--shadow-color, --shadow-strength), molecular texture, and body background gradients. All utilities (.glass, .glass-strong, .glass-dark, .text-gold-gradient, .text-cream-gradient, .shadow-premium, .shadow-gold, .bg-molecular, .bg-grid, .shimmer) now use these variables and adapt to both themes automatically. Added .theme-transition class for smooth 400ms color transitions on toggle.
+- Updated layout.tsx: removed forced className="dark" on <html>, enabled enableSystem in ThemeProvider, added dual themeColor (light #f7f3ec / dark #1a1410) for mobile browser chrome.
+- Created theme-toggle.tsx: premium ThemeToggle component with animated sun/moon icon swap (rotate + scale via AnimatePresence), glass styling, gold hover glow ring, smooth theme-transition class toggle.
+- Added ThemeToggle to TopNav in app-shell.tsx (size 38, next to cart icon).
+- Added "product" route + activeProductId + openProduct() to useNav store.
+- Added offers/rewards data to catalog.ts: PRODUCT_OFFERS (5 types: flash sale with countdown, bundle deal, coupon, bank offer, first-order), calcProductReward() function (base points + tier bonus + streak bonus + unlocks), NUTRITION_HIGHLIGHTS, RATING_BREAKDOWN.
+- Built ProductView (src/components/views/product.tsx) — full PDP with: image carousel (swipeable, dots, 360 hint), back/share/favorite floating buttons, title+rating+price+protein ring, Offers section (flash sale countdown card, bundle deal with expandable items, coupon with copy-to-clipboard, bank offer, first-order offer), Rewards section (total points with AnimatedNumber, base/tier/streak breakdown, unlocks), nutrition highlights grid, flavor selector, quantity selector with total, overview+features, nutrition facts, ingredients, trust badges, reviews section (rating breakdown bars + review cards), pairings, similar products, delivery info, sticky purchase bar (Add to cart + Buy now with reward point earning).
+- Wired up PDP navigation: product explorer card image opens PDP, shop card image+name opens PDP, quick-view has "View full details" link to PDP.
+- Fixed hydration error (nested buttons in shop card — changed outer button to div with role=button).
+- Added missing IconArrowLeft to icons.tsx.
+- Fixed border colors in app-shell and quick-view to use theme-aware border-border variable.
+
+Stage Summary:
+- Light theme: fully built from scratch, warm ivory + espresso + bronze palette, all glass/gradient/shadow utilities theme-aware via CSS variables. VLM confirms "polished and premium" in both themes.
+- Product Detail Page: complete with 5 offer types (flash countdown, bundle, coupon, bank, first-order), rewards calculator (points + tier bonus + streak bonus), nutrition, ingredients, reviews with rating breakdown, pairings, similar products, sticky purchase bar.
+- Appwrite backend (delegated to subagent Task 6): 8 API routes live and tested (products, product by slug, ingredients, reviews, coupons, coupon validate, orders, rewards member). Graceful fallback to local catalog when no Appwrite server. Setup script ready.
+- Verification: HTTP 200, lint clean, no console errors, no hydration errors. VLM confirms premium quality in both themes and all PDP sections.
+- API routes tested: GET /api/products, GET /api/products/huxon-gold-isolate, POST /api/coupons/validate (HUXON10 → valid, ₹250 discount), GET /api/coupons all return correct data.
+
+Unresolved / Next phase:
+- Could connect frontend cart checkout to POST /api/orders (currently uses local state)
+- Could replace static product data in views with fetch calls to /api/products (currently catalog.ts is used directly for instant render; API routes available when ready)
+- Ingredient images: 4/6 generated, 2 still missing (ashwagandha, spirulina) with graceful fallback
+- Could add more PDP sections (lab reports download, subscription option on PDP, Q&A)

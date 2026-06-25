@@ -5,6 +5,7 @@
 
 /* ============================================================
    DR. HUXON LABS — Premium Mobile-First Design System
+   Dual-theme: Light (warm ivory) + Dark (charcoal/espresso)
    Palette: charcoal · espresso · graphite · bronze · cocoa ·
             warm gold · cream highlights
    ============================================================ */
@@ -64,11 +65,106 @@
   --radius-3xl: calc(var(--radius) + 20px);
 }
 
+/* ============================================================
+   LIGHT THEME (default :root)
+   Warm ivory + espresso + bronze — premium parchment feel
+   ============================================================ */
 :root {
-  /* Premium dark theme (default — brand is dark) */
   --radius: 1rem;
 
-  /* Base surfaces — charcoal / espresso layered */
+  /* Base surfaces — warm ivory / cream */
+  --background: oklch(0.97 0.008 80);              /* warm ivory */
+  --foreground: oklch(0.22 0.02 45);               /* espresso */
+  --card: oklch(0.99 0.005 80);                    /* warm white */
+  --card-foreground: oklch(0.22 0.02 45);
+  --popover: oklch(0.99 0.005 80);
+  --popover-foreground: oklch(0.22 0.02 45);
+
+  /* Primary = bronze (darker for contrast on light) */
+  --primary: oklch(0.52 0.11 60);                  /* bronze */
+  --primary-foreground: oklch(0.99 0.005 80);      /* warm white */
+
+  --secondary: oklch(0.93 0.008 75);
+  --secondary-foreground: oklch(0.25 0.02 50);
+  --muted: oklch(0.93 0.008 75);
+  --muted-foreground: oklch(0.48 0.015 65);
+  --accent: oklch(0.90 0.025 65);                  /* light cocoa */
+  --accent-foreground: oklch(0.25 0.02 50);
+  --destructive: oklch(0.55 0.20 25);
+  --border: oklch(0.85 0.01 60 / 70%);
+  --input: oklch(0.88 0.008 70 / 80%);
+  --ring: oklch(0.52 0.11 60 / 50%);
+  --chart-1: oklch(0.52 0.11 60);                  /* bronze */
+  --chart-2: oklch(0.45 0.08 50);
+  --chart-3: oklch(0.50 0.09 160);
+  --chart-4: oklch(0.55 0.10 40);
+  --chart-5: oklch(0.40 0.05 280);
+
+  /* Brand palette — adjusted for light backgrounds */
+  --gold: oklch(0.55 0.12 65);                     /* darker gold for contrast */
+  --gold-soft: oklch(0.70 0.08 70);
+  --bronze: oklch(0.50 0.10 55);
+  --espresso: oklch(0.25 0.02 45);
+  --cocoa: oklch(0.40 0.03 50);
+  --graphite: oklch(0.45 0.005 60);
+  --charcoal: oklch(0.20 0.008 50);
+  --cream: oklch(0.25 0.02 45);                    /* In light theme, "cream" text var = espresso */
+  --jade: oklch(0.50 0.09 160);
+
+  /* Glass + overlay tokens (theme-aware) */
+  --glass-tint: 0.99 0.005 80;                     /* white-ish overlay */
+  --glass-alpha-1: 0.65;
+  --glass-alpha-2: 0.40;
+  --glass-border: 0.25 0.02 45;                    /* dark border */
+  --glass-border-alpha: 0.10;
+  --glass-dark-tint: 0.97 0.008 80;                /* nav bar bg in light = ivory */
+  --glass-dark-alpha-1: 0.80;
+  --glass-dark-alpha-2: 0.65;
+
+  /* Text gradients (theme-aware) */
+  --grad-gold-1: oklch(0.45 0.10 55);
+  --grad-gold-2: oklch(0.55 0.12 65);
+  --grad-gold-3: oklch(0.40 0.08 45);
+  --grad-cream-1: oklch(0.20 0.02 45);             /* espresso gradient for headings */
+  --grad-cream-2: oklch(0.30 0.02 50);
+
+  /* Shadow color */
+  --shadow-color: 0.20 0.02 45;                    /* espresso shadow */
+  --shadow-strength: 0.12;
+
+  /* Molecular texture color */
+  --molecular-color: 0.52 0.11 60;
+  --molecular-alpha-1: 0.05;
+  --molecular-alpha-2: 0.04;
+  --molecular-color-2: 0.25 0.02 45;
+  --molecular-alpha-3: 0.03;
+
+  /* Body background gradients (theme-aware) */
+  --bg-grad-1: 0.90 0.02 65;
+  --bg-grad-1-alpha: 0.6;
+  --bg-grad-2: 0.85 0.04 60;
+  --bg-grad-2-alpha: 0.3;
+  --bg-grad-3: 0.88 0.03 55;
+  --bg-grad-3-alpha: 0.35;
+
+  /* Sidebar */
+  --sidebar: oklch(0.98 0.006 80);
+  --sidebar-foreground: oklch(0.22 0.02 45);
+  --sidebar-primary: oklch(0.52 0.11 60);
+  --sidebar-primary-foreground: oklch(0.99 0.005 80);
+  --sidebar-accent: oklch(0.93 0.008 75);
+  --sidebar-accent-foreground: oklch(0.25 0.02 50);
+  --sidebar-border: oklch(0.85 0.01 60 / 70%);
+  --sidebar-ring: oklch(0.52 0.11 60 / 50%);
+
+  color-scheme: light;
+}
+
+/* ============================================================
+   DARK THEME (.dark)
+   Charcoal / espresso / graphite + warm gold
+   ============================================================ */
+.dark {
   --background: oklch(0.13 0.008 50);              /* deep charcoal with warm tint */
   --foreground: oklch(0.96 0.012 80);              /* warm cream */
   --card: oklch(0.17 0.012 55);                    /* graphite-espresso */
@@ -76,7 +172,6 @@
   --popover: oklch(0.16 0.012 55);
   --popover-foreground: oklch(0.96 0.012 80);
 
-  /* Primary = bronze-gold */
   --primary: oklch(0.78 0.13 75);                  /* warm gold */
   --primary-foreground: oklch(0.14 0.01 50);       /* charcoal */
 
@@ -90,13 +185,12 @@
   --border: oklch(0.28 0.012 55 / 60%);
   --input: oklch(0.22 0.012 55 / 80%);
   --ring: oklch(0.78 0.13 75 / 50%);
-  --chart-1: oklch(0.78 0.13 75);                  /* gold */
-  --chart-2: oklch(0.62 0.10 50);                  /* bronze */
-  --chart-3: oklch(0.55 0.09 160);                 /* jade */
-  --chart-4: oklch(0.70 0.08 30);                  /* cocoa-amber */
-  --chart-5: oklch(0.45 0.04 280);                 /* graphite-plum */
+  --chart-1: oklch(0.78 0.13 75);
+  --chart-2: oklch(0.62 0.10 50);
+  --chart-3: oklch(0.55 0.09 160);
+  --chart-4: oklch(0.70 0.08 30);
+  --chart-5: oklch(0.45 0.04 280);
 
-  /* Brand palette */
   --gold: oklch(0.82 0.14 80);
   --gold-soft: oklch(0.90 0.08 85);
   --bronze: oklch(0.60 0.10 55);
@@ -107,7 +201,42 @@
   --cream: oklch(0.96 0.012 80);
   --jade: oklch(0.62 0.10 160);
 
-  /* Sidebar */
+  /* Glass + overlay tokens */
+  --glass-tint: 0.96 0.012 80;                     /* light cream overlay on dark */
+  --glass-alpha-1: 0.06;
+  --glass-alpha-2: 0.02;
+  --glass-border: 0.96 0.012 80;
+  --glass-border-alpha: 0.08;
+  --glass-dark-tint: 0.14 0.01 50;
+  --glass-dark-alpha-1: 0.70;
+  --glass-dark-alpha-2: 0.50;
+
+  /* Text gradients */
+  --grad-gold-1: oklch(0.92 0.10 85);
+  --grad-gold-2: oklch(0.78 0.13 75);
+  --grad-gold-3: oklch(0.62 0.10 55);
+  --grad-cream-1: oklch(0.99 0.005 80);
+  --grad-cream-2: oklch(0.86 0.02 75);
+
+  /* Shadow color */
+  --shadow-color: 0.05 0.01 50;
+  --shadow-strength: 0.50;
+
+  /* Molecular texture */
+  --molecular-color: 0.78 0.13 75;
+  --molecular-alpha-1: 0.06;
+  --molecular-alpha-2: 0.05;
+  --molecular-color-2: 0.96 0.012 80;
+  --molecular-alpha-3: 0.04;
+
+  /* Body background gradients */
+  --bg-grad-1: 0.20 0.02 55;
+  --bg-grad-1-alpha: 0.9;
+  --bg-grad-2: 0.28 0.05 60;
+  --bg-grad-2-alpha: 0.25;
+  --bg-grad-3: 0.22 0.03 50;
+  --bg-grad-3-alpha: 0.3;
+
   --sidebar: oklch(0.15 0.01 55);
   --sidebar-foreground: oklch(0.96 0.012 80);
   --sidebar-primary: oklch(0.78 0.13 75);
@@ -116,28 +245,8 @@
   --sidebar-accent-foreground: oklch(0.96 0.012 80);
   --sidebar-border: oklch(0.28 0.012 55 / 60%);
   --sidebar-ring: oklch(0.78 0.13 75 / 50%);
-}
 
-.dark {
-  /* Same as root — brand is inherently dark */
-  --background: oklch(0.13 0.008 50);
-  --foreground: oklch(0.96 0.012 80);
-  --card: oklch(0.17 0.012 55);
-  --card-foreground: oklch(0.96 0.012 80);
-  --popover: oklch(0.16 0.012 55);
-  --popover-foreground: oklch(0.96 0.012 80);
-  --primary: oklch(0.78 0.13 75);
-  --primary-foreground: oklch(0.14 0.01 50);
-  --secondary: oklch(0.22 0.01 55);
-  --secondary-foreground: oklch(0.94 0.012 80);
-  --muted: oklch(0.21 0.01 55);
-  --muted-foreground: oklch(0.66 0.015 70);
-  --accent: oklch(0.30 0.04 55);
-  --accent-foreground: oklch(0.96 0.012 80);
-  --destructive: oklch(0.62 0.20 25);
-  --border: oklch(0.28 0.012 55 / 60%);
-  --input: oklch(0.22 0.012 55 / 80%);
-  --ring: oklch(0.78 0.13 75 / 50%);
+  color-scheme: dark;
 }
 
 @layer base {
@@ -155,18 +264,19 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
-    /* Layered premium background */
+    /* Layered premium background — theme-aware via variables */
     background-color: var(--background);
     background-image:
-      radial-gradient(120% 80% at 50% -10%, oklch(0.20 0.02 55 / 0.9), transparent 60%),
-      radial-gradient(80% 60% at 100% 0%, oklch(0.28 0.05 60 / 0.25), transparent 50%),
-      radial-gradient(60% 50% at 0% 100%, oklch(0.22 0.03 50 / 0.3), transparent 50%);
+      radial-gradient(120% 80% at 50% -10%, oklch(var(--bg-grad-1) / var(--bg-grad-1-alpha)), transparent 60%),
+      radial-gradient(80% 60% at 100% 0%, oklch(var(--bg-grad-2) / var(--bg-grad-2-alpha)), transparent 50%),
+      radial-gradient(60% 50% at 0% 100%, oklch(var(--bg-grad-3) / var(--bg-grad-3-alpha)), transparent 50%);
     background-attachment: fixed;
+    transition: background-color 0.4s ease, color 0.4s ease;
   }
 
   ::selection {
-    background: oklch(0.78 0.13 75 / 30%);
-    color: var(--cream);
+    background: oklch(var(--gold) / 30%);
+    color: var(--foreground);
   }
 
   /* Premium scrollbar */
@@ -178,11 +288,11 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: oklch(0.40 0.02 55 / 50%);
+    background: oklch(var(--shadow-color) / 30%);
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: oklch(0.55 0.05 60 / 70%);
+    background: oklch(var(--gold) / 50%);
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -193,51 +303,52 @@
 }
 
 /* ============================================================
-   PREMIUM UTILITIES
+   PREMIUM UTILITIES — all theme-aware via CSS variables
    ============================================================ */
 @layer utilities {
   /* Glass surfaces */
   .glass {
     background: linear-gradient(
       135deg,
-      oklch(0.96 0.012 80 / 0.06),
-      oklch(0.96 0.012 80 / 0.02)
+      oklch(var(--glass-tint) / var(--glass-alpha-1)),
+      oklch(var(--glass-tint) / var(--glass-alpha-2))
     );
     backdrop-filter: blur(20px) saturate(140%);
     -webkit-backdrop-filter: blur(20px) saturate(140%);
-    border: 1px solid oklch(0.96 0.012 80 / 0.08);
+    border: 1px solid oklch(var(--glass-border) / var(--glass-border-alpha));
   }
   .glass-strong {
     background: linear-gradient(
       135deg,
-      oklch(0.96 0.012 80 / 0.10),
-      oklch(0.96 0.012 80 / 0.04)
+      oklch(var(--glass-tint) / calc(var(--glass-alpha-1) + 0.04)),
+      oklch(var(--glass-tint) / calc(var(--glass-alpha-2) + 0.02))
     );
     backdrop-filter: blur(28px) saturate(160%);
     -webkit-backdrop-filter: blur(28px) saturate(160%);
-    border: 1px solid oklch(0.96 0.012 80 / 0.12);
+    border: 1px solid oklch(var(--glass-border) / calc(var(--glass-border-alpha) + 0.04));
   }
   .glass-dark {
     background: linear-gradient(
       135deg,
-      oklch(0.14 0.01 50 / 0.70),
-      oklch(0.14 0.01 50 / 0.50)
+      oklch(var(--glass-dark-tint) / var(--glass-dark-alpha-1)),
+      oklch(var(--glass-dark-tint) / var(--glass-dark-alpha-2))
     );
     backdrop-filter: blur(24px) saturate(140%);
     -webkit-backdrop-filter: blur(24px) saturate(140%);
-    border: 1px solid oklch(0.96 0.012 80 / 0.08);
+    border: 1px solid oklch(var(--glass-border) / var(--glass-border-alpha));
   }
 
-  /* Gold text */
+  /* Gold text gradient — theme-aware */
   .text-gold-gradient {
-    background: linear-gradient(135deg, oklch(0.92 0.10 85) 0%, oklch(0.78 0.13 75) 45%, oklch(0.62 0.10 55) 100%);
+    background: linear-gradient(135deg, var(--grad-gold-1) 0%, var(--grad-gold-2) 45%, var(--grad-gold-3) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
   }
+  /* Heading text gradient — cream (dark) / espresso (light) */
   .text-cream-gradient {
-    background: linear-gradient(180deg, oklch(0.99 0.005 80), oklch(0.86 0.02 75));
+    background: linear-gradient(180deg, var(--grad-cream-1), var(--grad-cream-2));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -246,42 +357,42 @@
 
   /* Gold border glow */
   .border-gold-glow {
-    border: 1px solid oklch(0.78 0.13 75 / 30%);
+    border: 1px solid oklch(var(--gold) / 30%);
     box-shadow:
-      0 0 0 1px oklch(0.78 0.13 75 / 10%),
-      0 8px 32px -8px oklch(0.78 0.13 75 / 25%),
-      inset 0 1px 0 oklch(0.96 0.012 80 / 8%);
+      0 0 0 1px oklch(var(--gold) / 10%),
+      0 8px 32px -8px oklch(var(--gold) / 25%),
+      inset 0 1px 0 oklch(var(--glass-tint) / 8%);
   }
 
-  /* Premium shadow */
+  /* Premium shadow — theme-aware strength */
   .shadow-premium {
     box-shadow:
-      0 1px 2px oklch(0.05 0.01 50 / 40%),
-      0 8px 24px -6px oklch(0.05 0.01 50 / 60%),
-      0 24px 48px -12px oklch(0.05 0.01 50 / 50%),
-      inset 0 1px 0 oklch(0.96 0.012 80 / 4%);
+      0 1px 2px oklch(var(--shadow-color) / calc(var(--shadow-strength) * 0.5)),
+      0 8px 24px -6px oklch(var(--shadow-color) / var(--shadow-strength)),
+      0 24px 48px -12px oklch(var(--shadow-color) / calc(var(--shadow-strength) * 0.8)),
+      inset 0 1px 0 oklch(var(--glass-tint) / 4%);
   }
   .shadow-gold {
     box-shadow:
-      0 4px 12px -2px oklch(0.78 0.13 75 / 35%),
-      0 12px 32px -8px oklch(0.78 0.13 75 / 25%),
-      inset 0 1px 0 oklch(0.96 0.012 80 / 12%);
+      0 4px 12px -2px oklch(var(--gold) / 35%),
+      0 12px 32px -8px oklch(var(--gold) / 25%),
+      inset 0 1px 0 oklch(var(--glass-tint) / 12%);
   }
 
-  /* Molecular / noise texture overlay */
+  /* Molecular / noise texture overlay — theme-aware */
   .bg-molecular {
     background-image:
-      radial-gradient(circle at 25% 30%, oklch(0.78 0.13 75 / 0.06) 0, transparent 2px),
-      radial-gradient(circle at 75% 60%, oklch(0.78 0.13 75 / 0.05) 0, transparent 2px),
-      radial-gradient(circle at 50% 80%, oklch(0.96 0.012 80 / 0.04) 0, transparent 2px),
-      radial-gradient(circle at 10% 70%, oklch(0.78 0.13 75 / 0.04) 0, transparent 1.5px);
+      radial-gradient(circle at 25% 30%, oklch(var(--molecular-color) / var(--molecular-alpha-1)) 0, transparent 2px),
+      radial-gradient(circle at 75% 60%, oklch(var(--molecular-color) / var(--molecular-alpha-2)) 0, transparent 2px),
+      radial-gradient(circle at 50% 80%, oklch(var(--molecular-color-2) / var(--molecular-alpha-3)) 0, transparent 2px),
+      radial-gradient(circle at 10% 70%, oklch(var(--molecular-color) / var(--molecular-alpha-3)) 0, transparent 1.5px);
     background-size: 120px 120px, 90px 90px, 140px 140px, 70px 70px;
   }
 
   .bg-grid {
     background-image:
-      linear-gradient(oklch(0.96 0.012 80 / 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, oklch(0.96 0.012 80 / 0.04) 1px, transparent 1px);
+      linear-gradient(oklch(var(--glass-border) / 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(var(--glass-border) / 0.06) 1px, transparent 1px);
     background-size: 32px 32px;
   }
 
@@ -295,7 +406,7 @@
     50% { background-position: 100% 50%; }
   }
 
-  /* Shimmer */
+  /* Shimmer — theme-aware */
   .shimmer {
     position: relative;
     overflow: hidden;
@@ -308,7 +419,7 @@
     background: linear-gradient(
       90deg,
       transparent,
-      oklch(0.96 0.012 80 / 0.08),
+      oklch(var(--glass-tint) / 0.12),
       transparent
     );
     animation: shimmer 2s infinite;
@@ -451,7 +562,7 @@
 
 /* Premium focus ring */
 *:focus-visible {
-  outline: 2px solid oklch(0.78 0.13 75 / 60%);
+  outline: 2px solid oklch(var(--gold) / 60%);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -467,4 +578,12 @@
 }
 .pressable:active {
   transform: scale(0.97);
+}
+
+/* Theme transition smoothing */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.3s ease, box-shadow 0.4s ease !important;
 }
