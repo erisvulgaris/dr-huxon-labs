@@ -10,7 +10,9 @@ import { ProteinCalculator } from "@/components/sections/calculator";
 import { ComparisonWidget } from "@/components/sections/comparison";
 import { CustomerStories } from "@/components/sections/stories";
 import { FAQSection } from "@/components/sections/faq";
+import { EducationSection } from "@/components/sections/education";
 import { RecentlyViewed } from "@/components/sections/recently-viewed";
+import { BundleCTA } from "@/components/sections/bundle-cta";
 import { HuxonButton } from "@/components/huxon-button";
 import { useNav } from "@/lib/store";
 import { IconArrowRight, IconBolt } from "@/components/icons";
@@ -31,6 +33,8 @@ export function HomeView() {
       <ProteinCalculator />
       <ComparisonWidget />
       <CustomerStories />
+      <EducationSection />
+      <BundleCTA />
       <FAQSection />
       <FooterCTA />
     </div>

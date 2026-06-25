@@ -1042,3 +1042,95 @@ export const PRODUCT_RECIPES: Recipe[] = [
     accent: "oklch(0.55 0.08 50)",
   },
 ];
+
+/* ============================================================
+   NUTRITION EDUCATION / BLOG — science articles
+   ============================================================ */
+
+export type Article = {
+  id: string;
+  title: string;
+  category: "science" | "nutrition" | "fitness" | "lifestyle";
+  excerpt: string;
+  readTime: string;
+  author: string;
+  date: string;
+  accent: string;
+  emoji: string;
+  keyTakeaway: string;
+};
+
+export const ARTICLES: Article[] = [
+  {
+    id: "a1",
+    title: "Why PDCAAS 1.0 matters for plant protein",
+    category: "science",
+    excerpt: "Not all plant proteins are created equal. The Protein Digestibility-Corrected Amino Acid Score (PDCAAS) is the gold standard for measuring protein quality — and our blend hits the perfect 1.0 score.",
+    readTime: "4 min read",
+    author: "Dr. Huxon Labs Science Team",
+    date: "2 weeks ago",
+    accent: "oklch(0.78 0.13 75)",
+    emoji: "🧬",
+    keyTakeaway: "Pea + rice blend = complete amino acid profile matching whey",
+  },
+  {
+    id: "a2",
+    title: "The truth about heavy metals in protein powder",
+    category: "science",
+    excerpt: "A recent ConsumerLab study found alarming heavy metal levels in 47% of tested protein powders. Here's how we test every batch — and why you should demand the same from every brand.",
+    readTime: "6 min read",
+    author: "Dr. Huxon Labs Quality Team",
+    date: "1 month ago",
+    accent: "oklch(0.62 0.10 160)",
+    emoji: "🔬",
+    keyTakeaway: "Always check for third-party lab reports before buying",
+  },
+  {
+    id: "a3",
+    title: "How much protein do you actually need? (Indian context)",
+    category: "nutrition",
+    excerpt: "The RDA of 0.8g/kg is a minimum to prevent deficiency — not an optimal target. For active Indians, we break down the science of protein needs by activity level, age, and fitness goal.",
+    readTime: "5 min read",
+    author: "Dr. Huxon Labs Nutrition Team",
+    date: "3 weeks ago",
+    accent: "oklch(0.65 0.15 30)",
+    emoji: "📊",
+    keyTakeaway: "Active adults need 1.4-2.0g/kg depending on goals",
+  },
+  {
+    id: "a4",
+    title: "Plant protein vs whey: the definitive comparison",
+    category: "fitness",
+    excerpt: "12 independent studies compared plant vs whey protein for muscle building. The results may surprise you — especially when digestibility and amino acid profile are matched.",
+    readTime: "7 min read",
+    author: "Dr. Huxon Labs Science Team",
+    date: "1 week ago",
+    accent: "oklch(0.72 0.10 65)",
+    emoji: "💪",
+    keyTakeaway: "Properly formulated plant protein = equivalent muscle synthesis",
+  },
+  {
+    id: "a5",
+    title: "5 signs your protein powder is low quality",
+    category: "nutrition",
+    excerpt: "From proprietary blends to hidden fillers, here are the red flags to watch for when choosing a protein supplement — and what clean label really means.",
+    readTime: "3 min read",
+    author: "Dr. Huxon Labs",
+    date: "5 days ago",
+    accent: "oklch(0.55 0.08 50)",
+    emoji: "⚠️",
+    keyTakeaway: "Transparency in labeling is non-negotiable",
+  },
+  {
+    id: "a6",
+    title: "The science of muscle recovery: what actually works",
+    category: "fitness",
+    excerpt: "Curcumin, tart cherry, and timing — we dive into the peer-reviewed evidence behind post-workout recovery and how our Recovery Matrix was formulated.",
+    readTime: "8 min read",
+    author: "Dr. Huxon Labs Science Team",
+    date: "2 months ago",
+    accent: "oklch(0.62 0.10 160)",
+    emoji: "🔬",
+    keyTakeaway: "Curcumin + tart cherry = 24% faster recovery",
+  },
+];

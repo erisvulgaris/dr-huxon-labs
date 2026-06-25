@@ -172,7 +172,8 @@ export type Route =
   | "wishlist"
   | "orders"
   | "compare"
-  | "subscriptions";
+  | "subscriptions"
+  | "bundle";
 
 type NavState = {
   route: Route;

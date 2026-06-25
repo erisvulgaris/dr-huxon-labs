@@ -14,6 +14,7 @@ import { WishlistView } from "@/components/views/wishlist";
 import { OrdersView } from "@/components/views/orders";
 import { CompareView } from "@/components/views/compare";
 import { SubscriptionsView } from "@/components/views/subscriptions";
+import { BundleView } from "@/components/views/bundle";
 import { QuickView } from "@/components/quick-view";
 import { IngredientSheet } from "@/components/sections/ingredients";
 import { CartDrawer } from "@/components/cart-drawer";
@@ -24,6 +25,7 @@ import { ShareSheet } from "@/components/share-sheet";
 import { ReviewSheet } from "@/components/review-sheet";
 import { OnboardingTour } from "@/components/onboarding-tour";
 import { NutritionQuiz } from "@/components/nutrition-quiz";
+import { ChatWidget } from "@/components/chat-widget";
 import { useNav } from "@/lib/store";
 
 export default function Home() {
@@ -50,6 +52,7 @@ export default function Home() {
           {route === "orders" && <OrdersView />}
           {route === "compare" && <CompareView />}
           {route === "subscriptions" && <SubscriptionsView />}
+          {route === "bundle" && <BundleView />}
         </motion.div>
       </AnimatePresence>
 
@@ -64,6 +67,7 @@ export default function Home() {
       <ReviewSheet />
       <OnboardingTour />
       <NutritionQuiz />
+      <ChatWidget />
     </AppShell>
   );
 }

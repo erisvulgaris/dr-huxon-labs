@@ -447,3 +447,49 @@ Unresolved / Next phase:
 - Could add a nutrition blog/education section
 - Could add live chat support widget
 - Could add a "build your own bundle" custom bundle builder
+
+---
+Task ID: 13 (Phase 8 — webDevReview cron round)
+Agent: main (Z.ai Code)
+Task: Add custom bundle builder, nutrition education section, live chat widget
+
+Work Log:
+- Performed full QA via agent-browser across all views. No console errors, no hydration errors. Both themes stable. Project in excellent shape.
+- VLM identified personalized nutrition guidance and interactive tracking as gaps. Worklog noted bundle builder, education section, and live chat as next-phase items.
+
+New features added:
+1. **Custom Bundle Builder** (`src/components/views/bundle.tsx`) — full page for mix-and-match product bundles with: 3-tier savings system (2+ items = 10% off, 3+ = 15%, 4+ = 20%), visual tier progress with reached/unreached states, "items to next tier" hint, product selection grid with quantity steppers (0-5 per product), live price summary (subtotal, discount, final total, savings callout), sticky "Add bundle to cart" CTA. Awards reward points on add. Pre-selected with 2 products to show 10% tier immediately.
+
+2. **Bundle CTA Section** (`src/components/sections/bundle-cta.tsx`) — promotional section on home page with: gradient background with ambient glow, 3-tier preview cards (2+/3+/4+ items → 10%/15%/20% off), "Start building" CTA that navigates to Bundle Builder. Placed between Education and FAQ on home.
+
+3. **Nutrition Education Section** (`src/components/sections/education.tsx`) — science articles section on home with: featured article (larger, with excerpt), 4 article cards in 2-col grid (emoji header, category pill, title, read time), "Browse all articles" button. Article detail modal with: hero emoji on gradient, key takeaway callout, body text, "What you'll learn" highlights with checkmarks, author + date. 6 articles across 4 categories (Science, Nutrition, Fitness, Lifestyle). Data in `ARTICLES` in catalog.ts.
+
+4. **Live Chat Support Widget** (`src/components/chat-widget.tsx`) — floating chat assistant with: gold gradient chat button with pulse ring animation + notification badge, expandable chat panel (glass-dark styling), "Huxi · Nutrition Assistant" header with online status indicator, welcome message, 4 quick-reply buttons (orders, vegan, subscribe, human), typing indicator with animated dots, message bubbles (bot = glass, user = gold gradient), text input with send button, "Powered by Huxon AI · Avg response 2 min" footer. Bot responses for common questions with fallback.
+
+5. **Nav store extended** — added `bundle` route.
+
+Styling polish:
+- All new features use theme-aware CSS variables (work in light & dark)
+- Bundle tier progress has color-coded reached states (jade/gold/gold-soft)
+- Article cards have accent-colored gradient headers matching category
+- Chat widget has premium glass-dark styling with gold accents
+- Chat button has animated pulse ring + notification badge
+- VLM confirms all new features are "sleek, dark-themed... premium feel"
+
+Stage Summary:
+- ✅ `bun run lint` passes clean (no errors, no warnings)
+- ✅ HTTP 200, no console errors, no hydration errors
+- ✅ Bundle Builder: 3-tier savings, quantity steppers, live price calc, add to cart works (VLM: "sleek dark theme... interactive quantity controls... clear savings presentation")
+- ✅ Education section: featured article + 4 cards, detail modal with key takeaway (VLM: "sleek dark theme with gold accents... premium, trustworthy aesthetic")
+- ✅ Bundle CTA: tier preview + Start building button navigates to builder
+- ✅ Chat widget: floating button, quick replies, bot responses, typing indicator (VLM: "sleek dark theme with gold accents... polished and professional... cohesive, high-end look")
+- ✅ All new sections integrated into home page and navigation
+
+Unresolved / Next phase:
+- Could connect quiz recommendations to add items to cart directly
+- Could add PWA install prompt + push notifications
+- Could add a "track on map" real map visualization in Orders view
+- Could add dark/light theme auto-switch based on time of day
+- Could add a nutrition challenge/program feature (e.g., 30-day protein challenge)
+- Could add a product rating distribution chart on PDP
+- Could add a "refer friends leaderboard" in Rewards
