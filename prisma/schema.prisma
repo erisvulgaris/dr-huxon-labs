@@ -1,0 +1,156 @@
+// Dr. Huxon Labs — Prisma schema
+// Premium plant-based nutrition commerce + content + rewards
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  name          String
+  tagline       String
+  category      String   // "protein", "supplement", "snack", "performance"
+  description   String
+  price         Float
+  mrp           Float
+  proteinGrams  Float
+  servingSize   String
+  servings      Int
+  flavor        String
+  rating        Float    @default(4.8)
+  reviewCount   Int      @default(0)
+  inStock       Boolean  @default(true)
+  badge         String?  // "Bestseller", "New", "Limited"
+  features      String   // JSON array string
+  ingredients   String   // JSON array of {name, amount}
+  nutritionFacts String  // JSON object
+  pairings      String?  // JSON array of product ids
+  heroImage     String
+  galleryImages String   // JSON array
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  reviews       Review[]
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+
+  @@index([category])
+  @@index([slug])
+}
+
+model Ingredient {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  name          String
+  origin        String
+  originLat     Float
+  originLng     Float
+  benefits      String   // JSON array
+  qualityScore  Float    @default(95)
+  processingMethod String
+  nutritionalContribution String
+  macroImage    String
+  category      String   // "protein-source", "vitamin", "mineral", "botanical"
+  createdAt     DateTime @default(now())
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  author    String
+  avatar    String?
+  rating    Float
+  title     String
+  body      String
+  verified  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  sessionId String
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int      @default(1)
+  flavor    String?
+  createdAt DateTime @default(now())
+
+  @@index([sessionId])
+}
+
+model Order {
+  id           String      @id @default(cuid())
+  orderNumber  String      @unique
+  customerName String
+  customerEmail String
+  customerPhone String
+  address      String
+  city         String
+  state        String
+  pincode      String
+  status       String      @default("placed") // placed, packed, shipped, out_for_delivery, delivered
+  subtotal     Float
+  discount     Float       @default(0)
+  shipping     Float       @default(0)
+  total        Float
+  paymentMethod String     @default("cod")
+  items        OrderItem[]
+  timeline     String      // JSON array of {stage, timestamp, note}
+  createdAt    DateTime    @default(now())
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  name      String
+  price     Float
+  quantity  Int
+  flavor    String?
+}
+
+model RewardMember {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  phone        String
+  points       Int      @default(0)
+  tier         String   @default("bronze") // bronze, silver, gold, platinum
+  streak       Int      @default(0)
+  joinedAt     DateTime @default(now())
+  achievements String   // JSON array
+  referrals    Int      @default(0)
+}
+
+model Coupon {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  type      String   // "percent", "flat"
+  value     Float
+  minOrder  Float    @default(0)
+  active    Boolean  @default(true)
+  expiresAt DateTime?
+  createdAt DateTime @default(now())
+}
+
+model SearchQuery {
+  id        String   @id @default(cuid())
+  query     String
+  count     Int      @default(1)
+  trending  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([query])
+}
