@@ -171,7 +171,8 @@ export type Route =
   | "product"
   | "wishlist"
   | "orders"
-  | "compare";
+  | "compare"
+  | "subscriptions";
 
 type NavState = {
   route: Route;
@@ -373,6 +374,113 @@ export const useOrders = create<OrdersState>()(
     }),
     {
       name: "huxon-orders",
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);
+
+/* ============================================================
+   Subscriptions store — persisted recurring deliveries
+   ============================================================ */
+export type Subscription = {
+  id: string;
+  productId: string;
+  productName: string;
+  productImage: string;
+  productAccent: string;
+  flavor: string;
+  quantity: number;
+  frequencyDays: number;
+  nextDelivery: number; // epoch ms
+  pricePerDelivery: number;
+  originalPricePerDelivery: number;
+  status: "active" | "paused";
+  pausedUntil?: number;
+  totalSaved: number;
+  deliveriesCount: number;
+  createdAt: number;
+};
+
+type SubscriptionsState = {
+  subscriptions: Subscription[];
+  addSubscription: (sub: Subscription) => void;
+  pauseSubscription: (id: string, days?: number) => void;
+  resumeSubscription: (id: string) => void;
+  skipNextDelivery: (id: string) => void;
+  swapFlavor: (id: string, flavor: string) => void;
+  changeFrequency: (id: string, days: number) => void;
+  cancelSubscription: (id: string) => void;
+  hasSeenOnboarding: boolean;
+  setHasSeenOnboarding: (v: boolean) => void;
+};
+
+export const useSubscriptions = create<SubscriptionsState>()(
+  persist(
+    (set) => ({
+      subscriptions: [
+        {
+          id: "sub-seed-1",
+          productId: "p1",
+          productName: "Huxon Gold Isolate",
+          productImage: "/products/gold-isolate.png",
+          productAccent: "oklch(0.78 0.13 75)",
+          flavor: "Belgian Cocoa",
+          quantity: 2,
+          frequencyDays: 30,
+          nextDelivery: Date.now() + 1000 * 60 * 60 * 24 * 12,
+          pricePerDelivery: 4248,
+          originalPricePerDelivery: 4998,
+          status: "active",
+          totalSaved: 2250,
+          deliveriesCount: 4,
+          createdAt: Date.now() - 1000 * 60 * 60 * 24 * 90,
+        },
+      ],
+      addSubscription: (sub) =>
+        set((s) => ({ subscriptions: [sub, ...s.subscriptions] })),
+      pauseSubscription: (id, days = 30) =>
+        set((s) => ({
+          subscriptions: s.subscriptions.map((sub) =>
+            sub.id === id
+              ? { ...sub, status: "paused", pausedUntil: Date.now() + 1000 * 60 * 60 * 24 * days }
+              : sub
+          ),
+        })),
+      resumeSubscription: (id) =>
+        set((s) => ({
+          subscriptions: s.subscriptions.map((sub) =>
+            sub.id === id ? { ...sub, status: "active", pausedUntil: undefined } : sub
+          ),
+        })),
+      skipNextDelivery: (id) =>
+        set((s) => ({
+          subscriptions: s.subscriptions.map((sub) =>
+            sub.id === id
+              ? { ...sub, nextDelivery: sub.nextDelivery + sub.frequencyDays * 24 * 60 * 60 * 1000 }
+              : sub
+          ),
+        })),
+      swapFlavor: (id, flavor) =>
+        set((s) => ({
+          subscriptions: s.subscriptions.map((sub) =>
+            sub.id === id ? { ...sub, flavor } : sub
+          ),
+        })),
+      changeFrequency: (id, days) =>
+        set((s) => ({
+          subscriptions: s.subscriptions.map((sub) =>
+            sub.id === id ? { ...sub, frequencyDays: days } : sub
+          ),
+        })),
+      cancelSubscription: (id) =>
+        set((s) => ({
+          subscriptions: s.subscriptions.filter((sub) => sub.id !== id),
+        })),
+      hasSeenOnboarding: false,
+      setHasSeenOnboarding: (v) => set({ hasSeenOnboarding: v }),
+    }),
+    {
+      name: "huxon-subs",
       storage: createJSONStorage(() => localStorage),
     }
   )

@@ -13,6 +13,7 @@ import { ProductView } from "@/components/views/product";
 import { WishlistView } from "@/components/views/wishlist";
 import { OrdersView } from "@/components/views/orders";
 import { CompareView } from "@/components/views/compare";
+import { SubscriptionsView } from "@/components/views/subscriptions";
 import { QuickView } from "@/components/quick-view";
 import { IngredientSheet } from "@/components/sections/ingredients";
 import { CartDrawer } from "@/components/cart-drawer";
@@ -21,6 +22,7 @@ import { RewardToasts } from "@/components/reward-toasts";
 import { CompareBar } from "@/components/compare-bar";
 import { ShareSheet } from "@/components/share-sheet";
 import { ReviewSheet } from "@/components/review-sheet";
+import { OnboardingTour } from "@/components/onboarding-tour";
 import { useNav } from "@/lib/store";
 
 export default function Home() {
@@ -46,6 +48,7 @@ export default function Home() {
           {route === "wishlist" && <WishlistView />}
           {route === "orders" && <OrdersView />}
           {route === "compare" && <CompareView />}
+          {route === "subscriptions" && <SubscriptionsView />}
         </motion.div>
       </AnimatePresence>
 
@@ -58,6 +61,7 @@ export default function Home() {
       <CompareBar />
       <ShareSheet />
       <ReviewSheet />
+      <OnboardingTour />
     </AppShell>
   );
 }

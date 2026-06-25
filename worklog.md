@@ -355,3 +355,52 @@ Unresolved / Next phase:
 - Could add a "track on map" real map visualization in Orders view
 - Could add subscription management page (PDP has Subscribe & Save but no management view)
 - Could add more product images per product for the carousel
+
+---
+Task ID: 11 (Phase 6 — webDevReview cron round)
+Agent: main (Z.ai Code)
+Task: Add subscription management, onboarding tour, enhanced shop categories
+
+Work Log:
+- Performed full QA via agent-browser across all views. No console errors, no hydration errors. All themes stable. Project in excellent shape.
+- VLM identified missing onboarding/guidance and category exploration as high-impact gaps.
+
+New features added:
+1. **Subscription Management View** (`src/components/views/subscriptions.tsx`) — full page for managing recurring deliveries with: savings summary card (total savings across all subs, active count, monthly spend), subscription cards showing product thumbnail/flavor/qty/frequency, next-delivery banner with countdown days, per-delivery price with 15% discount + strikethrough original, Pause/Skip/Manage actions, expandable manage panel (frequency selector, flavor swap with 7 flavors, stats grid: deliveries/saved/days active, cancel with confirmation). Empty state with illustration + CTA. Wired to new `useSubscriptions` persisted store (seeded with 1 active subscription).
+
+2. **Onboarding Welcome Tour** (`src/components/onboarding-tour.tsx`) — 3-slide intro for first-time users: (1) Pharmaceutical-grade nutrition — lab-tested, NABL accredited, (2) 100% plant-based — PDCAAS 1.0, no sucralose/fillers, (3) Earn rewards — tier loyalty, subscribe & save 15%. Each slide has animated icon with glow, subtitle, title, body text, progress dots (tap to jump), Next/Get started CTA, Skip tour. Shows once (controlled by `hasSeenOnboarding` in persisted store). Spring-animated bottom sheet with ambient glow that shifts per slide.
+
+3. **Enhanced Shop Category Navigation** — replaced plain text chips with visual category cards: 5 categories (All/Protein/Performance/Supplements/Snacks) each with custom icon (grid/dumbbell/bolt/leaf/flask), brand accent color, gradient background when active, glow effect, product count, premium card styling (72×120px). Added `soften()` helper for oklch color alpha manipulation.
+
+4. **PDP Subscribe → Real Subscription** — wired the PDP Subscribe & Save "Start subscription" button to create a real `Subscription` in the `useSubscriptions` store (with product info, flavor, qty, frequency, next delivery date, pricing). Awards 100 reward points + toast. Verified: subscribed from PDP → new subscription appears in Subscriptions view.
+
+5. **Subscriptions store** (`useSubscriptions` in store.ts) — persisted Zustand store with `Subscription` type, actions: addSubscription, pauseSubscription (with days), resumeSubscription, skipNextDelivery (advances next delivery by frequency), swapFlavor, changeFrequency, cancelSubscription. Also stores `hasSeenOnboarding`/`setHasSeenOnboarding`. Seeded with 1 realistic subscription (Gold Isolate, monthly, 2 tubs).
+
+6. **Nav store extended** — added `subscriptions` route.
+
+7. **Profile quick actions updated** — replaced Notifications with Subscriptions (badge: live count → subscriptions view). Now shows: My Orders, Subscriptions, Wishlist, Compare.
+
+Styling polish:
+- All new views/components use theme-aware CSS variables (work in light & dark)
+- Onboarding slides have per-slide accent colors (gold/jade/gold) with animated ambient glow
+- Subscription cards have premium card styling with status-aware opacity (paused = dimmed)
+- Category cards use accent-colored gradients matching each category's theme
+- VLM confirms all new features are "sleek, dark-themed... premium feel"
+
+Stage Summary:
+- ✅ `bun run lint` passes clean (no errors, no warnings)
+- ✅ HTTP 200, no console errors, no hydration errors
+- ✅ Onboarding tour: 3 slides, Next/Skip/Get started, shows once then persists (VLM: "clean layout, intuitive navigation, visual hierarchy")
+- ✅ Subscriptions view: seeded sub + new subs from PDP, Pause/Skip/Manage/frequency/flavor/cancel all work (VLM: "sleek dark theme with gold accents, premium feel, clearly displays savings")
+- ✅ Shop categories: 5 visual cards with icons, counts, accent gradients (VLM: "sleek, dark-themed design with distinct icons... premium feel")
+- ✅ PDP → subscription creation: verified end-to-end (subscribe → +100 points toast → appears in Subscriptions view)
+- ✅ Profile quick actions: My Orders, Subscriptions, Wishlist, Compare
+
+Unresolved / Next phase:
+- Could connect review submission to display new reviews in ReviewsSection (currently static)
+- Could add PWA install prompt + push notifications
+- Could add a "track on map" real map visualization in Orders view
+- Could add more product images per product for the carousel
+- Could add a nutrition quiz / protein quiz gamified feature
+- Could add a "refer friend" flow with shareable referral link from Rewards view
+- Could add a dark/light theme auto-switch based on time of day

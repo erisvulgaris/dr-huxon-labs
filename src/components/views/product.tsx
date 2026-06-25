@@ -53,7 +53,7 @@ import {
   Stagger,
   StaggerItem,
 } from "@/components/primitives";
-import { useCart, useNav, useWishlist, useReward, useRecent } from "@/lib/store";
+import { useCart, useNav, useWishlist, useReward, useRecent, useSubscriptions } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
 /**
@@ -65,6 +65,7 @@ export function ProductView() {
   const product = PRODUCTS.find((p) => p.id === activeProductId) ?? PRODUCTS[0];
   const inCompare = compareIds.includes(product.id);
   const pushRecent = useRecent((s) => s.push);
+  const addSubscription = useSubscriptions((s) => s.addSubscription);
 
   const [qty, setQty] = React.useState(1);
   const [flavor, setFlavor] = React.useState(product.flavor);
@@ -429,13 +430,30 @@ export function ProductView() {
         <Reveal className="mt-6">
           <SubscribeSection
             price={product.price}
-            onSubscribe={() => {
+            onSubscribe={(frequency, quantities) => {
+              const discountedPrice = Math.round(product.price * 0.85);
+              addSubscription({
+                id: `sub-${Date.now()}`,
+                productId: product.id,
+                productName: product.name,
+                productImage: product.heroImage,
+                productAccent: product.accent,
+                flavor,
+                quantity: quantities,
+                frequencyDays: frequency,
+                nextDelivery: Date.now() + frequency * 24 * 60 * 60 * 1000,
+                pricePerDelivery: discountedPrice * quantities,
+                originalPricePerDelivery: product.price * quantities,
+                status: "active",
+                totalSaved: 0,
+                deliveriesCount: 0,
+                createdAt: Date.now(),
+              });
               addPoints(100);
               pushToast({
                 title: "+100 reward points",
                 description: "Subscription activated — 15% off every order",
               });
-              addItem(product, flavor, qty);
             }}
           />
         </Reveal>
@@ -1314,7 +1332,7 @@ function SubscribeSection({
   onSubscribe,
 }: {
   price: number;
-  onSubscribe: () => void;
+  onSubscribe: (frequency: number, quantities: number) => void;
 }) {
   const [mode, setMode] = React.useState<"one-time" | "subscription">("subscription");
   const [frequency, setFrequency] = React.useState(30);
@@ -1474,7 +1492,7 @@ function SubscribeSection({
               ))}
             </div>
 
-            <HuxonButton size="md" glow className="mt-3 w-full" onClick={onSubscribe}>
+            <HuxonButton size="md" glow className="mt-3 w-full" onClick={() => onSubscribe(frequency, quantities)}>
               <IconRefresh size={14} />
               Start subscription · {formatINR(perDelivery)}/delivery
             </HuxonButton>

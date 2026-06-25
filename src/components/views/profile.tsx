@@ -26,7 +26,7 @@ import {
   StarRating,
   Pill,
 } from "@/components/primitives";
-import { useNav, useReward, useWishlist } from "@/lib/store";
+import { useNav, useReward, useWishlist, useSubscriptions } from "@/lib/store";
 import { PRODUCTS, formatINR } from "@/lib/catalog";
 
 /**
@@ -36,6 +36,7 @@ export function ProfileView() {
   const { points, tier, streak } = useReward();
   const { setRoute, setQuickView, compareIds } = useNav();
   const wishCount = useWishlist((s) => s.ids.length);
+  const subCount = useSubscriptions((s) => s.subscriptions.length);
 
   return (
     <div className="px-4 pb-8 pt-4">
@@ -228,9 +229,9 @@ export function ProfileView() {
       {/* Quick actions */}
       <Reveal className="mt-4 grid grid-cols-2 gap-2">
         <ActionTile icon={<IconPackage size={16} />} label="My Orders" badge={2} onClick={() => setRoute("orders")} />
+        <ActionTile icon={<IconRefresh size={16} />} label="Subscriptions" badge={subCount || undefined} onClick={() => setRoute("subscriptions")} />
         <ActionTile icon={<IconHeart size={16} />} label="Wishlist" badge={wishCount} onClick={() => setRoute("wishlist")} />
         <ActionTile icon={<IconCompare size={16} />} label="Compare" badge={compareIds.length || undefined} onClick={() => setRoute("compare")} />
-        <ActionTile icon={<IconBell size={16} />} label="Notifications" badge={3} />
       </Reveal>
     </div>
   );

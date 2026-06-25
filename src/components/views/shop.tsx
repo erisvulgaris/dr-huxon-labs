@@ -11,6 +11,8 @@ import {
   IconEye,
   IconCompare,
   IconStar,
+  IconGrid,
+  ICON_MAP,
 } from "@/components/icons";
 import { HuxonButton } from "@/components/huxon-button";
 import { StarRating, Pill, Reveal } from "@/components/primitives";
@@ -18,12 +20,16 @@ import { useCart, useNav, useSearch, useWishlist } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
 const CATEGORIES = [
-  { id: "all", label: "All" },
-  { id: "protein", label: "Protein" },
-  { id: "performance", label: "Performance" },
-  { id: "supplement", label: "Supplements" },
-  { id: "snack", label: "Snacks" },
+  { id: "all", label: "All", icon: "grid", accent: "oklch(0.78 0.13 75)", gradient: "from-[oklch(0.78_0.13_75/0.15)] to-[oklch(0.62_0.10_55/0.04)]" },
+  { id: "protein", label: "Protein", icon: "dumbbell", accent: "oklch(0.78 0.13 75)", gradient: "from-[oklch(0.78_0.13_75/0.15)] to-[oklch(0.62_0.10_55/0.04)]" },
+  { id: "performance", label: "Performance", icon: "bolt", accent: "oklch(0.65 0.15 30)", gradient: "from-[oklch(0.65_0.15_30/0.15)] to-[oklch(0.55_0.12_25/0.04)]" },
+  { id: "supplement", label: "Supplements", icon: "leaf", accent: "oklch(0.62 0.10 160)", gradient: "from-[oklch(0.62_0.10_160/0.15)] to-[oklch(0.50_0.09_160/0.04)]" },
+  { id: "snack", label: "Snacks", icon: "flask", accent: "oklch(0.72 0.10 65)", gradient: "from-[oklch(0.72_0.10_65/0.15)] to-[oklch(0.60_0.08_55/0.04)]" },
 ];
+
+
+// Helper to add alpha to an oklch color
+const soften = (color: string, alpha: string) => color.replace(')', ` / ${alpha})`);
 
 const SORTS = [
   { id: "popular", label: "Popular" },
@@ -82,22 +88,54 @@ export function ShopView() {
         </div>
       </Reveal>
 
-      {/* Category chips */}
-      <div className="no-scrollbar mt-4 flex gap-2 overflow-x-auto pb-1">
-        {CATEGORIES.map((c) => (
-          <button
-            key={c.id}
-            onClick={() => setCat(c.id)}
-            className={cn(
-              "shrink-0 rounded-full border px-3.5 py-1.5 text-[12px] font-medium transition-all",
-              cat === c.id
-                ? "border-[oklch(0.78_0.13_75_/_50%)] bg-[oklch(0.78_0.13_75_/_0.14)] text-[oklch(0.92_0.10_85)]"
-                : "border-border bg-transparent text-muted-foreground"
-            )}
-          >
-            {c.label}
-          </button>
-        ))}
+      {/* Visual category cards */}
+      <div className="no-scrollbar mt-4 flex gap-2.5 overflow-x-auto pb-1">
+        {CATEGORIES.map((c) => {
+          const count = c.id === "all" ? PRODUCTS.length : PRODUCTS.filter((p) => p.category === c.id).length;
+          const Icon = ICON_MAP[c.icon] ?? IconGrid;
+          const active = cat === c.id;
+          return (
+            <motion.button
+              key={c.id}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setCat(c.id)}
+              className={cn(
+                "group relative flex h-[72px] w-[120px] shrink-0 flex-col justify-between overflow-hidden rounded-2xl border p-2.5 text-left transition-all",
+                active
+                  ? "border-transparent"
+                  : "border-border glass"
+              )}
+              style={active ? { background: `linear-gradient(135deg, ${soften(c.accent, "0.22")}, ${soften(c.accent, "0.06")})` } : undefined}
+            >
+              {/* Glow on active */}
+              {active && (
+                <div
+                  className="absolute -right-4 -top-4 h-16 w-16 rounded-full blur-xl"
+                  style={{ background: soften(c.accent, "0.4") }}
+                />
+              )}
+              {/* Icon */}
+              <div
+                className={cn(
+                  "grid h-8 w-8 place-items-center rounded-lg transition-colors",
+                  active ? "text-cream-gradient" : "text-muted-foreground"
+                )}
+                style={active ? { background: soften(c.accent, "0.2") } : undefined}
+              >
+                <Icon size={16} active={active} />
+              </div>
+              {/* Label + count */}
+              <div className="relative">
+                <div className={cn("text-[11px] font-semibold leading-tight", active ? "text-cream-gradient" : "text-foreground/90")}>
+                  {c.label}
+                </div>
+                <div className="text-[9px] text-muted-foreground tabular">
+                  {count} product{count !== 1 ? "s" : ""}
+                </div>
+              </div>
+            </motion.button>
+          );
+        })}
       </div>
 
       {/* Sort */}
