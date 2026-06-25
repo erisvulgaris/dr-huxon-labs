@@ -561,3 +561,65 @@ Unresolved / Next phase:
 - Could add push notifications for challenge reminders
 - Could add a nutrition blog search/filter
 - Could add a "share your challenge progress" feature
+
+---
+Task ID: 15 (Phase 10 — webDevReview cron round)
+Agent: main (Z.ai Code)
+Task: Add track-on-map, referral leaderboard, share challenge progress
+
+Work Log:
+- Performed full QA via agent-browser across all views. No console errors, no hydration errors. Both themes stable. Project in excellent shape.
+- VLM identified personalized tracking and social features as gaps. Worklog noted track-on-map, referral leaderboard, and share challenge as next-phase items.
+
+New features added:
+1. **Track on Map** (`src/components/track-map.tsx`) — interactive delivery map modal for Orders view:
+  - Stylized SVG map with grid, city blocks, roads, and route path from facility to user
+  - Animated courier vehicle (🚚/🛵) that moves along the route based on order progress
+  - Origin (Bengaluru facility, jade) + destination (You, gold with pulse ring) markers
+  - "Live · updating" overlay badge with pulse indicator
+  - ETA banner with hours-left countdown
+  - Horizontal 5-stage delivery journey timeline with progress line (gold gradient)
+  - Current status detail card with emoji + live/done pill
+  - Courier info card (Delhivery Express, AWB number, call button) for shipped+ stages
+  - Spring-animated bottom sheet, wired to "Track on map" button in OrderTracker
+
+2. **Referral Leaderboard** (`LeaderboardSection` in rewards.tsx) — gamified social proof:
+  - Period toggle (All time / This month)
+  - "Your rank" banner with #4 rank + "1 referrer away from top 3" nudge
+  - Top 3 podium with gold/silver/bronze gradient bars (decreasing heights), crown/medal emojis, avatar circles
+  - Ranked list (4th+) with rank number, avatar, name, tier, referrals count, earnings
+  - Current user row highlighted with gold border + "YOU" badge
+  - 7 seeded entries (platinum/gold/silver/bronze tiers)
+  - Data in `LEADERBOARD` in catalog.ts
+
+3. **Share Challenge Progress** (`ChallengeShareCard` in challenge.tsx) — shareable stats card:
+  - Gradient background with molecular texture
+  - Shareable stats card: Day X/30, completed days, total protein, daily goal
+  - "Share my progress" button using native Web Share API (falls back to clipboard copy)
+  - Share text includes emoji-formatted progress summary + challenge URL
+  - "Copied to clipboard!" confirmation state
+  - Placed in Challenge view between calendar grid and opt-out
+
+Styling polish:
+- All new features use theme-aware CSS variables (work in light & dark)
+- Track map has animated courier with pulse ring + route path draw animation
+- Leaderboard podium has gradient bars with crown/medal emojis
+- Share card has premium gradient with molecular texture
+- VLM confirms: Track map "sleek premium aesthetic, live-updating map, intuitive interactivity"; Leaderboard "premium competitive feel, gamification strong through tiered rankings"; Share "premium motivational feel, shareability strong"
+
+Stage Summary:
+- ✅ `bun run lint` passes clean (no errors, no warnings)
+- ✅ HTTP 200, no console errors, no hydration errors
+- ✅ Track on Map: interactive SVG map with route, courier, ETA, journey timeline (VLM: "sleek premium aesthetic, live-updating map")
+- ✅ Referral Leaderboard: podium top 3 + ranked list with user highlight (VLM: "premium competitive feel, gamification strong")
+- ✅ Share Challenge Progress: stats card + native share with clipboard fallback (VLM: "premium motivational feel, shareability strong")
+- ✅ All features wired into existing views (Orders track button, Rewards leaderboard, Challenge share card)
+
+Unresolved / Next phase:
+- Could connect quiz recommendations to add items to cart directly
+- Could add push notifications for challenge reminders
+- Could add a nutrition blog search/filter
+- Could add a product rating distribution chart on PDP
+- Could add a "build your own stack" recommendation engine
+- Could add a water intake reminder system
+- Could add a sleep + recovery tracking widget

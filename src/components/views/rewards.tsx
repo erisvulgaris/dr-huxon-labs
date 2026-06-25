@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   REWARDS_TIERS,
   ACHIEVEMENTS,
+  LEADERBOARD,
 } from "@/lib/catalog";
 import { ICON_MAP } from "@/components/icons";
 import {
@@ -326,6 +327,11 @@ export function RewardsView() {
           </div>
         </div>
       </Reveal>
+
+      {/* Referral Leaderboard */}
+      <Reveal className="mt-6">
+        <LeaderboardSection />
+      </Reveal>
     </div>
   );
 }
@@ -368,6 +374,154 @@ function ChallengeCard({
             )}
           />
         ))}
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   Referral Leaderboard Section
+   ============================================================ */
+function LeaderboardSection() {
+  const [period, setPeriod] = React.useState<"all" | "month">("all");
+
+  const sorted = [...LEADERBOARD].sort((a, b) => b.referrals - a.referrals);
+  const myRank = sorted.findIndex((e) => e.isCurrentUser) + 1;
+  const topThree = sorted.slice(0, 3);
+  const rest = sorted.slice(3);
+
+  return (
+    <div>
+      <div className="mb-3 flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <IconCrown size={14} className="text-gold-gradient" />
+          <h2 className="text-[15px] font-semibold">Referral Leaderboard</h2>
+        </div>
+        <div className="flex gap-1 rounded-full bg-[oklch(var(--glass-tint)/0.06)] p-0.5">
+          {(["all", "month"] as const).map((p) => (
+            <button
+              key={p}
+              onClick={() => setPeriod(p)}
+              className={cn(
+                "rounded-full px-2.5 py-1 text-[10px] font-medium transition-colors",
+                period === p ? "bg-[oklch(var(--gold)/0.18)] text-gold-gradient" : "text-muted-foreground"
+              )}
+            >
+              {p === "all" ? "All time" : "This month"}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* My rank banner */}
+      <div className="mb-3 flex items-center gap-3 rounded-2xl border border-[oklch(var(--gold)/0.25)] bg-[oklch(var(--gold)/0.06)] p-3">
+        <div className="grid h-10 w-10 place-items-center rounded-full bg-[oklch(var(--gold)/0.18)]">
+          <span className="text-[14px] font-bold text-gold-gradient">#{myRank}</span>
+        </div>
+        <div className="flex-1">
+          <div className="text-[12px] font-semibold text-cream-gradient">Your rank</div>
+          <div className="text-[10px] text-muted-foreground">
+            {myRank <= 3 ? "Top 3! 🎉" : `${myRank - 3} referrers away from top 3`}
+          </div>
+        </div>
+        <div className="text-right">
+          <div className="text-[14px] font-bold text-gold-gradient tabular">12</div>
+          <div className="text-[8px] uppercase tracking-wide text-muted-foreground">referrals</div>
+        </div>
+      </div>
+
+      {/* Top 3 podium */}
+      <div className="mb-3 grid grid-cols-3 gap-2">
+        {topThree.map((entry, i) => {
+          const podiumConfig = [
+            { height: "h-20", icon: "👑", color: "oklch(0.82 0.14 80)", label: "1st" },
+            { height: "h-16", icon: "🥈", color: "oklch(0.72 0.02 80)", label: "2nd" },
+            { height: "h-14", icon: "🥉", color: "oklch(0.62 0.08 55)", label: "3rd" },
+          ][i];
+          return (
+            <motion.div
+              key={entry.id}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="flex flex-col items-center"
+            >
+              <div
+                className="grid h-10 w-10 place-items-center rounded-full text-[11px] font-bold"
+                style={{ background: `${podiumConfig.color.replace(")", " / 0.2)")}`, color: podiumConfig.color }}
+              >
+                {entry.avatar}
+              </div>
+              <div className="mt-1 max-w-full truncate text-[10px] font-semibold">
+                {entry.name.split(" ")[0]}
+              </div>
+              <div className="text-[9px] text-muted-foreground tabular">
+                {entry.referrals} refs
+              </div>
+              <div
+                className={cn("mt-1.5 w-full rounded-t-lg", podiumConfig.height)}
+                style={{
+                  background: `linear-gradient(180deg, ${podiumConfig.color.replace(")", " / 0.25)")}, ${podiumConfig.color.replace(")", " / 0.05)")})`,
+                }}
+              >
+                <div className="grid h-full place-items-center text-[18px]">
+                  {podiumConfig.icon}
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {/* Rest of leaderboard */}
+      <div className="space-y-1.5">
+        {rest.map((entry, i) => {
+          const rank = i + 4;
+          return (
+            <motion.div
+              key={entry.id}
+              initial={{ opacity: 0, x: -8 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.04 }}
+              className={cn(
+                "flex items-center gap-3 rounded-xl px-3 py-2",
+                entry.isCurrentUser
+                  ? "border border-[oklch(var(--gold)/0.3)] bg-[oklch(var(--gold)/0.06)]"
+                  : "glass"
+              )}
+            >
+              <span className="w-5 text-center text-[11px] font-bold text-muted-foreground tabular">
+                {rank}
+              </span>
+              <div className="grid h-8 w-8 place-items-center rounded-full bg-[oklch(var(--glass-tint)/0.08)] text-[10px] font-bold">
+                {entry.avatar}
+              </div>
+              <div className="flex-1">
+                <div className="text-[12px] font-semibold">
+                  {entry.name}
+                  {entry.isCurrentUser && (
+                    <span className="ml-1.5 rounded-full bg-[oklch(var(--gold)/0.18)] px-1.5 py-0.5 text-[8px] font-bold text-gold-gradient">
+                      YOU
+                    </span>
+                  )}
+                </div>
+                <div className="text-[9px] uppercase tracking-wide text-muted-foreground">
+                  {entry.tier} tier
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-[12px] font-bold text-cream-gradient tabular">
+                  {entry.referrals}
+                </div>
+                <div className="text-[8px] text-muted-foreground tabular">
+                  ₹{entry.earnings.toLocaleString("en-IN")}
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   );

@@ -1134,3 +1134,27 @@ export const ARTICLES: Article[] = [
     keyTakeaway: "Curcumin + tart cherry = 24% faster recovery",
   },
 ];
+
+/* ============================================================
+   REFERRAL LEADERBOARD — top referrers for Rewards view
+   ============================================================ */
+
+export type LeaderboardEntry = {
+  id: string;
+  name: string;
+  avatar: string;
+  referrals: number;
+  earnings: number;
+  tier: string;
+  isCurrentUser?: boolean;
+};
+
+export const LEADERBOARD: LeaderboardEntry[] = [
+  { id: "l1", name: "Vikram R.", avatar: "VR", referrals: 47, earnings: 9400, tier: "platinum" },
+  { id: "l2", name: "Ananya K.", avatar: "AK", referrals: 39, earnings: 7800, tier: "platinum" },
+  { id: "l3", name: "Rahul S.", avatar: "RS", referrals: 31, earnings: 6200, tier: "gold" },
+  { id: "l4", name: "Arjun Mehta", avatar: "AM", referrals: 12, earnings: 2400, tier: "silver", isCurrentUser: true },
+  { id: "l5", name: "Priya N.", avatar: "PN", referrals: 9, earnings: 1800, tier: "silver" },
+  { id: "l6", name: "Karthik V.", avatar: "KV", referrals: 6, earnings: 1200, tier: "bronze" },
+  { id: "l7", name: "Sneha P.", avatar: "SP", referrals: 4, earnings: 800, tier: "bronze" },
+];

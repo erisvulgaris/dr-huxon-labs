@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useOrders, type TrackedOrder, type OrderStage } from "@/lib/store";
 import { formatINR } from "@/lib/catalog";
 import { HuxonButton } from "@/components/huxon-button";
+import { TrackMapModal } from "@/components/track-map";
 import {
   IconArrowLeft,
   IconArrowRight,
@@ -50,8 +51,10 @@ export function OrdersView() {
   const [activeId, setActiveId] = React.useState<string | null>(
     orders[0]?.id ?? null
   );
+  const [mapOrderId, setMapOrderId] = React.useState<string | null>(null);
 
   const active = orders.find((o) => o.id === activeId) ?? orders[0];
+  const mapOrder = orders.find((o) => o.id === mapOrderId);
 
   return (
     <div className="px-4 pb-8 pt-4">
@@ -95,11 +98,22 @@ export function OrdersView() {
           {/* Active order tracking */}
           {active ? (
             <Reveal className="mt-6">
-              <OrderTracker order={active} onAdvance={() => advanceStage(active.id)} />
+              <OrderTracker
+                order={active}
+                onAdvance={() => advanceStage(active.id)}
+                onTrackMap={() => setMapOrderId(active.id)}
+              />
             </Reveal>
           ) : null}
         </div>
       )}
+
+      {/* Track Map Modal */}
+      <AnimatePresence>
+        {mapOrder && (
+          <TrackMapModal order={mapOrder} onClose={() => setMapOrderId(null)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -196,9 +210,11 @@ function OrderListItem({
 function OrderTracker({
   order,
   onAdvance,
+  onTrackMap,
 }: {
   order: TrackedOrder;
   onAdvance: () => void;
+  onTrackMap: () => void;
 }) {
   const cfg = STAGE_CONFIG[order.status];
   const currentIdx = STAGE_ORDER.indexOf(order.status);
@@ -418,7 +434,7 @@ function OrderTracker({
             <IconRefresh size={12} />
             Simulate next stage
           </HuxonButton>
-          <HuxonButton size="sm" className="flex-1">
+          <HuxonButton size="sm" className="flex-1" onClick={onTrackMap}>
             <IconLocation size={12} />
             Track on map
           </HuxonButton>

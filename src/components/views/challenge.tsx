@@ -16,6 +16,7 @@ import {
   IconSpark,
   IconClose,
   IconTarget,
+  IconShare,
 } from "@/components/icons";
 import { Reveal, Stagger, StaggerItem, ProteinRing, Pill, AnimatedNumber } from "@/components/primitives";
 import { useNav } from "@/lib/store";
@@ -354,6 +355,16 @@ function ActiveChallenge({
         </div>
       </Reveal>
 
+      {/* Share progress */}
+      <Reveal className="mt-4">
+        <ChallengeShareCard
+          completedDays={completedDays}
+          totalProtein={totalProtein}
+          goalGrams={goalGrams}
+          currentDay={currentDay}
+        />
+      </Reveal>
+
       {/* Opt out */}
       <Reveal className="mt-4">
         <button
@@ -376,6 +387,100 @@ function ActiveChallenge({
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+/* ============================================================
+   Challenge Share Card — shareable progress stats
+   ============================================================ */
+function ChallengeShareCard({
+  completedDays,
+  totalProtein,
+  goalGrams,
+  currentDay,
+}: {
+  completedDays: number;
+  totalProtein: number;
+  goalGrams: number;
+  currentDay: number;
+}) {
+  const [copied, setCopied] = React.useState(false);
+
+  const shareText = `🧬 I'm on Day ${Math.min(currentDay, 30)} of the Dr. Huxon Labs 30-Day Protein Challenge!\n\n✅ ${completedDays} days completed\n💪 ${totalProtein}g protein logged\n🎯 Daily goal: ${goalGrams}g\n\nJoin me: https://drhuxon.com/challenge`;
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "My 30-Day Protein Challenge",
+          text: shareText,
+          url: "https://drhuxon.com/challenge",
+        });
+      } catch {}
+    } else {
+      try {
+        await navigator.clipboard.writeText(shareText);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch {}
+    }
+  };
+
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-[oklch(var(--gold)/0.2)] bg-gradient-to-br from-[oklch(var(--espresso))] via-[oklch(var(--cocoa)/0.5)] to-[oklch(var(--charcoal)/0.8)] p-4">
+      <div className="bg-molecular absolute inset-0 opacity-30" />
+      <div className="relative">
+        <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.16em] text-gold-gradient">
+          <IconSpark size={11} />
+          Share your progress
+        </div>
+
+        {/* Shareable stats card */}
+        <div className="mt-3 rounded-2xl bg-[oklch(var(--glass-tint)/0.06)] p-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-[10px] text-muted-foreground">Day</div>
+              <div className="font-display text-[24px] font-bold text-gold-gradient tabular">
+                {Math.min(currentDay, 30)}/30
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-[10px] text-muted-foreground">Completed</div>
+              <div className="font-display text-[24px] font-bold text-cream-gradient tabular">
+                {completedDays}
+              </div>
+            </div>
+          </div>
+          <div className="my-2 h-px bg-border/50" />
+          <div className="flex items-center justify-between text-[11px]">
+            <span className="text-muted-foreground">Total protein</span>
+            <span className="font-semibold text-gold-gradient tabular">{totalProtein}g</span>
+          </div>
+          <div className="mt-1 flex items-center justify-between text-[11px]">
+            <span className="text-muted-foreground">Daily goal</span>
+            <span className="font-semibold text-cream-gradient tabular">{goalGrams}g</span>
+          </div>
+        </div>
+
+        {/* Share button */}
+        <button
+          onClick={handleShare}
+          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-[oklch(var(--gold))] to-[oklch(var(--bronze))] py-2.5 text-[13px] font-semibold text-[oklch(var(--charcoal))] shadow-gold"
+        >
+          {copied ? (
+            <>
+              <IconCheck size={14} />
+              Copied to clipboard!
+            </>
+          ) : (
+            <>
+              <IconShare size={14} />
+              Share my progress
+            </>
+          )}
+        </button>
+      </div>
+    </div>
   );
 }
 
