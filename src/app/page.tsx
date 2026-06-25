@@ -23,6 +23,7 @@ import { CompareBar } from "@/components/compare-bar";
 import { ShareSheet } from "@/components/share-sheet";
 import { ReviewSheet } from "@/components/review-sheet";
 import { OnboardingTour } from "@/components/onboarding-tour";
+import { NutritionQuiz } from "@/components/nutrition-quiz";
 import { useNav } from "@/lib/store";
 
 export default function Home() {
@@ -62,6 +63,7 @@ export default function Home() {
       <ShareSheet />
       <ReviewSheet />
       <OnboardingTour />
+      <NutritionQuiz />
     </AppShell>
   );
 }

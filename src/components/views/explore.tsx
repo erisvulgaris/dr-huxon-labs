@@ -12,6 +12,7 @@ import {
   IconArrowRight,
   IconPlus,
   IconMinus,
+  IconSpark,
 } from "@/components/icons";
 import {
   SectionHeader,
@@ -22,12 +23,13 @@ import {
   StaggerItem,
 } from "@/components/primitives";
 import { HuxonButton } from "@/components/huxon-button";
-import { useReward } from "@/lib/store";
+import { useReward, useNav as useNavHook } from "@/lib/store";
 
 /**
  * Explore view — a premium dashboard of interactive nutrition widgets.
  */
 export function ExploreView() {
+  const { setQuizOpen } = useNavHook();
   return (
     <div className="px-4 pb-8 pt-4">
       <Reveal>
@@ -39,7 +41,31 @@ export function ExploreView() {
         </p>
       </Reveal>
 
-      <Stagger className="mt-5 space-y-4" staggerChildren={0.07}>
+      {/* Quiz CTA */}
+      <Reveal className="mt-4">
+        <button
+          onClick={() => setQuizOpen(true)}
+          className="relative flex w-full items-center gap-3 overflow-hidden rounded-2xl border border-[oklch(var(--gold)/0.3)] bg-gradient-to-br from-[oklch(var(--gold)/0.1)] to-[oklch(var(--gold)/0.02)] p-4 text-left"
+        >
+          <div className="bg-molecular absolute inset-0 opacity-30" />
+          <div className="relative grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-[oklch(var(--gold)/0.2)]">
+            <IconSpark size={22} active />
+          </div>
+          <div className="relative flex-1">
+            <div className="text-[14px] font-semibold text-cream-gradient">
+              Find your perfect product
+            </div>
+            <div className="text-[11px] text-muted-foreground">
+              5-question quiz · earn 75 points
+            </div>
+          </div>
+          <div className="relative grid h-8 w-8 place-items-center rounded-full bg-[oklch(var(--gold)/0.2)]">
+            <IconArrowRight size={14} className="text-gold-gradient" />
+          </div>
+        </button>
+      </Reveal>
+
+      <Stagger className="mt-4 space-y-4" staggerChildren={0.07}>
         <StaggerItem>
           <DailyProteinTracker />
         </StaggerItem>

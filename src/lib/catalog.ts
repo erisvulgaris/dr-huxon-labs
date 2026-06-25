@@ -918,3 +918,127 @@ export const PRODUCT_QAS: QA[] = [
     answeredBy: "verified",
   },
 ];
+
+/* ============================================================
+   RECIPES / USAGE IDEAS — for PDP
+   ============================================================ */
+
+export type Recipe = {
+  id: string;
+  title: string;
+  category: "smoothie" | "breakfast" | "pre-workout" | "dessert";
+  prepTime: string;
+  difficulty: "Easy" | "Medium";
+  calories: number;
+  protein: number;
+  servings: number;
+  ingredients: string[];
+  steps: string[];
+  emoji: string;
+  accent: string;
+};
+
+export const PRODUCT_RECIPES: Recipe[] = [
+  {
+    id: "r1",
+    title: "Belgian Cocoa Power Smoothie",
+    category: "smoothie",
+    prepTime: "3 min",
+    difficulty: "Easy",
+    calories: 320,
+    protein: 35,
+    servings: 1,
+    ingredients: [
+      "1 scoop Huxon Gold Isolate",
+      "1 frozen banana",
+      "250ml oat milk",
+      "1 tbsp peanut butter",
+      "1 tsp cocoa powder",
+      "Ice cubes",
+    ],
+    steps: [
+      "Add all ingredients to a blender",
+      "Blend on high for 45 seconds until smooth",
+      "Pour into a chilled glass and enjoy",
+    ],
+    emoji: "🥤",
+    accent: "oklch(0.78 0.13 75)",
+  },
+  {
+    id: "r2",
+    title: "Protein Overnight Oats",
+    category: "breakfast",
+    prepTime: "5 min + overnight",
+    difficulty: "Easy",
+    calories: 410,
+    protein: 32,
+    servings: 1,
+    ingredients: [
+      "1 scoop Huxon Gold Isolate",
+      "40g rolled oats",
+      "150ml almond milk",
+      "1 tbsp chia seeds",
+      "1 tsp honey",
+      "Berries for topping",
+    ],
+    steps: [
+      "Mix oats, chia seeds, and protein powder in a jar",
+      "Add almond milk and honey, stir well",
+      "Refrigerate overnight (min 6 hours)",
+      "Top with berries in the morning",
+    ],
+    emoji: "🥣",
+    accent: "oklch(0.72 0.10 65)",
+  },
+  {
+    id: "r3",
+    title: "Pre-Workout Energy Bowl",
+    category: "pre-workout",
+    prepTime: "5 min",
+    difficulty: "Easy",
+    calories: 280,
+    protein: 28,
+    servings: 1,
+    ingredients: [
+      "1 scoop Huxon Gold Isolate",
+      "1 medium banana, sliced",
+      "2 tbsp Greek yogurt",
+      "1 tbsp granola",
+      "Drizzle of honey",
+    ],
+    steps: [
+      "Layer banana slices in a bowl",
+      "Mix protein powder with 2 tbsp water, drizzle over banana",
+      "Add yogurt, granola, and honey",
+      "Eat 45-60 min before workout",
+    ],
+    emoji: "🍌",
+    accent: "oklch(0.65 0.15 30)",
+  },
+  {
+    id: "r4",
+    title: "Chocolate Protein Mug Cake",
+    category: "dessert",
+    prepTime: "2 min",
+    difficulty: "Easy",
+    calories: 240,
+    protein: 26,
+    servings: 1,
+    ingredients: [
+      "1 scoop Huxon Gold Isolate",
+      "1 egg",
+      "1 tbsp cocoa powder",
+      "1/2 tsp baking powder",
+      "1 tsp stevia",
+      "1 tbsp dark chocolate chips",
+    ],
+    steps: [
+      "Mix all ingredients in a microwave-safe mug",
+      "Microwave on high for 60-90 seconds",
+      "Let cool for 1 minute",
+      "Top with chocolate chips and enjoy warm",
+    ],
+    emoji: "🍰",
+    accent: "oklch(0.55 0.08 50)",
+  },
+];

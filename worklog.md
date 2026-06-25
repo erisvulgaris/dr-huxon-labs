@@ -404,3 +404,46 @@ Unresolved / Next phase:
 - Could add a nutrition quiz / protein quiz gamified feature
 - Could add a "refer friend" flow with shareable referral link from Rewards view
 - Could add a dark/light theme auto-switch based on time of day
+
+---
+Task ID: 12 (Phase 7 — webDevReview cron round)
+Agent: main (Z.ai Code)
+Task: Add nutrition quiz, PDP recipes, enhanced referral flow
+
+Work Log:
+- Performed full QA via agent-browser across all views. No console errors, no hydration errors. Both themes stable. Project in excellent shape.
+- VLM identified personalized recommendations and recipe/usage search as high-impact gaps.
+
+New features added:
+1. **Nutrition Quiz** (`src/components/nutrition-quiz.tsx`) — gamified 5-question quiz that recommends products based on user goals. Features: progress bar with gold gradient, animated question icons, 5 questions (goal/activity/diet/timing/concern) each with weighted scoring, spring-animated option selection, auto-advance to next question, results screen with top 3 product recommendations sorted by match score, per-product match % ring, "Best match" gold badge on top result, "View top match" CTA that opens the PDP, earns 75 reward points on completion. Added `quizOpen`/`setQuizOpen` to nav store. Quiz CTA added to Explore view.
+
+2. **PDP Recipes / Usage Ideas** (`RecipesSection` + `RecipeDetailModal` in product.tsx) — horizontal scroll of 4 recipe cards (smoothie, overnight oats, pre-workout bowl, protein mug cake) with emoji header, category pill, prep time, protein/calorie info, difficulty. Tap any card to open a premium recipe detail modal with: hero emoji on gradient background, prep time/protein/calories/serves pills, ingredients list with checkmark icons, numbered method steps, nutrition stats grid. Data in `PRODUCT_RECIPES` in catalog.ts.
+
+3. **Enhanced Referral Flow** (rewards.tsx) — upgraded the referral section with: gradient background with molecular texture, referral code card with copy-to-clipboard (copies full referral URL, shows checkmark on copy), 4 share channel buttons (WhatsApp, Instagram, X, More with native share), 3-stat grid (Referred/Joined/Earned), "How it works" 3-step guide. All theme-aware. `ReferralCodeCard` component + `REFERRAL_CHANNELS` + `handleReferralShare` helper.
+
+4. **Quiz CTA on Explore** — added a prominent "Find your perfect product" card at the top of the Explore view with spark icon, "5-question quiz · earn 75 points" subtitle, and arrow CTA that opens the NutritionQuiz overlay.
+
+Styling polish:
+- All new features use theme-aware CSS variables (work in light & dark)
+- Quiz has animated progress bar with gold gradient + glow
+- Recipe cards have accent-colored gradient headers matching recipe category
+- Recipe modal has staggered ingredient/step animations
+- Referral section upgraded from plain glass to gold gradient with molecular texture
+- VLM confirms all new features are "sleek, dark-themed... premium feel"
+
+Stage Summary:
+- ✅ `bun run lint` passes clean (no errors, no warnings)
+- ✅ HTTP 200, no console errors, no hydration errors
+- ✅ Nutrition quiz: 5 questions flow correctly, results show 3 product matches with % rings, awards 75 points (VLM: "sleek dark theme, clean typography, modern premium aesthetic")
+- ✅ PDP recipes: 4 recipe cards render, detail modal opens with ingredients/method/nutrition (VLM: "dark cohesive color scheme... sleek modern aesthetic... premium feel")
+- ✅ Referral flow: copy link + 4 share channels + 3-step guide (VLM: "high-contrast accents, premium feel... intuitive and rewarding")
+- ✅ Quiz CTA on Explore: prominent card opens quiz overlay
+
+Unresolved / Next phase:
+- Could connect quiz recommendations to actually add items to cart
+- Could add PWA install prompt + push notifications
+- Could add a "track on map" real map visualization in Orders view
+- Could add dark/light theme auto-switch based on time of day
+- Could add a nutrition blog/education section
+- Could add live chat support widget
+- Could add a "build your own bundle" custom bundle builder

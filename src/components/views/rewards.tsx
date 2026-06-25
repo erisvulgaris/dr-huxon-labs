@@ -18,6 +18,7 @@ import {
   IconCheck,
   IconTrophy,
   IconRefresh,
+  IconShare,
 } from "@/components/icons";
 import {
   Reveal,
@@ -245,48 +246,82 @@ export function RewardsView() {
 
       {/* Referral */}
       <Reveal className="mt-6">
-        <div className="overflow-hidden rounded-3xl glass p-5">
-          <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-[oklch(0.78_0.13_75)]">
-            <IconUsers size={11} />
-            Refer & earn
-          </div>
-          <h3 className="mt-1 font-display text-[18px] font-semibold">
-            Give ₹200, get ₹200
-          </h3>
-          <p className="mt-1 text-[12px] text-muted-foreground">
-            Share your code. When your friend makes their first order, you both get ₹200 off.
-          </p>
+        <div className="relative overflow-hidden rounded-3xl border border-[oklch(var(--gold)/0.2)] bg-gradient-to-br from-[oklch(var(--gold)/0.08)] to-[oklch(var(--gold)/0.02)] p-5">
+          <div className="bg-molecular absolute inset-0 opacity-30" />
+          <div className="relative">
+            <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-gold-gradient">
+              <IconUsers size={11} />
+              Refer & earn
+            </div>
+            <h3 className="mt-1 font-display text-[18px] font-semibold text-cream-gradient">
+              Give ₹200, get ₹200
+            </h3>
+            <p className="mt-1 text-[12px] text-muted-foreground">
+              Share your code. When your friend makes their first order, you both get ₹200 off.
+            </p>
 
-          <div className="mt-3 flex items-center gap-2 rounded-2xl bg-[oklch(0.96_0.012_80_/_0.06)] p-3">
-            <div className="flex-1">
-              <div className="text-[9px] uppercase tracking-wide text-muted-foreground">
-                Your code
+            {/* Referral code with copy + share */}
+            <ReferralCodeCard code="HUX-ARJUN4280" />
+
+            {/* Share buttons */}
+            <div className="mt-3 grid grid-cols-4 gap-2">
+              {REFERRAL_CHANNELS.map((ch) => (
+                <motion.button
+                  key={ch.id}
+                  whileTap={{ scale: 0.92 }}
+                  onClick={() => handleReferralShare(ch.id, "HUX-ARJUN4280")}
+                  className="flex flex-col items-center gap-1.5 rounded-2xl glass p-2.5"
+                >
+                  <span
+                    className="grid h-9 w-9 place-items-center rounded-full"
+                    style={{ background: `${ch.color}20`, color: ch.color }}
+                  >
+                    <ch.Icon size={16} />
+                  </span>
+                  <span className="text-[9px] text-muted-foreground">{ch.label}</span>
+                </motion.button>
+              ))}
+            </div>
+
+            {/* Stats */}
+            <div className="mt-4 grid grid-cols-3 gap-2 text-center">
+              <div className="rounded-xl bg-[oklch(var(--glass-tint)/0.06)] p-2">
+                <div className="text-[16px] font-bold text-cream-gradient">
+                  <AnimatedNumber value={3} />
+                </div>
+                <div className="text-[9px] text-muted-foreground">Referred</div>
               </div>
-              <div className="font-mono text-[15px] font-bold tracking-wider text-gold-gradient">
-                HUX-ARJUN4280
+              <div className="rounded-xl bg-[oklch(var(--glass-tint)/0.06)] p-2">
+                <div className="text-[16px] font-bold text-[oklch(var(--jade))]">
+                  <AnimatedNumber value={2} />
+                </div>
+                <div className="text-[9px] text-muted-foreground">Joined</div>
+              </div>
+              <div className="rounded-xl bg-[oklch(var(--glass-tint)/0.06)] p-2">
+                <div className="text-[16px] font-bold text-gold-gradient">
+                  <AnimatedNumber value={600} prefix="₹" />
+                </div>
+                <div className="text-[9px] text-muted-foreground">Earned</div>
               </div>
             </div>
-            <button
-              onClick={() => navigator.clipboard?.writeText("HUX-ARJUN4280")}
-              className="grid h-9 w-9 place-items-center rounded-full bg-[oklch(0.78_0.13_75_/_0.18)] text-[oklch(0.92_0.10_85)]"
-              aria-label="Copy code"
-            >
-              <IconCopy size={14} />
-            </button>
-          </div>
 
-          <div className="mt-3 grid grid-cols-2 gap-2 text-center">
-            <div className="rounded-xl bg-[oklch(0.96_0.012_80_/_0.04)] p-2">
-              <div className="text-[16px] font-bold text-cream-gradient">
-                <AnimatedNumber value={3} />
+            {/* How it works */}
+            <div className="mt-4 space-y-2">
+              <div className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                How it works
               </div>
-              <div className="text-[9px] text-muted-foreground">Friends referred</div>
-            </div>
-            <div className="rounded-xl bg-[oklch(0.96_0.012_80_/_0.04)] p-2">
-              <div className="text-[16px] font-bold text-cream-gradient">
-                <AnimatedNumber value={600} prefix="₹" />
-              </div>
-              <div className="text-[9px] text-muted-foreground">Total earned</div>
+              {[
+                { step: "1", text: "Share your code with friends" },
+                { step: "2", text: "They get ₹200 off their first order" },
+                { step: "3", text: "You earn ₹200 + 250 reward points" },
+              ].map((item) => (
+                <div key={item.step} className="flex items-center gap-2 text-[12px]">
+                  <span className="grid h-5 w-5 place-items-center rounded-full bg-[oklch(var(--gold)/0.18)] text-[10px] font-bold text-gold-gradient">
+                    {item.step}
+                  </span>
+                  <span className="text-foreground/80">{item.text}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -336,4 +371,97 @@ function ChallengeCard({
       </div>
     </div>
   );
+}
+
+/* ============================================================
+   Referral helpers
+   ============================================================ */
+
+function ReferralCodeCard({ code }: { code: string }) {
+  const [copied, setCopied] = React.useState(false);
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(`https://drhuxon.com/r/${code}`);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {}
+  };
+  return (
+    <div className="mt-3 flex items-center gap-2 rounded-2xl bg-[oklch(var(--glass-tint)/0.08)] p-3">
+      <div className="flex-1">
+        <div className="text-[9px] uppercase tracking-wide text-muted-foreground">
+          Your referral link
+        </div>
+        <div className="font-mono text-[13px] font-bold tracking-wider text-gold-gradient">
+          {code}
+        </div>
+      </div>
+      <motion.button
+        whileTap={{ scale: 0.9 }}
+        onClick={handleCopy}
+        className={
+          "grid h-9 w-9 place-items-center rounded-full transition-colors " +
+          (copied
+            ? "bg-[oklch(var(--jade)/0.2)] text-[oklch(var(--jade))]"
+            : "bg-[oklch(var(--gold)/0.18)] text-gold-gradient")
+        }
+        aria-label="Copy referral link"
+      >
+        {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
+      </motion.button>
+    </div>
+  );
+}
+
+const REFERRAL_CHANNELS = [
+  {
+    id: "whatsapp",
+    label: "WhatsApp",
+    color: "oklch(0.62 0.18 145)",
+    Icon: ({ size = 16 }: { size?: number }) => (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-2.8.7.8-2.7-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.7.9-.1.1-.3.2-.5.1-.7-.3-1.4-.6-2-1.3-.4-.4-.7-.9-.9-1.4-.1-.2 0-.4.1-.5l.4-.4.2-.4v-.3c0-.1-.5-1.3-.7-1.7-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.5 4 3.4.5.2 1 .4 1.3.4.5.1 1 .1 1.3 0 .4-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.2-.2-.4-.3Z" />
+      </svg>
+    ),
+  },
+  {
+    id: "instagram",
+    label: "Instagram",
+    color: "oklch(0.62 0.20 350)",
+    Icon: ({ size = 16 }: { size?: number }) => (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <rect x="3" y="3" width="18" height="18" rx="5" />
+        <circle cx="12" cy="12" r="4" />
+        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+  {
+    id: "twitter",
+    label: "X",
+    color: "oklch(0.95 0 0)",
+    Icon: ({ size = 16 }: { size?: number }) => (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18 3h3l-7 8 8 10h-6l-5-6-5 6H3l7-9L3 3h6l4 5 5-5Z" />
+      </svg>
+    ),
+  },
+  {
+    id: "more",
+    label: "More",
+    color: "oklch(0.78 0.13 75)",
+    Icon: IconShare,
+  },
+] as const;
+
+function handleReferralShare(channel: string, code: string) {
+  const url = `https://drhuxon.com/r/${code}`;
+  const text = "Get ₹200 off your first Dr. Huxon Labs order with my referral code!";
+  if (channel === "more" && typeof navigator !== "undefined" && navigator.share) {
+    navigator.share({ title: "Dr. Huxon Labs", text, url }).catch(() => {});
+  } else {
+    try {
+      navigator.clipboard.writeText(`${text} ${url}`);
+    } catch {}
+  }
 }

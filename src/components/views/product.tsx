@@ -13,6 +13,7 @@ import {
   LAB_REPORTS,
   CERTIFICATIONS,
   PRODUCT_QAS,
+  PRODUCT_RECIPES,
   type Offer,
 } from "@/lib/catalog";
 import { ICON_MAP } from "@/components/icons";
@@ -456,6 +457,11 @@ export function ProductView() {
               });
             }}
           />
+        </Reveal>
+
+        {/* Recipes / Usage ideas */}
+        <Reveal className="mt-6">
+          <RecipesSection />
         </Reveal>
 
         {/* Pairings */}
@@ -1508,6 +1514,224 @@ function SubscribeSection({
         )}
       </div>
     </div>
+  );
+}
+
+/* ============================================================
+   Recipes / Usage Ideas Section
+   ============================================================ */
+function RecipesSection() {
+  const [activeRecipe, setActiveRecipe] = React.useState<string | null>(null);
+
+  return (
+    <div>
+      <div className="mb-3 flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <IconBolt size={14} className="text-gold-gradient" />
+          <h2 className="text-[15px] font-semibold">Ways to use it</h2>
+        </div>
+        <span className="text-[11px] text-muted-foreground">{PRODUCT_RECIPES.length} recipes</span>
+      </div>
+
+      {/* Recipe cards */}
+      <div className="no-scrollbar -mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
+        {PRODUCT_RECIPES.map((recipe, i) => (
+          <motion.button
+            key={recipe.id}
+            initial={{ opacity: 0, x: 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: i * 0.06 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => setActiveRecipe(recipe.id)}
+            className="group relative w-[200px] shrink-0 overflow-hidden rounded-2xl glass p-3 text-left"
+          >
+            {/* Emoji header */}
+            <div
+              className="relative grid h-20 w-full place-items-center rounded-xl overflow-hidden"
+              style={{
+                background: `linear-gradient(135deg, ${recipe.accent.replace(")", " / 0.18)")}, ${recipe.accent.replace(")", " / 0.04)")})`,
+              }}
+            >
+              <span className="text-[36px]">{recipe.emoji}</span>
+              <div className="absolute left-2 top-2">
+                <Pill tone="gold">{recipe.category}</Pill>
+              </div>
+              <div className="absolute right-2 top-2 rounded-full bg-black/30 px-2 py-0.5 text-[9px] font-medium text-cream/90 backdrop-blur-sm">
+                {recipe.prepTime}
+              </div>
+            </div>
+            {/* Info */}
+            <h3 className="mt-2 text-[13px] font-semibold leading-tight text-cream-gradient">
+              {recipe.title}
+            </h3>
+            <div className="mt-1.5 flex items-center gap-2 text-[10px] text-muted-foreground">
+              <span className="flex items-center gap-0.5">
+                <IconBolt size={9} className="text-gold-gradient" />
+                {recipe.protein}g protein
+              </span>
+              <span>·</span>
+              <span>{recipe.calories} kcal</span>
+            </div>
+            <div className="mt-1.5 flex items-center gap-1 text-[10px] text-muted-foreground">
+              <IconCheck size={9} className="text-[oklch(var(--jade))]" />
+              {recipe.difficulty}
+            </div>
+          </motion.button>
+        ))}
+      </div>
+
+      {/* Recipe detail modal */}
+      <AnimatePresence>
+        {activeRecipe && (
+          <RecipeDetailModal
+            recipe={PRODUCT_RECIPES.find((r) => r.id === activeRecipe)!}
+            onClose={() => setActiveRecipe(null)}
+          />
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function RecipeDetailModal({
+  recipe,
+  onClose,
+}: {
+  recipe: (typeof PRODUCT_RECIPES)[number];
+  onClose: () => void;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-md"
+    >
+      <motion.div
+        initial={{ y: "100%" }}
+        animate={{ y: 0 }}
+        exit={{ y: "100%" }}
+        transition={{ type: "spring", stiffness: 260, damping: 30 }}
+        onClick={(e) => e.stopPropagation()}
+        className="relative z-10 flex max-h-[88dvh] w-full max-w-[460px] flex-col overflow-hidden rounded-t-[28px] border-t border-border bg-background"
+      >
+        <div className="mx-auto my-3 h-1 w-10 rounded-full bg-[oklch(var(--glass-border)/0.2)]" />
+        <button
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute right-4 top-4 z-20 grid h-9 w-9 place-items-center rounded-full glass"
+        >
+          <IconClose size={16} />
+        </button>
+
+        <div className="no-scrollbar flex-1 overflow-y-auto pb-8">
+          {/* Hero */}
+          <div
+            className="relative grid h-[140px] w-full place-items-center overflow-hidden"
+            style={{
+              background: `linear-gradient(135deg, ${recipe.accent.replace(")", " / 0.25)")}, ${recipe.accent.replace(")", " / 0.05)")})`,
+            }}
+          >
+            <div className="bg-molecular absolute inset-0 opacity-30" />
+            <motion.span
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 200, damping: 16, delay: 0.1 }}
+              className="relative text-[56px]"
+            >
+              {recipe.emoji}
+            </motion.span>
+            <div className="absolute bottom-3 left-5">
+              <Pill tone="gold">{recipe.category}</Pill>
+            </div>
+          </div>
+
+          <div className="px-5 pt-4">
+            <h2 className="font-display text-[22px] font-semibold text-cream-gradient">
+              {recipe.title}
+            </h2>
+            <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px]">
+              <span className="flex items-center gap-1 rounded-full bg-[oklch(var(--glass-tint)/0.06)] px-2.5 py-1">
+                <IconClock size={10} /> {recipe.prepTime}
+              </span>
+              <span className="flex items-center gap-1 rounded-full bg-[oklch(var(--glass-tint)/0.06)] px-2.5 py-1">
+                <IconBolt size={10} className="text-gold-gradient" /> {recipe.protein}g protein
+              </span>
+              <span className="rounded-full bg-[oklch(var(--glass-tint)/0.06)] px-2.5 py-1">
+                {recipe.calories} kcal
+              </span>
+              <span className="rounded-full bg-[oklch(var(--glass-tint)/0.06)] px-2.5 py-1">
+                Serves {recipe.servings}
+              </span>
+            </div>
+
+            {/* Ingredients */}
+            <div className="mt-5">
+              <h3 className="mb-2 text-[13px] font-semibold">Ingredients</h3>
+              <div className="space-y-1.5">
+                {recipe.ingredients.map((ing, i) => (
+                  <motion.div
+                    key={ing}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.15 + i * 0.05 }}
+                    className="flex items-start gap-2 rounded-xl glass px-3 py-2"
+                  >
+                    <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-[oklch(var(--jade)/0.18)]">
+                      <IconCheck size={9} className="text-[oklch(var(--jade))]" />
+                    </span>
+                    <span className="text-[12px] text-foreground/85">{ing}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Steps */}
+            <div className="mt-5">
+              <h3 className="mb-2 text-[13px] font-semibold">Method</h3>
+              <div className="space-y-2.5">
+                {recipe.steps.map((step, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 + i * 0.08 }}
+                    className="flex gap-3"
+                  >
+                    <span
+                      className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[oklch(var(--gold)/0.18)] text-[11px] font-bold text-gold-gradient"
+                    >
+                      {i + 1}
+                    </span>
+                    <span className="pt-0.5 text-[12px] leading-relaxed text-foreground/85">
+                      {step}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Nutrition bar */}
+            <div className="mt-5 grid grid-cols-3 gap-2">
+              <div className="rounded-xl bg-[oklch(var(--glass-tint)/0.04)] p-2.5 text-center">
+                <div className="text-[14px] font-bold text-gold-gradient tabular">{recipe.protein}g</div>
+                <div className="text-[8px] uppercase tracking-wide text-muted-foreground">Protein</div>
+              </div>
+              <div className="rounded-xl bg-[oklch(var(--glass-tint)/0.04)] p-2.5 text-center">
+                <div className="text-[14px] font-bold text-cream-gradient tabular">{recipe.calories}</div>
+                <div className="text-[8px] uppercase tracking-wide text-muted-foreground">Calories</div>
+              </div>
+              <div className="rounded-xl bg-[oklch(var(--glass-tint)/0.04)] p-2.5 text-center">
+                <div className="text-[14px] font-bold text-cream-gradient tabular">{recipe.servings}</div>
+                <div className="text-[8px] uppercase tracking-wide text-muted-foreground">Servings</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }
 

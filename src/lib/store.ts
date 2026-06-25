@@ -192,6 +192,8 @@ type NavState = {
   setShareProductId: (id: string | null) => void;
   reviewProductId: string | null;
   setReviewProductId: (id: string | null) => void;
+  quizOpen: boolean;
+  setQuizOpen: (v: boolean) => void;
 };
 
 export const useNav = create<NavState>((set) => ({
@@ -219,6 +221,8 @@ export const useNav = create<NavState>((set) => ({
   setShareProductId: (id) => set({ shareProductId: id }),
   reviewProductId: null,
   setReviewProductId: (id) => set({ reviewProductId: id }),
+  quizOpen: false,
+  setQuizOpen: (v) => set({ quizOpen: v }),
 }));
 
 type Toast = { id: string; title: string; description?: string };
