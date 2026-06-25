@@ -493,3 +493,71 @@ Unresolved / Next phase:
 - Could add a nutrition challenge/program feature (e.g., 30-day protein challenge)
 - Could add a product rating distribution chart on PDP
 - Could add a "refer friends leaderboard" in Rewards
+
+---
+Task ID: 14 (Phase 9 — webDevReview cron round)
+Agent: main (Z.ai Code)
+Task: Add 30-Day Protein Challenge, PWA install prompt, time-based theme auto-switch
+
+Work Log:
+- Performed full QA via agent-browser across all views. No console errors, no hydration errors. Both themes stable. Project in excellent shape.
+- VLM identified personalized nutrition tracking and streamlined daily entry as gaps. Worklog noted 30-day challenge, PWA install, and time-based theme as next-phase items.
+
+New features added:
+1. **30-Day Protein Challenge** (`src/components/views/challenge.tsx`) — gamified nutrition program with:
+  - **Enrollment screen**: hero trophy icon, program description, 4 milestone preview cards (Day 7/14/21/30 with rewards 100-1000 pts), daily protein goal selector (80-220g, ±10 stepper), "Start the challenge" CTA
+  - **Active challenge**: progress ring (X/30 days complete), "Day X of 30" heading, total protein + daily goal stats, 4 milestone cards with reached/unreached states, 30-day calendar grid (gold gradient for completed days, today indicator with pulse, checkmark badges), "Log Day X" CTA, "Leave challenge" opt-out
+  - **Log Day modal**: protein input with ±5 stepper, goal progress bar (green when ≥80% reached), 4 quick-add presets (1 scoop +27g, 1 bar +20g, 1 meal +30g, ½ goal), "Log Xg for Day Y" submit button
+  - **Reward system**: +25 pts per day logged, milestone bonuses (100/200/300/1000 pts) with celebratory toast on unlock
+  - Wired to new `useChallenge` persisted Zustand store (enroll, logDay, skipDay, unenroll)
+  - Entry points: Explore view CTA card + Profile quick action
+
+2. **PWA Install Prompt** (`src/components/pwa-install-prompt.tsx`) — premium add-to-home-screen banner:
+  - Listens for `beforeinstallprompt` event, shows after 6s delay (post-onboarding)
+  - Hero install icon with gold gradient, "Add Huxon to Home Screen" title
+  - 3 benefit cards (faster loading/offline, full-screen experience, quick reorder)
+  - Native install button (when beforeinstallprompt available) OR iOS manual instructions (Share → Add to Home Screen)
+  - "Maybe later" dismiss with localStorage persistence (won't show again)
+  - Detects standalone mode (already installed) → no prompt
+  - Spring-animated bottom sheet
+
+3. **Time-Based Theme Auto-Switch** (`src/components/auto-theme-switch.tsx`) — automatically sets dark/light theme based on time of day:
+  - 7 AM – 7 PM: light theme
+  - 7 PM – 7 AM: dark theme
+  - Checks every 5 minutes
+  - Respects manual override: when user taps ThemeToggle, sets `huxon-theme-manual` flag in localStorage → auto-switch stops
+  - ThemeToggle updated to mark manual override on tap
+
+4. **Challenge store** (`useChallenge` in store.ts) — persisted Zustand store with `ChallengeDay` type, enroll/logDay/skipDay/unenroll actions, 30-day array initialization.
+
+5. **Nav store extended** — added `challenge` route.
+
+6. **Explore view enhanced** — replaced single quiz CTA with 2-column grid: "Find your product" (quiz) + "30-Day Challenge" (challenge) with distinct accent colors (gold vs flame-red).
+
+7. **Profile quick actions expanded** — now 6 actions: My Orders, Subscriptions, 30-Day Challenge, Wishlist, Compare, Build a Bundle.
+
+Styling polish:
+- All new features use theme-aware CSS variables (work in light & dark)
+- Challenge calendar grid has gold gradient for completed days + pulse ring for today
+- Milestone cards have reached/unreached states with crown icons
+- PWA prompt has premium gold gradient hero icon
+- Challenge CTA on Explore uses flame-red accent to differentiate from gold quiz CTA
+- VLM confirms: "sleek dark theme with gold accents... gamification is strong with milestones, calendar grid, and points system"
+
+Stage Summary:
+- ✅ `bun run lint` passes clean (no errors, no warnings)
+- ✅ HTTP 200, no console errors, no hydration errors
+- ✅ 30-Day Challenge: enrollment → active state → log day flow all work, milestones unlock with reward toasts (VLM: "sleek dark theme, gamification strong, progress ring enhances engagement")
+- ✅ PWA Install Prompt: shows after delay, native install + iOS fallback, dismiss persists
+- ✅ Time-based theme auto-switch: dark at night, light during day, respects manual override
+- ✅ Explore: 2-column CTA grid (quiz + challenge)
+- ✅ Profile: 6 quick actions (orders, subs, challenge, wishlist, compare, bundle)
+
+Unresolved / Next phase:
+- Could connect quiz recommendations to add items to cart directly
+- Could add a "track on map" real map visualization in Orders view
+- Could add a product rating distribution chart on PDP
+- Could add a "refer friends leaderboard" in Rewards
+- Could add push notifications for challenge reminders
+- Could add a nutrition blog search/filter
+- Could add a "share your challenge progress" feature

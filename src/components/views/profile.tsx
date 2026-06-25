@@ -17,6 +17,8 @@ import {
   IconGift,
   IconPackage,
   IconCompare,
+  IconTrophy,
+  IconBolt,
 } from "@/components/icons";
 import {
   Reveal,
@@ -230,8 +232,10 @@ export function ProfileView() {
       <Reveal className="mt-4 grid grid-cols-2 gap-2">
         <ActionTile icon={<IconPackage size={16} />} label="My Orders" badge={2} onClick={() => setRoute("orders")} />
         <ActionTile icon={<IconRefresh size={16} />} label="Subscriptions" badge={subCount || undefined} onClick={() => setRoute("subscriptions")} />
+        <ActionTile icon={<IconTrophy size={16} />} label="30-Day Challenge" onClick={() => setRoute("challenge")} />
         <ActionTile icon={<IconHeart size={16} />} label="Wishlist" badge={wishCount} onClick={() => setRoute("wishlist")} />
         <ActionTile icon={<IconCompare size={16} />} label="Compare" badge={compareIds.length || undefined} onClick={() => setRoute("compare")} />
+        <ActionTile icon={<IconBolt size={16} />} label="Build a Bundle" onClick={() => setRoute("bundle")} />
       </Reveal>
     </div>
   );

@@ -15,6 +15,7 @@ import { OrdersView } from "@/components/views/orders";
 import { CompareView } from "@/components/views/compare";
 import { SubscriptionsView } from "@/components/views/subscriptions";
 import { BundleView } from "@/components/views/bundle";
+import { ChallengeView } from "@/components/views/challenge";
 import { QuickView } from "@/components/quick-view";
 import { IngredientSheet } from "@/components/sections/ingredients";
 import { CartDrawer } from "@/components/cart-drawer";
@@ -26,6 +27,8 @@ import { ReviewSheet } from "@/components/review-sheet";
 import { OnboardingTour } from "@/components/onboarding-tour";
 import { NutritionQuiz } from "@/components/nutrition-quiz";
 import { ChatWidget } from "@/components/chat-widget";
+import { PWAInstallPrompt } from "@/components/pwa-install-prompt";
+import { AutoThemeSwitch } from "@/components/auto-theme-switch";
 import { useNav } from "@/lib/store";
 
 export default function Home() {
@@ -53,6 +56,7 @@ export default function Home() {
           {route === "compare" && <CompareView />}
           {route === "subscriptions" && <SubscriptionsView />}
           {route === "bundle" && <BundleView />}
+          {route === "challenge" && <ChallengeView />}
         </motion.div>
       </AnimatePresence>
 
@@ -68,6 +72,8 @@ export default function Home() {
       <OnboardingTour />
       <NutritionQuiz />
       <ChatWidget />
+      <PWAInstallPrompt />
+      <AutoThemeSwitch />
     </AppShell>
   );
 }

@@ -41,28 +41,42 @@ export function ExploreView() {
         </p>
       </Reveal>
 
-      {/* Quiz CTA */}
+      {/* Quiz + Challenge CTAs */}
       <Reveal className="mt-4">
-        <button
-          onClick={() => setQuizOpen(true)}
-          className="relative flex w-full items-center gap-3 overflow-hidden rounded-2xl border border-[oklch(var(--gold)/0.3)] bg-gradient-to-br from-[oklch(var(--gold)/0.1)] to-[oklch(var(--gold)/0.02)] p-4 text-left"
-        >
-          <div className="bg-molecular absolute inset-0 opacity-30" />
-          <div className="relative grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-[oklch(var(--gold)/0.2)]">
-            <IconSpark size={22} active />
-          </div>
-          <div className="relative flex-1">
-            <div className="text-[14px] font-semibold text-cream-gradient">
-              Find your perfect product
+        <div className="grid grid-cols-2 gap-2.5">
+          <button
+            onClick={() => setQuizOpen(true)}
+            className="relative flex flex-col items-start gap-2 overflow-hidden rounded-2xl border border-[oklch(var(--gold)/0.3)] bg-gradient-to-br from-[oklch(var(--gold)/0.1)] to-[oklch(var(--gold)/0.02)] p-3 text-left"
+          >
+            <div className="grid h-9 w-9 place-items-center rounded-xl bg-[oklch(var(--gold)/0.2)]">
+              <IconSpark size={16} active />
             </div>
-            <div className="text-[11px] text-muted-foreground">
-              5-question quiz · earn 75 points
+            <div>
+              <div className="text-[12px] font-semibold text-cream-gradient">
+                Find your product
+              </div>
+              <div className="text-[10px] text-muted-foreground">
+                5-Q quiz · +75 pts
+              </div>
             </div>
-          </div>
-          <div className="relative grid h-8 w-8 place-items-center rounded-full bg-[oklch(var(--gold)/0.2)]">
-            <IconArrowRight size={14} className="text-gold-gradient" />
-          </div>
-        </button>
+          </button>
+          <button
+            onClick={() => useNavHook.getState().setRoute("challenge")}
+            className="relative flex flex-col items-start gap-2 overflow-hidden rounded-2xl border border-[oklch(0.72_0.18_25/0.3)] bg-gradient-to-br from-[oklch(0.72_0.18_25/0.1)] to-[oklch(0.62_0.10_55/0.04)] p-3 text-left"
+          >
+            <div className="grid h-9 w-9 place-items-center rounded-xl bg-[oklch(0.72_0.18_25/0.2)]">
+              <IconTrophy size={16} className="text-[oklch(0.72_0.18_25)]" />
+            </div>
+            <div>
+              <div className="text-[12px] font-semibold text-cream-gradient">
+                30-Day Challenge
+              </div>
+              <div className="text-[10px] text-muted-foreground">
+                Earn 1,600 pts
+              </div>
+            </div>
+          </button>
+        </div>
       </Reveal>
 
       <Stagger className="mt-4 space-y-4" staggerChildren={0.07}>

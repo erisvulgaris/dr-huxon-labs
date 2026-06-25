@@ -17,6 +17,8 @@ export function ThemeToggle({ size = 44 }: { size?: number }) {
   const isDark = current === "dark";
 
   const toggle = () => {
+    // Mark manual override so AutoThemeSwitch stops auto-switching
+    localStorage.setItem("huxon-theme-manual", "true");
     // Add transition class for smooth color shift
     document.documentElement.classList.add("theme-transition");
     setTheme(isDark ? "light" : "dark");

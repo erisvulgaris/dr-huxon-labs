@@ -173,7 +173,8 @@ export type Route =
   | "orders"
   | "compare"
   | "subscriptions"
-  | "bundle";
+  | "bundle"
+  | "challenge";
 
 type NavState = {
   route: Route;
@@ -486,6 +487,80 @@ export const useSubscriptions = create<SubscriptionsState>()(
     }),
     {
       name: "huxon-subs",
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);
+
+/* ============================================================
+   30-Day Protein Challenge store — persisted daily tracking
+   ============================================================ */
+export type ChallengeDay = {
+  day: number;
+  completed: boolean;
+  proteinLogged: number;
+  date?: number;
+};
+
+type ChallengeState = {
+  enrolled: boolean;
+  enrolledAt: number | null;
+  goalGrams: number;
+  days: ChallengeDay[];
+  currentDay: number;
+  enroll: (goalGrams: number) => void;
+  unenroll: () => void;
+  logDay: (protein: number) => void;
+  skipDay: () => void;
+};
+
+export const useChallenge = create<ChallengeState>()(
+  persist(
+    (set) => ({
+      enrolled: false,
+      enrolledAt: null,
+      goalGrams: 140,
+      days: [],
+      currentDay: 0,
+      enroll: (goalGrams) =>
+        set({
+          enrolled: true,
+          enrolledAt: Date.now(),
+          goalGrams,
+          currentDay: 1,
+          days: Array.from({ length: 30 }, (_, i) => ({
+            day: i + 1,
+            completed: false,
+            proteinLogged: 0,
+          })),
+        }),
+      unenroll: () =>
+        set({ enrolled: false, enrolledAt: null, days: [], currentDay: 0 }),
+      logDay: (protein) =>
+        set((s) => {
+          if (!s.enrolled || s.currentDay > 30) return s;
+          const days = s.days.map((d) =>
+            d.day === s.currentDay
+              ? {
+                  ...d,
+                  completed: protein >= s.goalGrams * 0.8,
+                  proteinLogged: protein,
+                  date: Date.now(),
+                }
+              : d
+          );
+          return {
+            days,
+            currentDay: Math.min(31, s.currentDay + 1),
+          };
+        }),
+      skipDay: () =>
+        set((s) => ({
+          currentDay: Math.min(31, s.currentDay + 1),
+        })),
+    }),
+    {
+      name: "huxon-challenge",
       storage: createJSONStorage(() => localStorage),
     }
   )
