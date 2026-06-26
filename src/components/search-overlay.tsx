@@ -146,7 +146,7 @@ export function SearchOverlay() {
                       <button
                         key={t}
                         onClick={() => commitSearch(t)}
-                        className="rounded-full border border-[oklch(0.78_0.13_75_/_0.25)] bg-[oklch(0.78_0.13_75_/_0.08)] px-3 py-1.5 text-[12px] text-[oklch(0.92_0.10_85)]"
+                        className="rounded-full border border-[oklch(0.78_0.13_75_/_0.25)] bg-[oklch(0.78_0.13_75_/_0.08)] px-3 py-1.5 text-[12px] text-text-gold"
                       >
                         {t}
                       </button>
@@ -178,7 +178,7 @@ export function SearchOverlay() {
                     Based on your activity, you might like{" "}
                     <button
                       onClick={() => commitSearch("Recovery")}
-                      className="font-medium text-[oklch(0.92_0.10_85)] underline-offset-2 hover:underline"
+                      className="font-medium text-text-gold underline-offset-2 hover:underline"
                     >
                       Recovery Matrix
                     </button>{" "}
@@ -241,7 +241,7 @@ function PopularRow({
       </button>
       <button
         onClick={() => addItem(product)}
-        className="grid h-8 w-8 place-items-center rounded-full bg-[oklch(0.78_0.13_75_/_0.16)] text-[oklch(0.92_0.10_85)]"
+        className="grid h-8 w-8 place-items-center rounded-full bg-[oklch(0.78_0.13_75_/_0.16)] text-text-gold"
         aria-label="Add to cart"
       >
         <IconArrowRight size={14} />

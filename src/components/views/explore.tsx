@@ -123,7 +123,7 @@ function DailyProteinTracker() {
     <div className="overflow-hidden rounded-3xl glass p-5">
       <div className="flex items-center justify-between">
         <div>
-          <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-[oklch(0.78_0.13_75)]">
+          <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-text-gold">
             <IconBolt size={11} />
             Daily Protein Tracker
           </div>
@@ -203,7 +203,7 @@ function WaterIntakeTracker() {
         </div>
         <button
           onClick={() => setGlasses((g) => Math.min(goal + 2, g + 1))}
-          className="grid h-14 w-14 place-items-center rounded-2xl bg-[oklch(0.62_0.10_160_/_0.18)] text-[oklch(0.72_0.10_160)]"
+          className="grid h-14 w-14 place-items-center rounded-2xl bg-[oklch(0.62_0.10_160_/_0.18)] text-text-accent-jade"
           aria-label="Add glass"
         >
           <IconDrop size={26} />
@@ -270,7 +270,7 @@ function MealProgressRing() {
 function GoalProgressCard() {
   return (
     <div className="overflow-hidden rounded-3xl glass p-4">
-      <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.16em] text-[oklch(0.78_0.13_75)]">
+      <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.16em] text-text-gold">
         <IconTarget size={11} />
         Goal
       </div>
@@ -310,7 +310,7 @@ function BMICalculator() {
 
   return (
     <div className="overflow-hidden rounded-3xl glass p-5">
-      <div className="text-[10px] uppercase tracking-[0.2em] text-[oklch(0.78_0.13_75)]">
+      <div className="text-[10px] uppercase tracking-[0.2em] text-text-gold">
         BMI Calculator
       </div>
       <div className="mt-1 flex items-baseline gap-2">
@@ -370,7 +370,7 @@ function ProteinTimeline() {
     <div className="overflow-hidden rounded-3xl glass p-5">
       <div className="flex items-center justify-between">
         <div>
-          <div className="text-[10px] uppercase tracking-[0.2em] text-[oklch(0.78_0.13_75)]">
+          <div className="text-[10px] uppercase tracking-[0.2em] text-text-gold">
             Protein Intake · 7 days
           </div>
           <h3 className="mt-1 font-display text-[18px] font-semibold">
@@ -411,12 +411,12 @@ function FitnessGoalTimeline() {
     <div className="overflow-hidden rounded-3xl glass p-5">
       <div className="flex items-center justify-between">
         <div>
-          <div className="text-[10px] uppercase tracking-[0.2em] text-[oklch(0.78_0.13_75)]">
+          <div className="text-[10px] uppercase tracking-[0.2em] text-text-gold">
             Fitness Goal Timeline
           </div>
           <h3 className="mt-1 font-display text-[18px] font-semibold">16-week program</h3>
         </div>
-        <IconTrophy size={20} className="text-[oklch(0.78_0.13_75)]" />
+        <IconTrophy size={20} className="text-text-gold" />
       </div>
 
       <div className="mt-4 flex items-center justify-between">

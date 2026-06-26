@@ -57,6 +57,13 @@
   --color-cream: var(--cream);
   --color-jade: var(--jade);
 
+  /* Theme-aware text/icon accent colors (auto-adapt dark/light) */
+  --color-text-gold: var(--text-gold);
+  --color-text-gold-soft: var(--text-gold-soft);
+  --color-text-accent-jade: var(--text-accent-jade);
+  --color-text-accent-amber: var(--text-accent-amber);
+  --color-icon-default: var(--icon-default);
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -74,24 +81,24 @@
 
   /* Base surfaces — warm ivory / cream */
   --background: oklch(0.97 0.008 80);              /* warm ivory */
-  --foreground: oklch(0.22 0.02 45);               /* espresso */
+  --foreground: oklch(0.20 0.02 45);               /* espresso — darker for contrast */
   --card: oklch(0.99 0.005 80);                    /* warm white */
-  --card-foreground: oklch(0.22 0.02 45);
+  --card-foreground: oklch(0.20 0.02 45);
   --popover: oklch(0.99 0.005 80);
-  --popover-foreground: oklch(0.22 0.02 45);
+  --popover-foreground: oklch(0.20 0.02 45);
 
   /* Primary = bronze (darker for contrast on light) */
   --primary: oklch(0.52 0.11 60);                  /* bronze */
   --primary-foreground: oklch(0.99 0.005 80);      /* warm white */
 
   --secondary: oklch(0.93 0.008 75);
-  --secondary-foreground: oklch(0.25 0.02 50);
+  --secondary-foreground: oklch(0.22 0.02 50);
   --muted: oklch(0.93 0.008 75);
-  --muted-foreground: oklch(0.48 0.015 65);
+  --muted-foreground: oklch(0.42 0.015 65);        /* darker for WCAG AA contrast */
   --accent: oklch(0.90 0.025 65);                  /* light cocoa */
-  --accent-foreground: oklch(0.25 0.02 50);
+  --accent-foreground: oklch(0.22 0.02 50);
   --destructive: oklch(0.55 0.20 25);
-  --border: oklch(0.85 0.01 60 / 70%);
+  --border: oklch(0.82 0.01 60 / 75%);             /* slightly darker border */
   --input: oklch(0.88 0.008 70 / 80%);
   --ring: oklch(0.52 0.11 60 / 50%);
   --chart-1: oklch(0.52 0.11 60);                  /* bronze */
@@ -101,15 +108,22 @@
   --chart-5: oklch(0.40 0.05 280);
 
   /* Brand palette — adjusted for light backgrounds */
-  --gold: oklch(0.55 0.12 65);                     /* darker gold for contrast */
-  --gold-soft: oklch(0.70 0.08 70);
-  --bronze: oklch(0.50 0.10 55);
+  --gold: oklch(0.48 0.11 60);                     /* darker gold for text contrast on ivory */
+  --gold-soft: oklch(0.58 0.10 65);
+  --bronze: oklch(0.46 0.10 55);
   --espresso: oklch(0.25 0.02 45);
-  --cocoa: oklch(0.40 0.03 50);
-  --graphite: oklch(0.45 0.005 60);
+  --cocoa: oklch(0.38 0.03 50);
+  --graphite: oklch(0.42 0.005 60);
   --charcoal: oklch(0.20 0.008 50);
-  --cream: oklch(0.25 0.02 45);                    /* In light theme, "cream" text var = espresso */
-  --jade: oklch(0.50 0.09 160);
+  --cream: oklch(0.22 0.02 45);                    /* In light theme, "cream" text var = espresso (dark) */
+  --jade: oklch(0.42 0.09 160);                    /* darker jade for contrast */
+
+  /* Theme-aware text colors for gold/brand accents */
+  --text-gold: oklch(0.48 0.11 60);                /* dark gold for light theme text */
+  --text-gold-soft: oklch(0.52 0.10 65);
+  --text-accent-jade: oklch(0.40 0.09 160);        /* dark jade for text */
+  --text-accent-amber: oklch(0.48 0.10 55);        /* dark amber for text */
+  --icon-default: oklch(0.35 0.015 60);            /* dark icon color for light theme */
 
   /* Glass + overlay tokens (theme-aware) */
   --glass-tint: 0.99 0.005 80;                     /* white-ish overlay */
@@ -217,6 +231,13 @@
   --grad-gold-3: oklch(0.62 0.10 55);
   --grad-cream-1: oklch(0.99 0.005 80);
   --grad-cream-2: oklch(0.86 0.02 75);
+
+  /* Theme-aware text colors for gold/brand accents (dark theme = bright) */
+  --text-gold: oklch(0.92 0.10 85);                /* bright gold for dark theme text */
+  --text-gold-soft: oklch(0.82 0.13 75);
+  --text-accent-jade: oklch(0.72 0.10 160);        /* bright jade for text */
+  --text-accent-amber: oklch(0.78 0.13 75);        /* bright amber for text */
+  --icon-default: oklch(0.66 0.015 70);            /* light icon color for dark theme */
 
   /* Shadow color */
   --shadow-color: 0.05 0.01 50;

@@ -62,7 +62,7 @@ export function RewardsView() {
 
           <div className="relative flex items-center justify-between">
             <div>
-              <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-[oklch(0.78_0.13_75)]">
+              <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-text-gold">
                 <IconSpark size={11} />
                 Your balance
               </div>
@@ -76,9 +76,9 @@ export function RewardsView() {
             </div>
             <div className="flex flex-col items-center gap-1">
               <div className="grid h-14 w-14 place-items-center rounded-2xl bg-[oklch(0.78_0.13_75_/_0.2)]">
-                <IconCrown size={26} className="text-[oklch(0.92_0.10_85)]" />
+                <IconCrown size={26} className="text-text-gold" />
               </div>
-              <span className="text-[10px] font-semibold uppercase tracking-wide text-[oklch(0.92_0.10_85)]">
+              <span className="text-[10px] font-semibold uppercase tracking-wide text-text-gold">
                 {currentTier.name}
               </span>
             </div>
@@ -169,7 +169,7 @@ export function RewardsView() {
                     {t.name}
                   </span>
                   {isCurrent ? (
-                    <span className="rounded-full bg-[oklch(0.78_0.13_75_/_0.2)] px-2 py-0.5 text-[8px] font-semibold text-[oklch(0.92_0.10_85)]">
+                    <span className="rounded-full bg-[oklch(0.78_0.13_75_/_0.2)] px-2 py-0.5 text-[8px] font-semibold text-text-gold">
                       CURRENT
                     </span>
                   ) : unlocked ? (
@@ -205,7 +205,7 @@ export function RewardsView() {
                   <div
                     className={cn(
                       "grid h-10 w-10 place-items-center rounded-full",
-                      a.earned ? "bg-[oklch(0.78_0.13_75_/_0.2)] text-[oklch(0.92_0.10_85)]" : "bg-[oklch(0.96_0.012_80_/_0.06)] text-muted-foreground"
+                      a.earned ? "bg-[oklch(0.78_0.13_75_/_0.2)] text-text-gold" : "bg-[oklch(0.96_0.012_80_/_0.06)] text-muted-foreground"
                     )}
                   >
                     <Icon size={18} active={a.earned} />
@@ -353,7 +353,7 @@ function ChallengeCard({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="grid h-9 w-9 place-items-center rounded-xl bg-[oklch(0.78_0.13_75_/_0.14)]">
-            <IconTrophy size={16} className="text-[oklch(0.92_0.10_85)]" />
+            <IconTrophy size={16} className="text-text-gold" />
           </div>
           <div>
             <div className="text-[13px] font-semibold leading-tight">{title}</div>

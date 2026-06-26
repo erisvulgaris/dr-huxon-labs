@@ -54,7 +54,7 @@ export function ProfileView() {
                 AM
               </div>
               <div className="absolute -bottom-1 -right-1 grid h-6 w-6 place-items-center rounded-full bg-[oklch(0.30_0.04_55)] border border-[oklch(0.78_0.13_75_/_0.4)]">
-                <IconCrown size={12} className="text-[oklch(0.92_0.10_85)]" />
+                <IconCrown size={12} className="text-text-gold" />
               </div>
             </div>
             <div className="flex-1">
@@ -123,7 +123,7 @@ export function ProfileView() {
           <div className="rounded-2xl glass p-4">
             <div className="flex items-center gap-3">
               <div className="grid h-11 w-11 place-items-center rounded-xl bg-[oklch(0.78_0.13_75_/_0.14)]">
-                <IconRefresh size={18} className="text-[oklch(0.92_0.10_85)]" />
+                <IconRefresh size={18} className="text-text-gold" />
               </div>
               <div className="flex-1">
                 <div className="text-[13px] font-semibold">Huxon Gold Isolate</div>
@@ -158,7 +158,7 @@ export function ProfileView() {
           <Section title="Saved addresses">
             <div className="rounded-2xl glass p-4">
               <div className="flex items-start gap-2">
-                <IconLocation size={16} className="mt-0.5 text-[oklch(0.78_0.13_75)]" />
+                <IconLocation size={16} className="mt-0.5 text-text-gold" />
                 <div className="flex-1">
                   <div className="text-[13px] font-semibold">Home</div>
                   <div className="text-[11px] text-muted-foreground">
@@ -174,7 +174,7 @@ export function ProfileView() {
             <div className="rounded-2xl glass p-4">
               <div className="flex items-center gap-3">
                 <div className="grid h-9 w-12 place-items-center rounded-md bg-gradient-to-br from-[oklch(0.30_0.04_55)] to-[oklch(0.20_0.02_55)]">
-                  <IconLock size={14} className="text-[oklch(0.92_0.10_85)]" />
+                  <IconLock size={14} className="text-text-gold" />
                 </div>
                 <div className="flex-1">
                   <div className="text-[13px] font-semibold">UPI · arjun@oksbi</div>
@@ -257,7 +257,7 @@ function Section({
         {onAction ? (
           <button
             onClick={onAction}
-            className="flex items-center gap-0.5 text-[11px] text-[oklch(0.78_0.13_75)]"
+            className="flex items-center gap-0.5 text-[11px] text-text-gold"
           >
             View all
             <IconChevronRight size={12} />
@@ -354,7 +354,7 @@ function OrderRow({
       </div>
       {eta ? (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-[oklch(0.78_0.13_75_/_0.06)] px-2 py-1.5 text-[11px]">
-          <IconTruck size={12} className="text-[oklch(0.78_0.13_75)]" />
+          <IconTruck size={12} className="text-text-gold" />
           <span className="text-muted-foreground">ETA:</span>
           <span className="font-semibold text-cream-gradient">{eta}</span>
         </div>

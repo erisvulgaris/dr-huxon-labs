@@ -81,7 +81,7 @@ function IngredientCard({
         <div className="absolute right-2 top-2">
           <div className="flex items-center gap-1 rounded-full bg-black/50 px-2 py-0.5 backdrop-blur-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-[oklch(0.62_0.10_160)]" />
-            <span className="text-[9px] font-semibold text-[oklch(0.92_0.10_85)] tabular">
+            <span className="text-[9px] font-semibold text-text-gold tabular">
               {ingredient.qualityScore}
             </span>
           </div>
@@ -102,7 +102,7 @@ function IngredientCard({
             {ingredient.processingMethod.split("+")[0].trim()}
           </p>
         </div>
-        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[oklch(0.78_0.13_75_/_0.12)] text-[oklch(0.92_0.10_85)] transition-transform group-hover:rotate-45">
+        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[oklch(0.78_0.13_75_/_0.12)] text-text-gold transition-transform group-hover:rotate-45">
           <IconArrowUpRight size={12} />
         </span>
       </div>
@@ -178,7 +178,7 @@ function IngredientSheetContent({
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
             <div className="absolute bottom-3 left-5 right-5">
-              <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.16em] text-[oklch(0.78_0.13_75)]">
+              <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.16em] text-text-gold">
                 <IconLeaf size={11} />
                 {ingredient.category.replace("-", " ")}
               </div>

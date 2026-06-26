@@ -141,7 +141,7 @@ export function ProteinCalculator() {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-[10px] uppercase tracking-[0.2em] text-[oklch(0.78_0.13_75)]">
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-text-gold">
                     Your Daily Target
                   </div>
                   <div className="mt-1 flex items-baseline gap-1.5">
@@ -322,7 +322,7 @@ function SegmentField<T extends string>({
             <span
               className={
                 "relative z-10 " +
-                (value === opt.value ? "text-[oklch(0.92_0.10_85)]" : "text-muted-foreground")
+                (value === opt.value ? "text-text-gold" : "text-muted-foreground")
               }
             >
               {opt.label}
@@ -358,7 +358,7 @@ function SegmentGrid({
             className={
               "rounded-xl px-2 py-2 text-[11px] font-medium transition-all " +
               (value === i
-                ? "bg-[oklch(0.78_0.13_75_/_0.18)] text-[oklch(0.92_0.10_85)] border border-[oklch(0.78_0.13_75_/_0.35)]"
+                ? "bg-[oklch(0.78_0.13_75_/_0.18)] text-text-gold border border-[oklch(0.78_0.13_75_/_0.35)]"
                 : "bg-[oklch(0.96_0.012_80_/_0.04)] text-muted-foreground border border-transparent")
             }
           >

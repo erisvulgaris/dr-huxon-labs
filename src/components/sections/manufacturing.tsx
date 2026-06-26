@@ -89,7 +89,7 @@ function TimelineStage({
         <div className="flex items-start justify-between gap-2">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-bold text-[oklch(0.78_0.13_75)] tabular">
+              <span className="text-[10px] font-bold text-text-gold tabular">
                 {String(index).padStart(2, "0")}
               </span>
               <h3 className="font-display text-[15px] font-semibold text-cream-gradient">
@@ -100,7 +100,7 @@ function TimelineStage({
               {description}
             </p>
           </div>
-          <span className="shrink-0 rounded-full bg-[oklch(0.78_0.13_75_/_0.1)] px-2 py-0.5 text-[9px] font-medium text-[oklch(0.92_0.10_85)]">
+          <span className="shrink-0 rounded-full bg-[oklch(0.78_0.13_75_/_0.1)] px-2 py-0.5 text-[9px] font-medium text-text-gold">
             {duration}
           </span>
         </div>

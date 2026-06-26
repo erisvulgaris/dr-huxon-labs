@@ -77,7 +77,7 @@ export function ComparisonWidget() {
                 className={cn(
                   "flex items-center gap-2 rounded-full border px-3 py-1.5 text-[12px] font-medium transition-all",
                   active
-                    ? "border-[oklch(0.78_0.13_75_/_50%)] bg-[oklch(0.78_0.13_75_/_0.14)] text-[oklch(0.92_0.10_85)]"
+                    ? "border-[oklch(0.78_0.13_75_/_50%)] bg-[oklch(0.78_0.13_75_/_0.14)] text-text-gold"
                     : "border-border bg-transparent text-muted-foreground"
                 )}
               >
@@ -159,7 +159,7 @@ export function ComparisonWidget() {
                       key={p.id}
                       className={cn(
                         "text-center text-[12px] font-semibold tabular",
-                        pi === bestIdx ? "text-[oklch(0.92_0.10_85)]" : "text-foreground/80"
+                        pi === bestIdx ? "text-text-gold" : "text-foreground/80"
                       )}
                     >
                       {row.get(p)}

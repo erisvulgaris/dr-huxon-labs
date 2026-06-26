@@ -56,7 +56,7 @@ function ProteinAbsorptionCard() {
       <div className="overflow-hidden rounded-3xl glass p-5">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-[10px] uppercase tracking-[0.2em] text-[oklch(0.78_0.13_75)]">
+            <div className="text-[10px] uppercase tracking-[0.2em] text-text-gold">
               Protein Absorption
             </div>
             <h3 className="mt-1 font-display text-[18px] font-semibold">
@@ -139,7 +139,7 @@ function ProteinAbsorptionCard() {
           />
           <div className="mt-1 flex justify-between text-[10px] text-muted-foreground">
             <span>0h</span>
-            <span className="font-semibold text-[oklch(0.92_0.10_85)]">
+            <span className="font-semibold text-text-gold">
               {hours}h · {v}% absorbed
             </span>
             <span>6h</span>
@@ -160,7 +160,7 @@ function MuscleRecoveryCard() {
   return (
     <Reveal>
       <div className="overflow-hidden rounded-3xl glass p-5">
-        <div className="text-[10px] uppercase tracking-[0.2em] text-[oklch(0.78_0.13_75)]">
+        <div className="text-[10px] uppercase tracking-[0.2em] text-text-gold">
           Muscle Recovery
         </div>
         <h3 className="mt-1 font-display text-[18px] font-semibold">
@@ -190,7 +190,7 @@ function MuscleRecoveryCard() {
                   transition={{ duration: 1, delay: i * 0.1 + 0.15, ease: [0.22, 1, 0.36, 1] }}
                 />
               </div>
-              <span className="w-9 text-right text-[11px] font-semibold text-[oklch(0.92_0.10_85)] tabular">
+              <span className="w-9 text-right text-[11px] font-semibold text-text-gold tabular">
                 {d.huxon}%
               </span>
             </div>
@@ -220,7 +220,7 @@ function PlantComparisonCard() {
   return (
     <Reveal>
       <div className="overflow-hidden rounded-3xl glass p-5">
-        <div className="text-[10px] uppercase tracking-[0.2em] text-[oklch(0.78_0.13_75)]">
+        <div className="text-[10px] uppercase tracking-[0.2em] text-text-gold">
           Plant Protein Comparison
         </div>
         <h3 className="mt-1 font-display text-[18px] font-semibold">
@@ -277,7 +277,7 @@ function AminoAcidCard() {
   return (
     <Reveal>
       <div className="overflow-hidden rounded-3xl glass p-5">
-        <div className="text-[10px] uppercase tracking-[0.2em] text-[oklch(0.78_0.13_75)]">
+        <div className="text-[10px] uppercase tracking-[0.2em] text-text-gold">
           Amino Acid Profile
         </div>
         <h3 className="mt-1 font-display text-[18px] font-semibold">

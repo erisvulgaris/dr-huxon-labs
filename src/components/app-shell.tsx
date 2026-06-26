@@ -235,7 +235,7 @@ function TabButton({
           opacity: active ? 1 : 0,
           height: active ? 10 : 0,
         }}
-        className="relative z-10 overflow-hidden text-[9px] font-medium tracking-wide text-[oklch(0.92_0.10_85)]"
+        className="relative z-10 overflow-hidden text-[9px] font-medium tracking-wide text-text-gold"
       >
         {label}
       </motion.span>

@@ -307,7 +307,7 @@ export function SectionHeader({
           )}
         >
           <span className="h-px w-6 bg-gradient-to-r from-transparent to-[oklch(0.78_0.13_75_/_60%)]" />
-          <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[oklch(0.78_0.13_75)]">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-gold">
             {kicker}
           </span>
           <span className="h-px w-6 bg-gradient-to-l from-transparent to-[oklch(0.78_0.13_75_/_60%)]" />
@@ -367,8 +367,8 @@ export function Pill({
 }) {
   const tones: Record<string, string> = {
     default: "glass text-foreground/80",
-    gold: "bg-[oklch(0.78_0.13_75_/_0.14)] text-[oklch(0.92_0.10_85)] border-[oklch(0.78_0.13_75_/_0.25)]",
-    green: "bg-[oklch(0.62_0.10_160_/_0.14)] text-[oklch(0.72_0.10_160)] border-[oklch(0.62_0.10_160_/_0.25)]",
+    gold: "bg-[oklch(0.78_0.13_75_/_0.14)] text-text-gold border-[oklch(0.78_0.13_75_/_0.25)]",
+    green: "bg-[oklch(0.62_0.10_160_/_0.14)] text-text-accent-jade border-[oklch(0.62_0.10_160_/_0.25)]",
     red: "bg-[oklch(0.62_0.20_25_/_0.14)] text-[oklch(0.72_0.18_25)] border-[oklch(0.62_0.20_25_/_0.25)]",
   };
   return (

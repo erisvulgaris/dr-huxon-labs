@@ -58,7 +58,7 @@ export function FAQSection() {
                   className={cn(
                     "grid h-7 w-7 shrink-0 place-items-center rounded-full transition-colors",
                     isOpen
-                      ? "bg-[oklch(0.78_0.13_75_/_0.18)] text-[oklch(0.92_0.10_85)]"
+                      ? "bg-[oklch(0.78_0.13_75_/_0.18)] text-text-gold"
                       : "bg-[oklch(0.96_0.012_80_/_0.06)] text-muted-foreground"
                   )}
                 >

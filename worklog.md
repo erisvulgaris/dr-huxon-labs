@@ -685,3 +685,56 @@ Unresolved / Next phase:
 - Could add a menstrual cycle sync nutrition tracker
 - Could add a supplement stack scheduler
 - Could add a grocery list / meal prep planner
+
+---
+Task ID: 17 (Phase 12 — Contrast Fix)
+Agent: main (Z.ai Code)
+Task: Fix text/icon contrast and visibility issues in light theme
+
+Work Log:
+- User reported: light-colored text, icons, and effects have poor visibility on the light theme background.
+- Performed VLM analysis of light theme across home, shop, explore, rewards, profile views.
+- Identified root cause: 58 hardcoded light oklch colors (oklch(0.92 0.10 85), oklch(0.78 0.13 75), oklch(0.72 0.10 160)) used for text/icons across 18 component files. These light gold/jade colors are nearly invisible on the ivory light-theme background.
+
+Fixes applied:
+1. **Darkened light-theme CSS variables** in globals.css for better WCAG AA contrast:
+   - `--foreground`: 0.22 → 0.20 (darker espresso)
+   - `--muted-foreground`: 0.48 → 0.42 (significantly darker for readability)
+   - `--border`: 0.85/70% → 0.82/75% (slightly darker borders)
+   - `--gold`: 0.55 → 0.48 (darker gold for text contrast on ivory)
+   - `--bronze`: 0.50 → 0.46 (darker)
+   - `--jade`: 0.50 → 0.42 (darker jade for contrast)
+   - `--cream`: 0.25 → 0.22 (darker, used for text-cream/90 etc.)
+   - `--secondary-foreground`: 0.25 → 0.22
+
+2. **Added 5 new theme-aware CSS variables** that auto-adapt between dark/light:
+   - `--text-gold`: dark gold (0.48) in light / bright gold (0.92) in dark
+   - `--text-gold-soft`: dark gold-soft (0.52) in light / bright (0.82) in dark
+   - `--text-accent-jade`: dark jade (0.40) in light / bright jade (0.72) in dark
+   - `--text-accent-amber`: dark amber (0.48) in light / bright amber (0.78) in dark
+   - `--icon-default`: dark (0.35) in light / light (0.66) in dark
+   These are registered in @theme inline as `--color-text-gold`, etc., enabling Tailwind utilities like `text-text-gold`.
+
+3. **Bulk-replaced 58 hardcoded text colors** across 18 files:
+   - `text-[oklch(0.92_0.10_85)]` → `text-text-gold`
+   - `text-[oklch(0.78_0.13_75)]` → `text-text-gold`
+   - `text-[oklch(0.82_0.14_80)]` → `text-text-gold`
+   - `text-[oklch(0.72_0.10_160)]` → `text-text-accent-jade`
+   - `text-[oklch(0.72_0.10_65)]` → `text-text-accent-amber`
+   - `text-[oklch(0.65_0.15_30)]` → `text-text-accent-amber`
+   Files: app-shell, cart-drawer, primitives, quick-view, search-overlay, calculator, comparison, faq, hero, ingredients, manufacturing, products, science, cart, explore, profile, rewards, shop
+
+Stage Summary:
+- ✅ `bun run lint` passes clean (no errors, no warnings)
+- ✅ HTTP 200, no console errors (except minor hydration warning from theme class)
+- ✅ VLM verification — LIGHT theme home: "All gold/amber text is now clearly readable... No remaining contrast issues. The contrast fix successfully resolved readability and visibility."
+- ✅ VLM — LIGHT theme shop: "Product names, prices, and category cards are readable... no critical issues"
+- ✅ VLM — LIGHT theme explore: "All widget text, numbers, and labels are readable with no critical contrast issues"
+- ✅ VLM — LIGHT theme rewards: "All text, numbers, and badges have sufficient contrast... No readability issues"
+- ✅ VLM — LIGHT theme profile: "All text, stats, and quick actions are readable with no significant contrast issues"
+- ✅ VLM — DARK theme home: "All text is readable. Contrast is sufficient. No major contrast issues." (dark theme unaffected)
+
+Unresolved / Next phase:
+- Minor hydration warning from theme class on <html> — cosmetic, doesn't affect functionality
+- Could further optimize glass surface opacity in light theme for even better contrast
+- Could add WCAG AAA contrast mode toggle for accessibility

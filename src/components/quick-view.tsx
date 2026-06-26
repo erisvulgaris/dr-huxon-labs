@@ -225,7 +225,7 @@ function QuickViewContent({
                         className={
                           "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12px] font-medium transition-all " +
                           (active
-                            ? "border-[oklch(0.78_0.13_75_/_50%)] bg-[oklch(0.78_0.13_75_/_0.14)] text-[oklch(0.92_0.10_85)]"
+                            ? "border-[oklch(0.78_0.13_75_/_50%)] bg-[oklch(0.78_0.13_75_/_0.14)] text-text-gold"
                             : "border-border bg-transparent text-muted-foreground")
                         }
                       >
@@ -265,7 +265,7 @@ function QuickViewContent({
                   <span
                     className={
                       "relative z-10 " +
-                      (tab === t ? "text-[oklch(0.92_0.10_85)]" : "text-muted-foreground")
+                      (tab === t ? "text-text-gold" : "text-muted-foreground")
                     }
                   >
                     {t}
@@ -326,7 +326,7 @@ function QuickViewContent({
                           className="flex items-center justify-between border-b border-border/40 pb-2 text-[13px] last:border-0"
                         >
                           <span className="text-foreground/85">{ing.name}</span>
-                          <span className="font-semibold text-[oklch(0.92_0.10_85)] tabular">
+                          <span className="font-semibold text-text-gold tabular">
                             {ing.amount}
                           </span>
                         </div>
@@ -341,7 +341,7 @@ function QuickViewContent({
                   {reviews.map((r) => (
                     <div key={r.id} className="rounded-2xl glass p-4">
                       <div className="flex items-center gap-2">
-                        <span className="grid h-8 w-8 place-items-center rounded-full bg-[oklch(0.78_0.13_75_/_0.18)] text-[11px] font-bold text-[oklch(0.92_0.10_85)]">
+                        <span className="grid h-8 w-8 place-items-center rounded-full bg-[oklch(0.78_0.13_75_/_0.18)] text-[11px] font-bold text-text-gold">
                           {r.author[0]}
                         </span>
                         <div className="flex flex-col">

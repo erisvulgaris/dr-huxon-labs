@@ -223,7 +223,7 @@ function ShopCard({
           onClick={() => wishlist.toggle(product.id)}
           className={cn(
             "absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full backdrop-blur-md transition-colors",
-            fav ? "bg-[oklch(0.78_0.13_75_/_0.25)] text-[oklch(0.92_0.10_85)]" : "bg-black/30 text-cream/80"
+            fav ? "bg-[oklch(0.78_0.13_75_/_0.25)] text-text-gold" : "bg-black/30 text-cream/80"
           )}
           aria-label="Wishlist"
         >

@@ -218,7 +218,7 @@ export function CartDrawer() {
                             </HuxonButton>
                           </div>
                           {applied > 0 ? (
-                            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-[oklch(0.72_0.10_160)]">
+                            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-text-accent-jade">
                               <IconCheck size={12} />
                               Coupon applied · saved {formatINR(applied)}
                             </div>
@@ -424,7 +424,7 @@ function EmptyCart() {
 function TrustChip({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
     <div className="flex flex-col items-center gap-1 rounded-xl bg-[oklch(0.96_0.012_80_/_0.04)] py-2 text-[10px] text-muted-foreground">
-      <span className="text-[oklch(0.78_0.13_75)]">{icon}</span>
+      <span className="text-text-gold">{icon}</span>
       {label}
     </div>
   );
@@ -445,7 +445,7 @@ function Row({
       <span
         className={
           "font-semibold tabular " +
-          (good ? "text-[oklch(0.72_0.10_160)]" : "text-foreground")
+          (good ? "text-text-accent-jade" : "text-foreground")
         }
       >
         {value}
@@ -507,7 +507,7 @@ function CheckoutForm({ total }: { total: number }) {
               className={
                 "rounded-xl border px-3 py-2.5 text-[12px] font-medium transition-all " +
                 (i === 0
-                  ? "border-[oklch(0.78_0.13_75_/_50%)] bg-[oklch(0.78_0.13_75_/_0.14)] text-[oklch(0.92_0.10_85)]"
+                  ? "border-[oklch(0.78_0.13_75_/_50%)] bg-[oklch(0.78_0.13_75_/_0.14)] text-text-gold"
                   : "border-border bg-transparent text-muted-foreground")
               }
             >
@@ -518,7 +518,7 @@ function CheckoutForm({ total }: { total: number }) {
       </div>
 
       <div className="flex items-center justify-center gap-2 rounded-xl bg-[oklch(0.78_0.13_75_/_0.06)] py-2 text-[11px] text-muted-foreground">
-        <IconShield size={12} className="text-[oklch(0.78_0.13_75)]" />
+        <IconShield size={12} className="text-text-gold" />
         256-bit encrypted · PCI-DSS compliant
       </div>
     </div>

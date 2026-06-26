@@ -51,7 +51,7 @@ export function CartView() {
         <Reveal className="mt-4">
           <div className="rounded-2xl glass p-3">
             <div className="flex items-center gap-2 text-[11px]">
-              <IconTruck size={14} className="text-[oklch(0.78_0.13_75)]" />
+              <IconTruck size={14} className="text-text-gold" />
               <span className="text-muted-foreground">
                 Add <span className="font-semibold text-cream-gradient">{formatINR(freeShipRemaining)}</span> for free shipping
               </span>
@@ -243,7 +243,7 @@ function EmptyState() {
 function TrustChip({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
     <div className="flex flex-col items-center gap-1 rounded-xl bg-[oklch(0.96_0.012_80_/_0.04)] py-2 text-[10px] text-muted-foreground">
-      <span className="text-[oklch(0.78_0.13_75)]">{icon}</span>
+      <span className="text-text-gold">{icon}</span>
       {label}
     </div>
   );

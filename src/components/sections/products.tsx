@@ -184,7 +184,7 @@ function ProductCard({
               ) : null}
             </div>
             {discount > 0 ? (
-              <span className="text-[10px] font-semibold text-[oklch(0.72_0.10_160)]">
+              <span className="text-[10px] font-semibold text-text-accent-jade">
                 Save {discount}%
               </span>
             ) : null}
@@ -245,7 +245,7 @@ function FavButton({
       className={cn(
         "grid h-9 w-9 place-items-center rounded-full transition-colors",
         active
-          ? "bg-[oklch(0.78_0.13_75_/_0.18)] text-[oklch(0.92_0.10_85)]"
+          ? "bg-[oklch(0.78_0.13_75_/_0.18)] text-text-gold"
           : "glass text-foreground/70 hover:text-foreground"
       )}
     >
