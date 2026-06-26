@@ -1158,3 +1158,111 @@ export const LEADERBOARD: LeaderboardEntry[] = [
   { id: "l6", name: "Karthik V.", avatar: "KV", referrals: 6, earnings: 1200, tier: "bronze" },
   { id: "l7", name: "Sneha P.", avatar: "SP", referrals: 4, earnings: 800, tier: "bronze" },
 ];
+
+/* ============================================================
+   SMART RECOMMENDATIONS — personalized "For You" engine
+   ============================================================ */
+
+export type Recommendation = {
+  productId: string;
+  reason: string;
+  reasonTag: string;
+  matchScore: number;
+  category: "goal" | "history" | "trending" | "complementary";
+};
+
+export function getRecommendations(opts: {
+  quizGoal?: string;
+  recentIds: string[];
+  wishlistIds: string[];
+}): Recommendation[] {
+  const { quizGoal, recentIds, wishlistIds } = opts;
+  const recs: Recommendation[] = [];
+
+  // Goal-based recommendations (from quiz)
+  if (quizGoal === "muscle") {
+    recs.push({ productId: "p1", reason: "Matches your muscle-building goal", reasonTag: "Goal match", matchScore: 96, category: "goal" });
+    recs.push({ productId: "p2", reason: "Speeds up your post-workout recovery", reasonTag: "Recovery", matchScore: 91, category: "goal" });
+    recs.push({ productId: "p5", reason: "High-protein snack for muscle maintenance", reasonTag: "On-the-go", matchScore: 84, category: "goal" });
+  } else if (quizGoal === "energy") {
+    recs.push({ productId: "p3", reason: "Clean caffeine for pre-workout energy", reasonTag: "Pre-workout", matchScore: 94, category: "goal" });
+    recs.push({ productId: "p4", reason: "21 superfoods for sustained daily energy", reasonTag: "Daily greens", matchScore: 88, category: "goal" });
+    recs.push({ productId: "p5", reason: "Quick energy bar before workouts", reasonTag: "Snack", matchScore: 79, category: "goal" });
+  } else if (quizGoal === "health") {
+    recs.push({ productId: "p4", reason: "Complete daily nutrition in one scoop", reasonTag: "Wellness", matchScore: 95, category: "goal" });
+    recs.push({ productId: "p6", reason: "Plant omega for heart & brain health", reasonTag: "Omega-3", matchScore: 87, category: "goal" });
+    recs.push({ productId: "p1", reason: "Foundation protein for overall health", reasonTag: "Protein", matchScore: 82, category: "goal" });
+  } else if (quizGoal === "recover") {
+    recs.push({ productId: "p2", reason: "Curcumin + tart cherry for faster recovery", reasonTag: "Recovery", matchScore: 97, category: "goal" });
+    recs.push({ productId: "p1", reason: "27g protein to rebuild muscle", reasonTag: "Protein", matchScore: 89, category: "goal" });
+    recs.push({ productId: "p6", reason: "Omega-3 reduces exercise inflammation", reasonTag: "Anti-inflammatory", matchScore: 81, category: "goal" });
+  }
+
+  // Complementary to recently viewed
+  recentIds.slice(0, 2).forEach((rid) => {
+    const product = PRODUCTS.find((p) => p.id === rid);
+    if (product?.pairings) {
+      product.pairings.forEach((pid) => {
+        if (!recs.find((r) => r.productId === pid)) {
+          recs.push({
+            productId: pid,
+            reason: `Pairs perfectly with ${product.name}`,
+            reasonTag: "Pairs with recent",
+            matchScore: 85,
+            category: "complementary",
+          });
+        }
+      });
+    }
+  });
+
+  // Trending fallback
+  if (recs.length < 4) {
+    const trending = [
+      { productId: "p1", reason: "Bestseller · 2,148 reviews", reasonTag: "Trending", matchScore: 88, category: "trending" as const },
+      { productId: "p5", reason: "Most-loved protein bar in India", reasonTag: "Trending", matchScore: 86, category: "trending" as const },
+      { productId: "p4", reason: "Trending for daily wellness", reasonTag: "Trending", matchScore: 83, category: "trending" as const },
+    ];
+    trending.forEach((t) => {
+      if (!recs.find((r) => r.productId === t.productId) && recs.length < 5) {
+        recs.push(t);
+      }
+    });
+  }
+
+  // Filter out items already in wishlist (already have them)
+  return recs.filter((r) => !wishlistIds.includes(r.productId)).slice(0, 4);
+}
+
+/* ============================================================
+   WATER INTAKE — smart hydration data
+   ============================================================ */
+
+export const WATER_SCHEDULE = [
+  { time: "7:00 AM", label: "Wake up", amount: 250, tip: "Kickstart your metabolism" },
+  { time: "9:00 AM", label: "Mid-morning", amount: 250, tip: "Before breakfast" },
+  { time: "11:00 AM", label: "Pre-lunch", amount: 300, tip: "Aids digestion" },
+  { time: "1:00 PM", label: "With lunch", amount: 300, tip: "Stay hydrated through afternoon" },
+  { time: "3:00 PM", label: "Afternoon", amount: 250, tip: "Beat the slump" },
+  { time: "5:00 PM", label: "Pre-workout", amount: 300, tip: "Hydrate before exercise" },
+  { time: "7:00 PM", label: "Post-workout", amount: 350, tip: "Replenish fluids" },
+  { time: "9:00 PM", label: "Evening", amount: 200, tip: "Wind down" },
+];
+
+/* ============================================================
+   SLEEP & RECOVERY — tracking data
+   ============================================================ */
+
+export const SLEEP_FACTORS = [
+  { label: "Sleep duration", value: 7.5, unit: "h", target: 8, icon: "clock" },
+  { label: "Deep sleep", value: 1.8, unit: "h", target: 2, icon: "moon" },
+  { label: "REM sleep", value: 1.5, unit: "h", target: 1.5, icon: "spark" },
+  { label: "Resting HR", value: 58, unit: "bpm", target: 60, icon: "bolt", invert: true },
+];
+
+export const RECOVERY_FACTORS = [
+  { label: "Muscle soreness", value: 25, unit: "%", target: 0, invert: true },
+  { label: "Energy level", value: 82, unit: "%", target: 100 },
+  { label: "Hydration", value: 75, unit: "%", target: 100 },
+  { label: "Protein intake", value: 92, unit: "%", target: 100 },
+];

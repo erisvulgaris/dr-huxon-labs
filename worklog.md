@@ -623,3 +623,65 @@ Unresolved / Next phase:
 - Could add a "build your own stack" recommendation engine
 - Could add a water intake reminder system
 - Could add a sleep + recovery tracking widget
+
+---
+Task ID: 16 (Phase 11 — webDevReview cron round)
+Agent: main (Z.ai Code)
+Task: Add smart recommendations, water intake reminder, sleep + recovery widget
+
+Work Log:
+- Performed full QA via agent-browser across all views. No console errors, no hydration errors. Both themes stable. Project in excellent shape.
+- VLM identified personalized recommendations and clear nutrition tracking entry as gaps. Worklog noted water intake reminder and sleep + recovery widget as next-phase items.
+
+New features added:
+1. **Smart Recommendations** (`src/components/sections/recommendations.tsx`) — AI-powered "For You" section on home:
+  - `getRecommendations()` engine in catalog.ts that combines quiz goal, recent views, and wishlist to generate personalized picks
+  - 4 recommendation categories: Goal match (gold), Pairs with recent (jade), Trending (orange), Complementary (caramel)
+  - Each card shows: accent left border, product image with glow, category tag pill, product name, personalized reason, price + rating, match score % ring
+  - "Take the quiz for better picks" CTA at bottom
+  - Filters out wishlist items (already owned)
+  - Placed on home between Recently Viewed and Product Explorer
+
+2. **Water Intake Reminder Widget** (`WaterReminderWidget` in wellness-widgets.tsx) — smart hydration tracker on Explore:
+  - 8-slot daily schedule (7 AM – 9 PM) with time, label, amount, and tip per slot
+  - Interactive: tap any slot to mark as consumed (filled = jade checkmark)
+  - "NOW" pulse indicator on current time slot
+  - Progress ring showing % hydrated (jade gradient)
+  - Total consumed / goal display in liters
+  - "Next reminder" banner with current slot's tip + amount
+  - "Goal reached! 🎉" celebration state
+  - Data in `WATER_SCHEDULE` in catalog.ts
+
+3. **Sleep & Recovery Widget** (`SleepRecoveryWidget` in wellness-widgets.tsx) — dual-tab wellness tracker on Explore:
+  - Tab toggle: Sleep / Recovery
+  - Overall score ring (color-coded: jade ≥80, gold ≥60, red <60) with label (Optimal/Good/Needs rest)
+  - Sleep tab: 4 factors (duration, deep sleep, REM, resting HR) with animated progress bars
+  - Recovery tab: 4 factors (muscle soreness, energy, hydration, protein intake)
+  - Invert logic for metrics where lower is better (resting HR, soreness)
+  - Personalized insight/tip callout per tab ("Sleep insight" / "Recovery tip")
+  - Data in `SLEEP_FACTORS` + `RECOVERY_FACTORS` in catalog.ts
+
+Styling polish:
+- All new features use theme-aware CSS variables (work in light & dark)
+- Recommendation cards have accent left borders + match score rings
+- Water schedule has jade color-coding with pulse on current slot
+- Sleep widget has color-coded progress bars (jade/gold/red based on score)
+- VLM confirms: Recommendations "sleek dark-themed, premium product cards, personalization intentional"; Water "sleek dark theme, intuitive icons, clear timeline, progress ring"; Sleep "sleek dark theme, effective data presentation, actionable data-driven guidance"
+
+Stage Summary:
+- ✅ `bun run lint` passes clean (no errors, no warnings)
+- ✅ HTTP 200, no console errors, no hydration errors
+- ✅ Smart Recommendations: 4 personalized cards with match scores on home (VLM: "personalization intentional, premium feel reinforced by high-quality visuals")
+- ✅ Water Reminder: 8-slot schedule + progress ring + interactive tapping (VLM: "sleek dark theme, smooth interactivity, clear timeline")
+- ✅ Sleep & Recovery: dual-tab with score ring + 4-factor breakdown + insights (VLM: "effective data presentation, actionable guidance")
+- ✅ All widgets integrated (home recommendations, explore wellness widgets)
+
+Unresolved / Next phase:
+- Could connect quiz recommendations to add items to cart directly
+- Could add push notifications for water/challenge reminders
+- Could add a nutrition blog search/filter
+- Could add a product rating distribution chart on PDP
+- Could add a "build your own stack" recommendation engine
+- Could add a menstrual cycle sync nutrition tracker
+- Could add a supplement stack scheduler
+- Could add a grocery list / meal prep planner

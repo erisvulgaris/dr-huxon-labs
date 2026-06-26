@@ -23,6 +23,7 @@ import {
   StaggerItem,
 } from "@/components/primitives";
 import { HuxonButton } from "@/components/huxon-button";
+import { WaterReminderWidget, SleepRecoveryWidget } from "@/components/sections/wellness-widgets";
 import { useReward, useNav as useNavHook } from "@/lib/store";
 
 /**
@@ -100,6 +101,12 @@ export function ExploreView() {
         </StaggerItem>
         <StaggerItem>
           <FitnessGoalTimeline />
+        </StaggerItem>
+        <StaggerItem>
+          <WaterReminderWidget />
+        </StaggerItem>
+        <StaggerItem>
+          <SleepRecoveryWidget />
         </StaggerItem>
       </Stagger>
     </div>
