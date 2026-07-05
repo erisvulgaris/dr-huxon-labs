@@ -29,6 +29,9 @@ import { NutritionQuiz } from "@/components/nutrition-quiz";
 import { ChatWidget } from "@/components/chat-widget";
 import { PWAInstallPrompt } from "@/components/pwa-install-prompt";
 import { AutoThemeSwitch } from "@/components/auto-theme-switch";
+import { NotificationsPanel } from "@/components/notifications-panel";
+import { ExitIntentModal } from "@/components/exit-intent-modal";
+import { AbandonedCartRecovery } from "@/components/abandoned-cart-recovery";
 import { useNav } from "@/lib/store";
 
 export default function Home() {
@@ -74,6 +77,9 @@ export default function Home() {
       <ChatWidget />
       <PWAInstallPrompt />
       <AutoThemeSwitch />
+      <NotificationsPanel />
+      <ExitIntentModal />
+      <AbandonedCartRecovery />
     </AppShell>
   );
 }

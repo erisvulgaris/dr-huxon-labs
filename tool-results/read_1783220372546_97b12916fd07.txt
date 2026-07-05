@@ -1,0 +1,1269 @@
+     1→/**
+     2→ * Dr. Huxon Labs — shared brand + utility data (client-safe, no DB)
+     3→ * Used to keep the storefront lightning-fast; mirror of seeded DB rows.
+     4→ */
+     5→
+     6→export type BrandProduct = {
+     7→  id: string;
+     8→  slug: string;
+     9→  name: string;
+    10→  tagline: string;
+    11→  category: "protein" | "supplement" | "snack" | "performance";
+    12→  description: string;
+    13→  price: number;
+    14→  mrp: number;
+    15→  proteinGrams: number;
+    16→  servingSize: string;
+    17→  servings: number;
+    18→  flavor: string;
+    19→  flavorColor: string;
+    20→  rating: number;
+    21→  reviewCount: number;
+    22→  inStock: boolean;
+    23→  badge?: string;
+    24→  features: string[];
+    25→  ingredients: { name: string; amount: string }[];
+    26→  nutritionFacts: { label: string; value: string }[];
+    27→  pairings?: string[];
+    28→  heroImage: string;
+    29→  galleryImages: string[];
+    30→  accent: string; // oklch accent for the card
+    31→};
+    32→
+    33→export const PRODUCTS: BrandProduct[] = [
+    34→  {
+    35→    id: "p1",
+    36→    slug: "huxon-gold-isolate",
+    37→    name: "Huxon Gold Isolate",
+    38→    tagline: "Pea + Rice protein isolate, 27g per scoop",
+    39→    category: "protein",
+    40→    description:
+    41→      "Our flagship plant protein. A clinically-balanced pea and sprouted brown rice isolate, micro-filtered for 90% protein density. Engineered for maximum bioavailability with added digestive enzymes.",
+    42→    price: 2499,
+    43→    mrp: 3199,
+    44→    proteinGrams: 27,
+    45→    servingSize: "33g",
+    46→    servings: 30,
+    47→    flavor: "Belgian Cocoa",
+    48→    flavorColor: "oklch(0.55 0.08 50)",
+    49→    rating: 4.9,
+    50→    reviewCount: 2148,
+    51→    inStock: true,
+    52→    badge: "Bestseller",
+    53→    features: [
+    54→      "27g complete plant protein",
+    55→      "5.5g BCAAs per serving",
+    56→      "Added DigeZyme® enzymes",
+    57→      "No artificial sweeteners",
+    58→      "Heavy-metal tested",
+    59→    ],
+    60→    ingredients: [
+    61→      { name: "Pea Protein Isolate", amount: "18g" },
+    62→      { name: "Sprouted Brown Rice", amount: "9g" },
+    63→      { name: "Cocoa", amount: "2.5g" },
+    64→      { name: "DigeZyme® Blend", amount: "100mg" },
+    65→      { name: "Stevia", amount: "60mg" },
+    66→    ],
+    67→    nutritionFacts: [
+    68→      { label: "Calories", value: "118" },
+    69→      { label: "Protein", value: "27g" },
+    70→      { label: "Carbs", value: "3.2g" },
+    71→      { label: "Sugar", value: "0.4g" },
+    72→      { label: "Fat", value: "1.1g" },
+    73→      { label: "Sodium", value: "110mg" },
+    74→    ],
+    75→    pairings: ["p2", "p4"],
+    76→    heroImage: "/products/gold-isolate.png",
+    77→    galleryImages: ["/products/gold-isolate.png"],
+    78→    accent: "oklch(0.78 0.13 75)",
+    79→  },
+    80→  {
+    81→    id: "p2",
+    82→    slug: "huxon-recovery-matrix",
+    83→    name: "Recovery Matrix",
+    84→    tagline: "Post-workout recovery with curcumin + tart cherry",
+    85→    category: "performance",
+    86→    description:
+    87→      "A precision recovery formula combining plant protein with bioavailable curcumin, tart cherry extract and electrolytes. Reduces DOMS and accelerates muscle repair.",
+    88→    price: 2199,
+    89→    mrp: 2799,
+    90→    proteinGrams: 22,
+    91→    servingSize: "35g",
+    92→    servings: 25,
+    93→    flavor: "Tart Cherry",
+    94→    flavorColor: "oklch(0.55 0.16 25)",
+    95→    rating: 4.8,
+    96→    reviewCount: 894,
+    97→    inStock: true,
+    98→    badge: "New",
+    99→    features: [
+   100→      "22g protein + 500mg curcumin",
+   101→      "Tart cherry for inflammation",
+   102→      "Electrolyte balanced",
+   103→      "3x faster recovery",
+   104→    ],
+   105→    ingredients: [
+   106→      { name: "Pea Protein Isolate", amount: "15g" },
+   107→      { name: "Tart Cherry Extract", amount: "500mg" },
+   108→      { name: "Curcumin C3®", amount: "250mg" },
+   109→      { name: "Coconut Water Powder", amount: "1g" },
+   110→    ],
+   111→    nutritionFacts: [
+   112→      { label: "Calories", value: "98" },
+   113→      { label: "Protein", value: "22g" },
+   114→      { label: "Carbs", value: "4.5g" },
+   115→      { label: "Sugar", value: "1.2g" },
+   116→      { label: "Fat", value: "0.8g" },
+   117→      { label: "Sodium", value: "180mg" },
+   118→    ],
+   119→    pairings: ["p1"],
+   120→    heroImage: "/products/recovery-matrix.png",
+   121→    galleryImages: ["/products/recovery-matrix.png"],
+   122→    accent: "oklch(0.62 0.10 160)",
+   123→  },
+   124→  {
+   125→    id: "p3",
+   126→    slug: "huxon-plant-pre-workout",
+   127→    name: "Plant Pre-Workout",
+   128→    tagline: "Clean caffeine + beetroot nitric oxide boost",
+   129→    category: "performance",
+   130→    description:
+   131→      "A stimulant-balanced pre-workout with natural caffeine from green coffee, beetroot-derived nitrates, and L-citrulline for sustained pump without the crash.",
+   132→    price: 1899,
+   133→    mrp: 2399,
+   134→    proteinGrams: 0,
+   135→    servingSize: "12g",
+   136→    servings: 30,
+   137→    flavor: "Blood Orange",
+   138→    flavorColor: "oklch(0.62 0.18 35)",
+   139→    rating: 4.7,
+   140→    reviewCount: 612,
+   141→    inStock: true,
+   142→    features: [
+   143→      "180mg natural caffeine",
+   144→      "6g L-Citrulline",
+   145→      "Beetroot nitrate boost",
+   146→      "Zero artificial colors",
+   147→    ],
+   148→    ingredients: [
+   149→      { name: "L-Citrulline", amount: "6g" },
+   150→      { name: "Green Coffee Extract", amount: "350mg" },
+   151→      { name: "Beetroot Powder", amount: "1.5g" },
+   152→      { name: "L-Tyrosine", amount: "500mg" },
+   153→    ],
+   154→    nutritionFacts: [
+   155→      { label: "Calories", value: "12" },
+   156→      { label: "Protein", value: "0g" },
+   157→      { label: "Carbs", value: "2.8g" },
+   158→      { label: "Sugar", value: "0.5g" },
+   159→      { label: "Caffeine", value: "180mg" },
+   160→      { label: "Sodium", value: "60mg" },
+   161→    ],
+   162→    pairings: ["p1"],
+   163→    heroImage: "/products/pre-workout.png",
+   164→    galleryImages: ["/products/pre-workout.png"],
+   165→    accent: "oklch(0.65 0.15 30)",
+   166→  },
+   167→  {
+   168→    id: "p4",
+   169→    slug: "huxon-daily-greens",
+   170→    name: "Daily Greens+",
+   171→    tagline: "21 superfoods + probiotic blend",
+   172→    category: "supplement",
+   173→    description:
+   174→      "A daily greens powder with 21 cold-dried superfoods, adaptogenic herbs and a 5-strain probiotic blend for gut health, immunity and sustained energy.",
+   175→    price: 1599,
+   176→    mrp: 2099,
+   177→    proteinGrams: 4,
+   178→    servingSize: "8g",
+   179→    servings: 30,
+   180→    flavor: "Mint Cucumber",
+   181→    flavorColor: "oklch(0.65 0.10 150)",
+   182→    rating: 4.6,
+   183→    reviewCount: 1102,
+   184→    inStock: true,
+   185→    badge: "Clean Label",
+   186→    features: [
+   187→      "21 superfoods",
+   188→      "5-strain probiotic (10B CFU)",
+   189→      "Adaptogen blend",
+   190→      "Naturally sweetened",
+   191→    ],
+   192→    ingredients: [
+   193→      { name: "Spirulina", amount: "1g" },
+   194→      { name: "Wheat Grass", amount: "800mg" },
+   195→      { name: "Ashwagandha", amount: "300mg" },
+   196→      { name: "Probiotic Blend", amount: "10B CFU" },
+   197→    ],
+   198→    nutritionFacts: [
+   199→      { label: "Calories", value: "22" },
+   200→      { label: "Protein", value: "4g" },
+   201→      { label: "Carbs", value: "3.1g" },
+   202→      { label: "Fiber", value: "1.4g" },
+   203→      { label: "Sugar", value: "0.3g" },
+   204→      { label: "Sodium", value: "15mg" },
+   205→    ],
+   206→    pairings: ["p1", "p5"],
+   207→    heroImage: "/products/daily-greens.png",
+   208→    galleryImages: ["/products/daily-greens.png"],
+   209→    accent: "oklch(0.62 0.10 160)",
+   210→  },
+   211→  {
+   212→    id: "p5",
+   213→    slug: "huxon-protein-bars",
+   214→    name: "Huxon Protein Bars",
+   215→    tagline: "20g protein, zero sugar, 12-pack",
+   216→    category: "snack",
+   217→    description:
+   218→      "Decadent plant protein bars with 20g protein, zero added sugar, and a crisp quinoa crunch. Perfect on-the-go fuel without compromise.",
+   219→    price: 1299,
+   220→    mrp: 1599,
+   221→    proteinGrams: 20,
+   222→    servingSize: "60g",
+   223→    servings: 12,
+   224→    flavor: "Salted Caramel",
+   225→    flavorColor: "oklch(0.70 0.10 65)",
+   226→    rating: 4.8,
+   227→    reviewCount: 3274,
+   228→    inStock: true,
+   229→    badge: "Bestseller",
+   230→    features: [
+   231→      "20g protein per bar",
+   232→      "Zero added sugar",
+   233→      "Quinoa crunch",
+   234→      "No palm oil",
+   235→    ],
+   236→    ingredients: [
+   237→      { name: "Pea Protein Crisps", amount: "12g" },
+   238→      { name: "Almond Butter", amount: "8g" },
+   239→      { name: "Quinoa Crisps", amount: "4g" },
+   240→      { name: "Cocoa", amount: "2g" },
+   241→    ],
+   242→    nutritionFacts: [
+   243→      { label: "Calories", value: "210" },
+   244→      { label: "Protein", value: "20g" },
+   245→      { label: "Carbs", value: "18g" },
+   246→      { label: "Sugar", value: "0.8g" },
+   247→      { label: "Fat", value: "7.2g" },
+   248→      { label: "Fiber", value: "5g" },
+   249→    ],
+   250→    pairings: ["p1"],
+   251→    heroImage: "/products/protein-bars.png",
+   252→    galleryImages: ["/products/protein-bars.png"],
+   253→    accent: "oklch(0.72 0.10 65)",
+   254→  },
+   255→  {
+   256→    id: "p6",
+   257→    slug: "huxon-omega-plant",
+   258→    name: "Omega Plant 3-6-9",
+   259→    tagline: "Algae + flax + chia omega blend",
+   260→    category: "supplement",
+   261→    description:
+   262→      "A 100% plant-sourced omega blend from microalgae oil (DHA), cold-pressed flax and chia. Supports heart, brain and joint health without fish.",
+   263→    price: 999,
+   264→    mrp: 1299,
+   265→    proteinGrams: 0,
+   266→    servingSize: "2 softgels",
+   267→    servings: 45,
+   268→    flavor: "Unflavored",
+   269→    flavorColor: "oklch(0.55 0.06 90)",
+   270→    rating: 4.7,
+   271→    reviewCount: 487,
+   272→    inStock: true,
+   273→    features: [
+   274→      "300mg DHA from algae",
+   275→      "Cold-pressed flax + chia",
+   276→      "Fish-free, burp-free",
+   277→      "45-day supply",
+   278→    ],
+   279→    ingredients: [
+   280→      { name: "Algae Oil", amount: "500mg" },
+   281→      { name: "Flaxseed Oil", amount: "400mg" },
+   282→      { name: "Chia Oil", amount: "300mg" },
+   283→    ],
+   284→    nutritionFacts: [
+   285→      { label: "Calories", value: "15" },
+   286→      { label: "Total Fat", value: "1.5g" },
+   287→      { label: "Omega-3", value: "450mg" },
+   288→      { label: "Omega-6", value: "180mg" },
+   289→      { label: "Omega-9", value: "200mg" },
+   290→      { label: "DHA", value: "300mg" },
+   291→    ],
+   292→    pairings: ["p4"],
+   293→    heroImage: "/products/omega-plant.png",
+   294→    galleryImages: ["/products/omega-plant.png"],
+   295→    accent: "oklch(0.60 0.08 90)",
+   296→  },
+   297→];
+   298→
+   299→export type BrandIngredient = {
+   300→  id: string;
+   301→  slug: string;
+   302→  name: string;
+   303→  origin: string;
+   304→  originLat: number;
+   305→  originLng: number;
+   306→  benefits: string[];
+   307→  qualityScore: number;
+   308→  processingMethod: string;
+   309→  nutritionalContribution: string;
+   310→  macroImage: string;
+   311→  category: string;
+   312→};
+   313→
+   314→export const INGREDIENTS: BrandIngredient[] = [
+   315→  {
+   316→    id: "i1",
+   317→    slug: "yellow-pea-isolate",
+   318→    name: "Yellow Pea Isolate",
+   319→    origin: "Madhya Pradesh, India",
+   320→    originLat: 22.9734,
+   321→    originLng: 78.6569,
+   322→    benefits: [
+   323→      "Complete amino acid profile",
+   324→      "Easily digestible hypoallergenic protein",
+   325→      "Rich in BCAAs and arginine",
+   326→      "Supports muscle synthesis",
+   327→    ],
+   328→    qualityScore: 96,
+   329→    processingMethod: "Cold-water extraction + micro-filtration",
+   330→    nutritionalContribution: "27g protein / 100kcal — 90% protein density",
+   331→    macroImage: "/ingredients/pea.png",
+   332→    category: "protein-source",
+   333→  },
+   334→  {
+   335→    id: "i2",
+   336→    slug: "sprouted-brown-rice",
+   337→    name: "Sprouted Brown Rice",
+   338→    origin: "Andhra Pradesh, India",
+   339→    originLat: 15.9129,
+   340→    originLng: 79.7400,
+   341→    benefits: [
+   342→      "Complementary amino profile to pea",
+   343→      "High in methionine and cysteine",
+   344→      "Low allergen, easy digestion",
+   345→      "Sustained-release protein",
+   346→    ],
+   347→    qualityScore: 94,
+   348→    processingMethod: "Enzyme sprouting + low-temp drying",
+   349→    nutritionalContribution: "Pairs with pea for PDCAAS 1.0",
+   350→    macroImage: "/ingredients/rice.png",
+   351→    category: "protein-source",
+   352→  },
+   353→  {
+   354→    id: "i3",
+   355→    slug: "curcumin-c3",
+   356→    name: "Curcumin C3 Complex®",
+   357→    origin: "Erode, Tamil Nadu",
+   358→    originLat: 11.3410,
+   359→    originLng: 77.7172,
+   360→    benefits: [
+   361→      "Clinically studied anti-inflammatory",
+   362→      "Reduces exercise-induced DOMS",
+   363→      "Powerful antioxidant",
+   364→      "Supports joint mobility",
+   365→    ],
+   366→    qualityScore: 97,
+   367→    processingMethod: "Supercritical CO₂ extraction + piperine",
+   368→    nutritionalContribution: "95% curcuminoids standardized",
+   369→    macroImage: "/ingredients/curcumin.png",
+   370→    category: "botanical",
+   371→  },
+   372→  {
+   373→    id: "i4",
+   374→    slug: "tart-cherry",
+   375→    name: "Tart Cherry Extract",
+   376→    origin: "Kashmir Valley, India",
+   377→    originLat: 34.0837,
+   378→    originLng: 74.7973,
+   379→    benefits: [
+   380→      "Natural melatonin for sleep",
+   381→      "Reduces muscle soreness",
+   382→      "Anthocyanin antioxidant",
+   383→      "Supports uric acid balance",
+   384→    ],
+   385→    qualityScore: 92,
+   386→    processingMethod: "Cold-pressed + freeze-dried",
+   387→    nutritionalContribution: "Standardized to 10% anthocyanins",
+   388→    macroImage: "/ingredients/cherry.png",
+   389→    category: "botanical",
+   390→  },
+   391→  {
+   392→    id: "i5",
+   393→    slug: "spirulina",
+   394→    name: "Spirulina",
+   395→    origin: "Odisha Coast, India",
+   396→    originLat: 19.8209,
+   397→    originLng: 85.9080,
+   398→    benefits: [
+   399→      "60%+ complete protein",
+   400→      "Rich in B12 and iron",
+   401→      "Detoxifying chlorophyll",
+   402→      "Immune support",
+   403→    ],
+   404→    qualityScore: 93,
+   405→    processingMethod: "Pond-cultivated + low-temp drying",
+   406→    nutritionalContribution: "60% protein, B12, iron, chlorophyll",
+   407→    macroImage: "/ingredients/spirulina.png",
+   408→    category: "protein-source",
+   409→  },
+   410→  {
+   411→    id: "i6",
+   412→    slug: "ashwagandha-ksm66",
+   413→    name: "Ashwagandha KSM-66®",
+   414→    origin: "Rajasthan, India",
+   415→    originLat: 27.0238,
+   416→    originLng: 74.2179,
+   417→    benefits: [
+   418→      "Clinically-studied adaptogen",
+   419→      "Reduces cortisol & stress",
+   420→      "Improves VO2 max",
+   421→      "Supports testosterone balance",
+   422→    ],
+   423→    qualityScore: 98,
+   424→    processingMethod: "Full-spectrum root extraction",
+   425→    nutritionalContribution: "5% withanolides standardized",
+   426→    macroImage: "/ingredients/ashwagandha.png",
+   427→    category: "botanical",
+   428→  },
+   429→];
+   430→
+   431→export type Review = {
+   432→  id: string;
+   433→  productId: string;
+   434→  author: string;
+   435→  avatar?: string;
+   436→  rating: number;
+   437→  title: string;
+   438→  body: string;
+   439→  verified: boolean;
+   440→  date: string;
+   441→};
+   442→
+   443→export const REVIEWS: Review[] = [
+   444→  {
+   445→    id: "r1",
+   446→    productId: "p1",
+   447→    author: "Arjun Mehta",
+   448→    rating: 5,
+   449→    title: "Best plant protein in India, period.",
+   450→    body: "Tried 6+ brands. Huxon Gold Isolate mixes clean, tastes like real cocoa, and my recovery has never been better. Lab reports on the site gave me total confidence.",
+   451→    verified: true,
+   452→    date: "2 weeks ago",
+   453→  },
+   454→  {
+   455→    id: "r2",
+   456→    productId: "p1",
+   457→    author: "Priya Sharma",
+   458→    rating: 5,
+   459→    title: "Finally a clean-label protein",
+   460→    body: "No sucralose, no fillers, no junk. Belgian cocoa is genuinely delicious. As a vegan athlete this is exactly what I needed.",
+   461→    verified: true,
+   462→    date: "1 month ago",
+   463→  },
+   464→  {
+   465→    id: "r3",
+   466→    productId: "p5",
+   467→    author: "Rohan Kapoor",
+   468→    rating: 5,
+   469→    title: "My go-to travel fuel",
+   470→    body: "20g protein, zero sugar, salted caramel is unreal. Carry these everywhere now.",
+   471→    verified: true,
+   472→    date: "3 days ago",
+   473→  },
+   474→  {
+   475→    id: "r4",
+   476→    productId: "p2",
+   477→    author: "Sneha Iyer",
+   478→    rating: 4,
+   479→    title: "Noticeable recovery boost",
+   480→    body: "DOMS reduced significantly after switching. Tart cherry flavor is refreshing post-workout.",
+   481→    verified: true,
+   482→    date: "5 days ago",
+   483→  },
+   484→];
+   485→
+   486→export const TRUST_BADGES = [
+   487→  { id: "lab-tested", label: "Lab Tested", icon: "flask" },
+   488→  { id: "high-protein", label: "High Protein", icon: "dumbbell" },
+   489→  { id: "made-in-india", label: "Made in India", icon: "lotus" },
+   490→  { id: "plant-based", label: "Plant Based", icon: "leaf" },
+   491→  { id: "no-fillers", label: "No Artificial Fillers", icon: "shield" },
+   492→  { id: "export-quality", label: "Export Quality", icon: "globe" },
+   493→  { id: "clean-label", label: "Clean Label", icon: "check" },
+   494→  { id: "fssai", label: "FSSAI Approved", icon: "certificate" },
+   495→];
+   496→
+   497→export const MANUFACTURING_STAGES = [
+   498→  {
+   499→    id: "raw",
+   500→    title: "Raw Material",
+   501→    description: "Sourced from certified Indian farms, every batch verified for purity.",
+   502→    icon: "sprout",
+   503→    duration: "Day 1",
+   504→  },
+   505→  {
+   506→    id: "testing",
+   507→    title: "Testing",
+   508→    description: "Heavy metals, microbes, and protein assay in our in-house NABL lab.",
+   509→    icon: "flask",
+   510→    duration: "Day 2-3",
+   511→  },
+   512→  {
+   513→    id: "blending",
+   514→    title: "Blending",
+   515→    description: "Precision micro-blending in humidity-controlled clean rooms.",
+   516→    icon: "blend",
+   517→    duration: "Day 4",
+   518→  },
+   519→  {
+   520→    id: "qc",
+   521→    title: "Quality Control",
+   522→    description: "Inline spectroscopy checks every 15 minutes for consistency.",
+   523→    icon: "shield",
+   524→    duration: "Day 4-5",
+   525→  },
+   526→  {
+   527→    id: "packaging",
+   528→    title: "Packaging",
+   529→    description: "Nitrogen-flushed, UV-sealed recycled-kraft containers.",
+   530→    icon: "package",
+   531→    duration: "Day 6",
+   532→  },
+   533→  {
+   534→    id: "inspection",
+   535→    title: "Final Inspection",
+   536→    description: "Manual + AI visual inspection before release.",
+   537→    icon: "scan",
+   538→    duration: "Day 7",
+   539→  },
+   540→  {
+   541→    id: "distribution",
+   542→    title: "Distribution",
+   543→    description: "Climate-controlled logistics to your doorstep.",
+   544→    icon: "truck",
+   545→    duration: "Day 8+",
+   546→  },
+   547→];
+   548→
+   549→export const FAQS = [
+   550→  {
+   551→    id: "f1",
+   552→    q: "Are your products third-party lab tested?",
+   553→    a: "Every single batch is tested in our NABL-accredited in-house lab and independently verified by a third party for heavy metals (Pb, As, Cd, Hg), microbial load, and protein assay. Certificates of Analysis are published on each product page.",
+   554→  },
+   555→  {
+   556→    id: "f2",
+   557→    q: "Is plant protein as effective as whey?",
+   558→    a: "When properly formulated, yes. Our pea + sprouted rice blend achieves a PDCAAS of 1.0, matching whey's amino acid score. We add DigeZyme® digestive enzymes to maximize absorption. Independent studies show equivalent muscle protein synthesis to whey.",
+   559→  },
+   560→  {
+   561→    id: "f3",
+   562→    q: "Are your products FSSAI certified?",
+   563→    a: "Yes. Dr. Huxon Labs operates under FSSAI License No. 10024031000234, with ISO 22000:2018 and GMP certifications. Our facility is audited quarterly.",
+   564→  },
+   565→  {
+   566→    id: "f4",
+   567→    q: "What sweeteners do you use?",
+   568→    a: "We use a blend of steviol glycosides (stevia) and monk fruit extract — never sucralose, aspartame, or artificial sweeteners. Our cocoa and natural flavors are all plant-derived.",
+   569→  },
+   570→  {
+   571→    id: "f5",
+   572→    q: "How fast is delivery across India?",
+   573→    a: "Metro cities receive orders in 1-2 business days; rest of India in 3-5 days. All orders ship within 24 hours from our Bengaluru facility with live tracking.",
+   574→  },
+   575→  {
+   576→    id: "f6",
+   577→    q: "Do you offer subscriptions?",
+   578→    a: "Yes — subscribe & save 15% on every recurring order, with the flexibility to pause, skip, or swap flavors anytime from your profile dashboard.",
+   579→  },
+   580→  {
+   581→    id: "f7",
+   582→    q: "What is your return policy?",
+   583→    a: "Unopened products can be returned within 30 days for a full refund. For quality concerns on opened products, contact care@drhuxon.com — we'll make it right.",
+   584→  },
+   585→];
+   586→
+   587→export const CUSTOMER_STORIES = [
+   588→  {
+   589→    id: "s1",
+   590→    name: "Arjun Mehta",
+   591→    role: "Marathon runner · Bengaluru",
+   592→    avatar: "AM",
+   593→    accent: "oklch(0.78 0.13 75)",
+   594→    quote:
+   595→      "Cut my recovery time by a third. The Gold Isolate + Recovery Matrix stack is non-negotiable now.",
+   596→    metric: "-32% recovery time",
+   597→    duration: "12 weeks",
+   598→  },
+   599→  {
+   600→    id: "s2",
+   601→    name: "Priya Sharma",
+   602→    role: "CrossFit athlete · Mumbai",
+   603→    avatar: "PS",
+   604→    accent: "oklch(0.62 0.10 160)",
+   605→    quote:
+   606→      "First plant protein that doesn't bloat me. Tastes unreal and the lab transparency won me over.",
+   607→    metric: "+8kg lean mass",
+   608→    duration: "6 months",
+   609→  },
+   610→  {
+   611→    id: "s3",
+   612→    name: "Rohan Kapoor",
+   613→    role: "Hybrid athlete · Delhi",
+   614→    avatar: "RK",
+   615→    accent: "oklch(0.65 0.15 30)",
+   616→    quote:
+   617→      "Bars replaced my airport junk food habit. 20g protein, zero sugar, actually delicious.",
+   618→    metric: "0 → 5 workouts/wk",
+   619→    duration: "3 months",
+   620→  },
+   621→];
+   622→
+   623→export const REWARDS_TIERS = [
+   624→  {
+   625→    id: "bronze",
+   626→    name: "Bronze",
+   627→    min: 0,
+   628→    perk: "5% back on every order",
+   629→    accent: "oklch(0.55 0.06 55)",
+   630→  },
+   631→  {
+   632→    id: "silver",
+   633→    name: "Silver",
+   634→    min: 2500,
+   635→    perk: "8% back + early access",
+   636→    accent: "oklch(0.72 0.02 80)",
+   637→  },
+   638→  {
+   639→    id: "gold",
+   640→    name: "Gold",
+   641→    min: 7500,
+   642→    perk: "12% back + free shipping",
+   643→    accent: "oklch(0.82 0.13 75)",
+   644→  },
+   645→  {
+   646→    id: "platinum",
+   647→    name: "Platinum",
+   648→    min: 15000,
+   649→    perk: "15% back + concierge nutritionist",
+   650→    accent: "oklch(0.88 0.06 85)",
+   651→  },
+   652→];
+   653→
+   654→export const ACHIEVEMENTS = [
+   655→  { id: "a1", name: "First Order", icon: "spark", earned: true },
+   656→  { id: "a2", name: "Protein Streak — 7 days", icon: "flame", earned: true },
+   657→  { id: "a3", name: "Reviewed a Product", icon: "star", earned: true },
+   658→  { id: "a4", name: "Referred a Friend", icon: "users", earned: true },
+   659→  { id: "a5", name: "Gold Tier", icon: "crown", earned: false },
+   660→  { id: "a6", name: "Subscription Member", icon: "refresh", earned: false },
+   661→];
+   662→
+   663→export const formatINR = (n: number) =>
+   664→  "₹" + Math.round(n).toLocaleString("en-IN");
+   665→
+   666→export const discountPercent = (price: number, mrp: number) =>
+   667→  Math.round(((mrp - price) / mrp) * 100);
+   668→
+   669→/* ============================================================
+   670→   OFFERS & REWARDS — for Product Detail Page
+   671→   ============================================================ */
+   672→
+   673→export type Offer =
+   674→  | {
+   675→      id: string;
+   676→      type: "flash";
+   677→      title: string;
+   678→      description: string;
+   679→      endsAt: number; // epoch ms
+   680→      badge: string;
+   681→    }
+   682→  | {
+   683→      id: string;
+   684→      type: "bundle";
+   685→      title: string;
+   686→      description: string;
+   687→      items: string[];
+   688→      bundlePrice: number;
+   689→      originalPrice: number;
+   690→      badge: string;
+   691→    }
+   692→  | {
+   693→      id: string;
+   694→      type: "coupon";
+   695→      code: string;
+   696→      title: string;
+   697→      description: string;
+   698→      discount: string;
+   699→      badge: string;
+   700→    }
+   701→  | {
+   702→      id: string;
+   703→      type: "bank";
+   704→      title: string;
+   705→      description: string;
+   706→      discount: string;
+   707→      badge: string;
+   708→    }
+   709→  | {
+   710→      id: string;
+   711→      type: "first-order";
+   712→      title: string;
+   713→      description: string;
+   714→      discount: string;
+   715→      badge: string;
+   716→    };
+   717→
+   718→export const PRODUCT_OFFERS: Offer[] = [
+   719→  {
+   720→    id: "o1",
+   721→    type: "flash",
+   722→    title: "Flash Sale — 22% off",
+   723→    description: "Ends soon. Limited stock at this price.",
+   724→    endsAt: Date.now() + 1000 * 60 * 60 * 5 + 1000 * 60 * 42, // ~5h 42m from now
+   725→    badge: "🔥 Flash",
+   726→  },
+   727→  {
+   728→    id: "o2",
+   729→    type: "bundle",
+   730→    title: "Complete Stack — Save ₹1,098",
+   731→    description: "Gold Isolate + Recovery Matrix + Protein Bars",
+   732→    items: ["Huxon Gold Isolate", "Recovery Matrix", "Protein Bars (12-pack)"],
+   733→    bundlePrice: 5398,
+   734→    originalPrice: 6496,
+   735→    badge: "📦 Bundle",
+   736→  },
+   737→  {
+   738→    id: "o3",
+   739→    type: "coupon",
+   740→    code: "HUXON10",
+   741→    title: "10% off your order",
+   742→    description: "Apply code HUXON10 at checkout. Min order ₹1,499.",
+   743→    discount: "10%",
+   744→    badge: "🎫 Coupon",
+   745→  },
+   746→  {
+   747→    id: "o4",
+   748→    type: "bank",
+   749→    title: "5% instant discount on Axis Bank cards",
+   750→    description: "Up to ₹250 off on orders above ₹2,000.",
+   751→    discount: "5%",
+   752→    badge: "🏦 Bank",
+   753→  },
+   754→  {
+   755→    id: "o5",
+   756→    type: "first-order",
+   757→    title: "First order? Get ₹200 off",
+   758→    description: "Auto-applied at checkout for new customers.",
+   759→    discount: "₹200",
+   760→    badge: "✨ First",
+   761→  },
+   762→];
+   763→
+   764→export type ProductReward = {
+   765→  basePoints: number;
+   766→  tierBonus: number;
+   767→  streakBonus: number;
+   768→  totalPoints: number;
+   769→  unlocks: string[];
+   770→};
+   771→
+   772→export function calcProductReward(
+   773→  price: number,
+   774→  tier: string,
+   775→  streak: number
+   776→): ProductReward {
+   777→  // 1 point per ₹10 spent
+   778→  const base = Math.round(price / 10);
+   779→  const tierMult =
+   780→    tier === "platinum"
+   781→      ? 0.15
+   782→      : tier === "gold"
+   783→      ? 0.12
+   784→      : tier === "silver"
+   785→      ? 0.08
+   786→      : 0.05;
+   787→  const tierBonus = Math.round(base * tierMult);
+   788→  const streakBonus = streak >= 7 ? 50 : streak >= 3 ? 25 : 0;
+   789→  return {
+   790→    basePoints: base,
+   791→    tierBonus,
+   792→    streakBonus,
+   793→    totalPoints: base + tierBonus + streakBonus,
+   794→    unlocks:
+   795→      base + tierBonus + streakBonus > 250
+   796→        ? ["Free shipping unlocked", "Early access to new drops"]
+   797→        : ["Free shipping unlocked"],
+   798→  };
+   799→}
+   800→
+   801→export const NUTRITION_HIGHLIGHTS = [
+   802→  { label: "Protein Density", value: "90%", icon: "dumbbell" },
+   803→  { label: "BCAAs", value: "5.5g", icon: "bolt" },
+   804→  { label: "Absorption", value: "96%", icon: "drop" },
+   805→  { label: "Sugar", value: "0.4g", icon: "leaf" },
+   806→];
+   807→
+   808→export const RATING_BREAKDOWN = [
+   809→  { stars: 5, count: 1820, pct: 85 },
+   810→  { stars: 4, count: 248, pct: 11 },
+   811→  { stars: 3, count: 52, pct: 3 },
+   812→  { stars: 2, count: 18, pct: 1 },
+   813→  { stars: 1, count: 10, pct: 0 },
+   814→];
+   815→
+   816→/* ============================================================
+   817→   LAB REPORTS / CERTIFICATE OF ANALYSIS — for PDP
+   818→   ============================================================ */
+   819→
+   820→export type LabTest = {
+   821→  id: string;
+   822→  category: "heavy-metals" | "microbial" | "protein-assay" | "contaminants";
+   823→  testName: string;
+   824→  result: string;
+   825→  unit: string;
+   826→  limit: string;
+   827→  status: "pass" | "nd"; // pass or "not detected"
+   828→};
+   829→
+   830→export const LAB_REPORTS: LabTest[] = [
+   831→  // Heavy metals
+   832→  { id: "hm1", category: "heavy-metals", testName: "Lead (Pb)", result: "ND", unit: "ppm", limit: "< 0.5", status: "nd" },
+   833→  { id: "hm2", category: "heavy-metals", testName: "Arsenic (As)", result: "ND", unit: "ppm", limit: "< 0.3", status: "nd" },
+   834→  { id: "hm3", category: "heavy-metals", testName: "Cadmium (Cd)", result: "ND", unit: "ppm", limit: "< 0.1", status: "nd" },
+   835→  { id: "hm4", category: "heavy-metals", testName: "Mercury (Hg)", result: "ND", unit: "ppm", limit: "< 0.1", status: "nd" },
+   836→  // Microbial
+   837→  { id: "mb1", category: "microbial", testName: "Total Plate Count", result: "120", unit: "CFU/g", limit: "< 10,000", status: "pass" },
+   838→  { id: "mb2", category: "microbial", testName: "E. coli", result: "Absent", unit: "/ 25g", limit: "Absent", status: "pass" },
+   839→  { id: "mb3", category: "microbial", testName: "Salmonella", result: "Absent", unit: "/ 25g", limit: "Absent", status: "pass" },
+   840→  { id: "mb4", category: "microbial", testName: "Yeast & Mould", result: "40", unit: "CFU/g", limit: "< 100", status: "pass" },
+   841→  // Protein assay
+   842→  { id: "pa1", category: "protein-assay", testName: "Protein Content (Dumas)", result: "90.2", unit: "%", limit: "≥ 85", status: "pass" },
+   843→  { id: "pa2", category: "protein-assay", testName: "Amino Acid Score", result: "1.0", unit: "PDCAAS", limit: "≥ 1.0", status: "pass" },
+   844→  { id: "pa3", category: "protein-assay", testName: "Solubility", result: "98", unit: "%", limit: "≥ 95", status: "pass" },
+   845→  // Contaminants
+   846→  { id: "ct1", category: "contaminants", testName: "Melamine", result: "ND", unit: "ppm", limit: "< 2.5", status: "nd" },
+   847→  { id: "ct2", category: "contaminants", testName: "Pesticide Residue", result: "ND", unit: "ppm", limit: "MRL", status: "nd" },
+   848→  { id: "ct3", category: "contaminants", testName: "Aflatoxin B1", result: "ND", unit: "ppb", limit: "< 5", status: "nd" },
+   849→];
+   850→
+   851→export const CERTIFICATIONS = [
+   852→  { id: "cert1", name: "FSSAI", license: "10024031000234", image: "shield" },
+   853→  { id: "cert2", name: "ISO 22000:2018", license: "HXL-ISO-2024", image: "certificate" },
+   854→  { id: "cert3", name: "GMP Certified", license: "GMP-IN-2023-0891", image: "check" },
+   855→  { id: "cert4", name: "NABL Accredited", license: "LAB-NABL-1145", image: "flask" },
+   856→  { id: "cert5", name: "Vegan Society", license: "VS-IND-44820", image: "leaf" },
+   857→  { id: "cert6", name: "Halal India", license: "HI-2024-1129", image: "check" },
+   858→];
+   859→
+   860→/* ============================================================
+   861→   Q&A — Customer Questions for PDP
+   862→   ============================================================ */
+   863→
+   864→export type QA = {
+   865→  id: string;
+   866→  question: string;
+   867→  answer: string;
+   868→  author: string;
+   869→  date: string;
+   870→  helpful: number;
+   871→  answeredBy: "verified" | "brand";
+   872→};
+   873→
+   874→export const PRODUCT_QAS: QA[] = [
+   875→  {
+   876→    id: "qa1",
+   877→    question: "Is this safe for people with lactose intolerance?",
+   878→    answer: "Absolutely. Our Gold Isolate is 100% plant-based (pea + rice), contains zero dairy, and is produced in a dairy-free facility. It's ideal for lactose-intolerant and vegan consumers.",
+   879→    author: "Sneha I.",
+   880→    date: "3 weeks ago",
+   881→    helpful: 28,
+   882→    answeredBy: "brand",
+   883→  },
+   884→  {
+   885→    id: "qa2",
+   886→    question: "How does this compare to whey protein for muscle building?",
+   887→    answer: "Our pea + sprouted rice blend achieves a PDCAAS of 1.0, matching whey's amino acid score. Independent studies show equivalent muscle protein synthesis. We add DigeZyme® enzymes for maximum absorption. Honestly, you won't notice a difference in results.",
+   888→    author: "Rohan K.",
+   889→    date: "1 month ago",
+   890→    helpful: 45,
+   891→    answeredBy: "verified",
+   892→  },
+   893→  {
+   894→    id: "qa3",
+   895→    question: "Can I mix this with hot water or only cold?",
+   896→    answer: "Both work! Cold water or plant milk gives the best flavor. Hot water (up to 70°C) is fine and won't denature the protein. Avoid boiling water. Try it with oat milk and a banana for a killer smoothie.",
+   897→    author: "Priya S.",
+   898→    date: "2 weeks ago",
+   899→    helpful: 19,
+   900→    answeredBy: "verified",
+   901→  },
+   902→  {
+   903→    id: "qa4",
+   904→    question: "What's the shelf life after opening?",
+   905→    answer: "12 months unopened (see date on tub). After opening, consume within 90 days for best freshness — our nitrogen-flushed packaging keeps it stable. The desiccant pack inside absorbs moisture.",
+   906→    author: "Customer Care",
+   907→    date: "1 week ago",
+   908→    helpful: 12,
+   909→    answeredBy: "brand",
+   910→  },
+   911→  {
+   912→    id: "qa5",
+   913→    question: "Does it contain any artificial sweeteners or colors?",
+   914→    answer: "No. We use only stevia and monk fruit for sweetness. Zero sucralose, aspartame, or artificial colors/flavors. The cocoa color comes from real Belgian cocoa powder.",
+   915→    author: "Arjun M.",
+   916→    date: "5 days ago",
+   917→    helpful: 8,
+   918→    answeredBy: "verified",
+   919→  },
+   920→];
+   921→
+   922→/* ============================================================
+   923→   RECIPES / USAGE IDEAS — for PDP
+   924→   ============================================================ */
+   925→
+   926→export type Recipe = {
+   927→  id: string;
+   928→  title: string;
+   929→  category: "smoothie" | "breakfast" | "pre-workout" | "dessert";
+   930→  prepTime: string;
+   931→  difficulty: "Easy" | "Medium";
+   932→  calories: number;
+   933→  protein: number;
+   934→  servings: number;
+   935→  ingredients: string[];
+   936→  steps: string[];
+   937→  emoji: string;
+   938→  accent: string;
+   939→};
+   940→
+   941→export const PRODUCT_RECIPES: Recipe[] = [
+   942→  {
+   943→    id: "r1",
+   944→    title: "Belgian Cocoa Power Smoothie",
+   945→    category: "smoothie",
+   946→    prepTime: "3 min",
+   947→    difficulty: "Easy",
+   948→    calories: 320,
+   949→    protein: 35,
+   950→    servings: 1,
+   951→    ingredients: [
+   952→      "1 scoop Huxon Gold Isolate",
+   953→      "1 frozen banana",
+   954→      "250ml oat milk",
+   955→      "1 tbsp peanut butter",
+   956→      "1 tsp cocoa powder",
+   957→      "Ice cubes",
+   958→    ],
+   959→    steps: [
+   960→      "Add all ingredients to a blender",
+   961→      "Blend on high for 45 seconds until smooth",
+   962→      "Pour into a chilled glass and enjoy",
+   963→    ],
+   964→    emoji: "🥤",
+   965→    accent: "oklch(0.78 0.13 75)",
+   966→  },
+   967→  {
+   968→    id: "r2",
+   969→    title: "Protein Overnight Oats",
+   970→    category: "breakfast",
+   971→    prepTime: "5 min + overnight",
+   972→    difficulty: "Easy",
+   973→    calories: 410,
+   974→    protein: 32,
+   975→    servings: 1,
+   976→    ingredients: [
+   977→      "1 scoop Huxon Gold Isolate",
+   978→      "40g rolled oats",
+   979→      "150ml almond milk",
+   980→      "1 tbsp chia seeds",
+   981→      "1 tsp honey",
+   982→      "Berries for topping",
+   983→    ],
+   984→    steps: [
+   985→      "Mix oats, chia seeds, and protein powder in a jar",
+   986→      "Add almond milk and honey, stir well",
+   987→      "Refrigerate overnight (min 6 hours)",
+   988→      "Top with berries in the morning",
+   989→    ],
+   990→    emoji: "🥣",
+   991→    accent: "oklch(0.72 0.10 65)",
+   992→  },
+   993→  {
+   994→    id: "r3",
+   995→    title: "Pre-Workout Energy Bowl",
+   996→    category: "pre-workout",
+   997→    prepTime: "5 min",
+   998→    difficulty: "Easy",
+   999→    calories: 280,
+  1000→    protein: 28,
+  1001→    servings: 1,
+  1002→    ingredients: [
+  1003→      "1 scoop Huxon Gold Isolate",
+  1004→      "1 medium banana, sliced",
+  1005→      "2 tbsp Greek yogurt",
+  1006→      "1 tbsp granola",
+  1007→      "Drizzle of honey",
+  1008→    ],
+  1009→    steps: [
+  1010→      "Layer banana slices in a bowl",
+  1011→      "Mix protein powder with 2 tbsp water, drizzle over banana",
+  1012→      "Add yogurt, granola, and honey",
+  1013→      "Eat 45-60 min before workout",
+  1014→    ],
+  1015→    emoji: "🍌",
+  1016→    accent: "oklch(0.65 0.15 30)",
+  1017→  },
+  1018→  {
+  1019→    id: "r4",
+  1020→    title: "Chocolate Protein Mug Cake",
+  1021→    category: "dessert",
+  1022→    prepTime: "2 min",
+  1023→    difficulty: "Easy",
+  1024→    calories: 240,
+  1025→    protein: 26,
+  1026→    servings: 1,
+  1027→    ingredients: [
+  1028→      "1 scoop Huxon Gold Isolate",
+  1029→      "1 egg",
+  1030→      "1 tbsp cocoa powder",
+  1031→      "1/2 tsp baking powder",
+  1032→      "1 tsp stevia",
+  1033→      "1 tbsp dark chocolate chips",
+  1034→    ],
+  1035→    steps: [
+  1036→      "Mix all ingredients in a microwave-safe mug",
+  1037→      "Microwave on high for 60-90 seconds",
+  1038→      "Let cool for 1 minute",
+  1039→      "Top with chocolate chips and enjoy warm",
+  1040→    ],
+  1041→    emoji: "🍰",
+  1042→    accent: "oklch(0.55 0.08 50)",
+  1043→  },
+  1044→];
+  1045→
+  1046→/* ============================================================
+  1047→   NUTRITION EDUCATION / BLOG — science articles
+  1048→   ============================================================ */
+  1049→
+  1050→export type Article = {
+  1051→  id: string;
+  1052→  title: string;
+  1053→  category: "science" | "nutrition" | "fitness" | "lifestyle";
+  1054→  excerpt: string;
+  1055→  readTime: string;
+  1056→  author: string;
+  1057→  date: string;
+  1058→  accent: string;
+  1059→  emoji: string;
+  1060→  keyTakeaway: string;
+  1061→};
+  1062→
+  1063→export const ARTICLES: Article[] = [
+  1064→  {
+  1065→    id: "a1",
+  1066→    title: "Why PDCAAS 1.0 matters for plant protein",
+  1067→    category: "science",
+  1068→    excerpt: "Not all plant proteins are created equal. The Protein Digestibility-Corrected Amino Acid Score (PDCAAS) is the gold standard for measuring protein quality — and our blend hits the perfect 1.0 score.",
+  1069→    readTime: "4 min read",
+  1070→    author: "Dr. Huxon Labs Science Team",
+  1071→    date: "2 weeks ago",
+  1072→    accent: "oklch(0.78 0.13 75)",
+  1073→    emoji: "🧬",
+  1074→    keyTakeaway: "Pea + rice blend = complete amino acid profile matching whey",
+  1075→  },
+  1076→  {
+  1077→    id: "a2",
+  1078→    title: "The truth about heavy metals in protein powder",
+  1079→    category: "science",
+  1080→    excerpt: "A recent ConsumerLab study found alarming heavy metal levels in 47% of tested protein powders. Here's how we test every batch — and why you should demand the same from every brand.",
+  1081→    readTime: "6 min read",
+  1082→    author: "Dr. Huxon Labs Quality Team",
+  1083→    date: "1 month ago",
+  1084→    accent: "oklch(0.62 0.10 160)",
+  1085→    emoji: "🔬",
+  1086→    keyTakeaway: "Always check for third-party lab reports before buying",
+  1087→  },
+  1088→  {
+  1089→    id: "a3",
+  1090→    title: "How much protein do you actually need? (Indian context)",
+  1091→    category: "nutrition",
+  1092→    excerpt: "The RDA of 0.8g/kg is a minimum to prevent deficiency — not an optimal target. For active Indians, we break down the science of protein needs by activity level, age, and fitness goal.",
+  1093→    readTime: "5 min read",
+  1094→    author: "Dr. Huxon Labs Nutrition Team",
+  1095→    date: "3 weeks ago",
+  1096→    accent: "oklch(0.65 0.15 30)",
+  1097→    emoji: "📊",
+  1098→    keyTakeaway: "Active adults need 1.4-2.0g/kg depending on goals",
+  1099→  },
+  1100→  {
+  1101→    id: "a4",
+  1102→    title: "Plant protein vs whey: the definitive comparison",
+  1103→    category: "fitness",
+  1104→    excerpt: "12 independent studies compared plant vs whey protein for muscle building. The results may surprise you — especially when digestibility and amino acid profile are matched.",
+  1105→    readTime: "7 min read",
+  1106→    author: "Dr. Huxon Labs Science Team",
+  1107→    date: "1 week ago",
+  1108→    accent: "oklch(0.72 0.10 65)",
+  1109→    emoji: "💪",
+  1110→    keyTakeaway: "Properly formulated plant protein = equivalent muscle synthesis",
+  1111→  },
+  1112→  {
+  1113→    id: "a5",
+  1114→    title: "5 signs your protein powder is low quality",
+  1115→    category: "nutrition",
+  1116→    excerpt: "From proprietary blends to hidden fillers, here are the red flags to watch for when choosing a protein supplement — and what clean label really means.",
+  1117→    readTime: "3 min read",
+  1118→    author: "Dr. Huxon Labs",
+  1119→    date: "5 days ago",
+  1120→    accent: "oklch(0.55 0.08 50)",
+  1121→    emoji: "⚠️",
+  1122→    keyTakeaway: "Transparency in labeling is non-negotiable",
+  1123→  },
+  1124→  {
+  1125→    id: "a6",
+  1126→    title: "The science of muscle recovery: what actually works",
+  1127→    category: "fitness",
+  1128→    excerpt: "Curcumin, tart cherry, and timing — we dive into the peer-reviewed evidence behind post-workout recovery and how our Recovery Matrix was formulated.",
+  1129→    readTime: "8 min read",
+  1130→    author: "Dr. Huxon Labs Science Team",
+  1131→    date: "2 months ago",
+  1132→    accent: "oklch(0.62 0.10 160)",
+  1133→    emoji: "🔬",
+  1134→    keyTakeaway: "Curcumin + tart cherry = 24% faster recovery",
+  1135→  },
+  1136→];
+  1137→
+  1138→/* ============================================================
+  1139→   REFERRAL LEADERBOARD — top referrers for Rewards view
+  1140→   ============================================================ */
+  1141→
+  1142→export type LeaderboardEntry = {
+  1143→  id: string;
+  1144→  name: string;
+  1145→  avatar: string;
+  1146→  referrals: number;
+  1147→  earnings: number;
+  1148→  tier: string;
+  1149→  isCurrentUser?: boolean;
+  1150→};
+  1151→
+  1152→export const LEADERBOARD: LeaderboardEntry[] = [
+  1153→  { id: "l1", name: "Vikram R.", avatar: "VR", referrals: 47, earnings: 9400, tier: "platinum" },
+  1154→  { id: "l2", name: "Ananya K.", avatar: "AK", referrals: 39, earnings: 7800, tier: "platinum" },
+  1155→  { id: "l3", name: "Rahul S.", avatar: "RS", referrals: 31, earnings: 6200, tier: "gold" },
+  1156→  { id: "l4", name: "Arjun Mehta", avatar: "AM", referrals: 12, earnings: 2400, tier: "silver", isCurrentUser: true },
+  1157→  { id: "l5", name: "Priya N.", avatar: "PN", referrals: 9, earnings: 1800, tier: "silver" },
+  1158→  { id: "l6", name: "Karthik V.", avatar: "KV", referrals: 6, earnings: 1200, tier: "bronze" },
+  1159→  { id: "l7", name: "Sneha P.", avatar: "SP", referrals: 4, earnings: 800, tier: "bronze" },
+  1160→];
+  1161→
+  1162→/* ============================================================
+  1163→   SMART RECOMMENDATIONS — personalized "For You" engine
+  1164→   ============================================================ */
+  1165→
+  1166→export type Recommendation = {
+  1167→  productId: string;
+  1168→  reason: string;
+  1169→  reasonTag: string;
+  1170→  matchScore: number;
+  1171→  category: "goal" | "history" | "trending" | "complementary";
+  1172→};
+  1173→
+  1174→export function getRecommendations(opts: {
+  1175→  quizGoal?: string;
+  1176→  recentIds: string[];
+  1177→  wishlistIds: string[];
+  1178→}): Recommendation[] {
+  1179→  const { quizGoal, recentIds, wishlistIds } = opts;
+  1180→  const recs: Recommendation[] = [];
+  1181→
+  1182→  // Goal-based recommendations (from quiz)
+  1183→  if (quizGoal === "muscle") {
+  1184→    recs.push({ productId: "p1", reason: "Matches your muscle-building goal", reasonTag: "Goal match", matchScore: 96, category: "goal" });
+  1185→    recs.push({ productId: "p2", reason: "Speeds up your post-workout recovery", reasonTag: "Recovery", matchScore: 91, category: "goal" });
+  1186→    recs.push({ productId: "p5", reason: "High-protein snack for muscle maintenance", reasonTag: "On-the-go", matchScore: 84, category: "goal" });
+  1187→  } else if (quizGoal === "energy") {
+  1188→    recs.push({ productId: "p3", reason: "Clean caffeine for pre-workout energy", reasonTag: "Pre-workout", matchScore: 94, category: "goal" });
+  1189→    recs.push({ productId: "p4", reason: "21 superfoods for sustained daily energy", reasonTag: "Daily greens", matchScore: 88, category: "goal" });
+  1190→    recs.push({ productId: "p5", reason: "Quick energy bar before workouts", reasonTag: "Snack", matchScore: 79, category: "goal" });
+  1191→  } else if (quizGoal === "health") {
+  1192→    recs.push({ productId: "p4", reason: "Complete daily nutrition in one scoop", reasonTag: "Wellness", matchScore: 95, category: "goal" });
+  1193→    recs.push({ productId: "p6", reason: "Plant omega for heart & brain health", reasonTag: "Omega-3", matchScore: 87, category: "goal" });
+  1194→    recs.push({ productId: "p1", reason: "Foundation protein for overall health", reasonTag: "Protein", matchScore: 82, category: "goal" });
+  1195→  } else if (quizGoal === "recover") {
+  1196→    recs.push({ productId: "p2", reason: "Curcumin + tart cherry for faster recovery", reasonTag: "Recovery", matchScore: 97, category: "goal" });
+  1197→    recs.push({ productId: "p1", reason: "27g protein to rebuild muscle", reasonTag: "Protein", matchScore: 89, category: "goal" });
+  1198→    recs.push({ productId: "p6", reason: "Omega-3 reduces exercise inflammation", reasonTag: "Anti-inflammatory", matchScore: 81, category: "goal" });
+  1199→  }
+  1200→
+  1201→  // Complementary to recently viewed
+  1202→  recentIds.slice(0, 2).forEach((rid) => {
+  1203→    const product = PRODUCTS.find((p) => p.id === rid);
+  1204→    if (product?.pairings) {
+  1205→      product.pairings.forEach((pid) => {
+  1206→        if (!recs.find((r) => r.productId === pid)) {
+  1207→          recs.push({
+  1208→            productId: pid,
+  1209→            reason: `Pairs perfectly with ${product.name}`,
+  1210→            reasonTag: "Pairs with recent",
+  1211→            matchScore: 85,
+  1212→            category: "complementary",
+  1213→          });
+  1214→        }
+  1215→      });
+  1216→    }
+  1217→  });
+  1218→
+  1219→  // Trending fallback
+  1220→  if (recs.length < 4) {
+  1221→    const trending = [
+  1222→      { productId: "p1", reason: "Bestseller · 2,148 reviews", reasonTag: "Trending", matchScore: 88, category: "trending" as const },
+  1223→      { productId: "p5", reason: "Most-loved protein bar in India", reasonTag: "Trending", matchScore: 86, category: "trending" as const },
+  1224→      { productId: "p4", reason: "Trending for daily wellness", reasonTag: "Trending", matchScore: 83, category: "trending" as const },
+  1225→    ];
+  1226→    trending.forEach((t) => {
+  1227→      if (!recs.find((r) => r.productId === t.productId) && recs.length < 5) {
+  1228→        recs.push(t);
+  1229→      }
+  1230→    });
+  1231→  }
+  1232→
+  1233→  // Filter out items already in wishlist (already have them)
+  1234→  return recs.filter((r) => !wishlistIds.includes(r.productId)).slice(0, 4);
+  1235→}
+  1236→
+  1237→/* ============================================================
+  1238→   WATER INTAKE — smart hydration data
+  1239→   ============================================================ */
+  1240→
+  1241→export const WATER_SCHEDULE = [
+  1242→  { time: "7:00 AM", label: "Wake up", amount: 250, tip: "Kickstart your metabolism" },
+  1243→  { time: "9:00 AM", label: "Mid-morning", amount: 250, tip: "Before breakfast" },
+  1244→  { time: "11:00 AM", label: "Pre-lunch", amount: 300, tip: "Aids digestion" },
+  1245→  { time: "1:00 PM", label: "With lunch", amount: 300, tip: "Stay hydrated through afternoon" },
+  1246→  { time: "3:00 PM", label: "Afternoon", amount: 250, tip: "Beat the slump" },
+  1247→  { time: "5:00 PM", label: "Pre-workout", amount: 300, tip: "Hydrate before exercise" },
+  1248→  { time: "7:00 PM", label: "Post-workout", amount: 350, tip: "Replenish fluids" },
+  1249→  { time: "9:00 PM", label: "Evening", amount: 200, tip: "Wind down" },
+  1250→];
+  1251→
+  1252→/* ============================================================
+  1253→   SLEEP & RECOVERY — tracking data
+  1254→   ============================================================ */
+  1255→
+  1256→export const SLEEP_FACTORS = [
+  1257→  { label: "Sleep duration", value: 7.5, unit: "h", target: 8, icon: "clock" },
+  1258→  { label: "Deep sleep", value: 1.8, unit: "h", target: 2, icon: "moon" },
+  1259→  { label: "REM sleep", value: 1.5, unit: "h", target: 1.5, icon: "spark" },
+  1260→  { label: "Resting HR", value: 58, unit: "bpm", target: 60, icon: "bolt", invert: true },
+  1261→];
+  1262→
+  1263→export const RECOVERY_FACTORS = [
+  1264→  { label: "Muscle soreness", value: 25, unit: "%", target: 0, invert: true },
+  1265→  { label: "Energy level", value: 82, unit: "%", target: 100 },
+  1266→  { label: "Hydration", value: 75, unit: "%", target: 100 },
+  1267→  { label: "Protein intake", value: 92, unit: "%", target: 100 },
+  1268→];
+  1269→

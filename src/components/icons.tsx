@@ -692,6 +692,102 @@ export function IconQuote({ size = 24, active, ...p }: IconProps) {
   );
 }
 
+export function IconEdit({ size = 24, active, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path
+        d="M14.5 5.5l4 4M4 20l1-4.2L16.4 4.4a2 2 0 0 1 2.8 0l.4.4a2 2 0 0 1 0 2.8L8.2 19l-4.2 1Z"
+        stroke={stroke(active)}
+        strokeWidth="1.7"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+export function IconSettings({ size = 24, active, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <circle cx="12" cy="12" r="3" stroke={stroke(active)} strokeWidth="1.7" />
+      <path
+        d="M19.4 13.5a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V20a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.11-1.56 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.03H4a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.56-1.11 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H10a1.7 1.7 0 0 0 1.03-1.56V4a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V10a1.7 1.7 0 0 0 1.56 1.03H20a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1.03Z"
+        stroke={stroke(active)}
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function IconMenu({ size = 24, active, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path d="M4 7h16M4 12h16M4 17h16" stroke={stroke(active)} strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function IconChartBar({ size = 24, active, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke={stroke(active)} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+export function IconTag({ size = 24, active, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path
+        d="M3.5 11.5V5a1.5 1.5 0 0 1 1.5-1.5h6.5a2 2 0 0 1 1.4.6l7 7a2 2 0 0 1 0 2.8l-5.6 5.6a2 2 0 0 1-2.8 0l-7-7a2 2 0 0 1-.6-1.4Z"
+        stroke={stroke(active)}
+        strokeWidth="1.7"
+        strokeLinejoin="round"
+      />
+      <circle cx="8" cy="8" r="1.4" fill={stroke(active)} />
+    </svg>
+  );
+}
+
+export function IconLogout({ size = 24, active, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path
+        d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"
+        stroke={stroke(active)}
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function IconDots({ size = 24, active, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <circle cx="5" cy="12" r="1.6" fill="currentColor" />
+      <circle cx="12" cy="12" r="1.6" fill="currentColor" />
+      <circle cx="19" cy="12" r="1.6" fill="currentColor" />
+    </svg>
+  );
+}
+
+export function IconRupee({ size = 24, active, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path
+        d="M7 4h10M7 8h10M14 4c2.5 0 4 2 4 4.5S16.5 13 14 13H9l7 7"
+        stroke={stroke(active)}
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export const ICON_MAP: Record<string, React.FC<IconProps>> = {
   flask: IconFlask,
   dumbbell: IconDumbbell,

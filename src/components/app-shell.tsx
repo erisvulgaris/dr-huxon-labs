@@ -70,7 +70,7 @@ function TopNav({ scrolled }: { scrolled: boolean }) {
   const { openCart } = useCart();
   const cartCount = useCart((s) => s.count());
   const wishCount = useWishlist((s) => s.ids.length);
-  const { setRoute } = useNav();
+  const { setRoute, setNotificationsOpen } = useNav();
 
   return (
     <motion.header
@@ -104,7 +104,7 @@ function TopNav({ scrolled }: { scrolled: boolean }) {
           >
             <IconHeart size={20} />
           </NavAction>
-          <NavAction onClick={() => {}} label="Notifications" badge={3}>
+          <NavAction onClick={() => setNotificationsOpen(true)} label="Notifications" badge={3}>
             <IconBell size={20} />
           </NavAction>
           <NavAction onClick={openCart} label="Cart" badge={cartCount}>
@@ -204,38 +204,43 @@ function TabButton({
       onClick={onClick}
       aria-label={label}
       aria-current={active ? "page" : undefined}
-      className="relative flex h-12 w-12 flex-col items-center justify-center gap-0.5 rounded-2xl"
+      className="relative flex min-w-[48px] flex-1 flex-col items-center justify-center gap-0.5 rounded-2xl px-1 py-1.5"
     >
       {active && (
         <motion.span
           layoutId="tab-active-bg"
           transition={{ type: "spring", stiffness: 380, damping: 30 }}
-          className="absolute inset-0 rounded-2xl bg-[oklch(0.78_0.13_75_/_0.14)] border border-[oklch(0.78_0.13_75_/_0.25)]"
+          className="absolute inset-0 rounded-2xl bg-[oklch(var(--gold)/0.14)] border border-[oklch(var(--gold)/0.25)]"
         />
       )}
       {active && (
         <motion.span
           layoutId="tab-active-dot"
           transition={{ type: "spring", stiffness: 400, damping: 28 }}
-          className="absolute -top-0.5 h-1 w-1 rounded-full bg-[oklch(0.78_0.13_75)] shadow-gold"
+          className="absolute top-0.5 h-1 w-1 rounded-full bg-[oklch(var(--gold))] shadow-gold"
         />
       )}
       <motion.span
         animate={{
-          color: active ? "oklch(0.92 0.10 85)" : "oklch(0.66 0.015 70)",
           scale: active ? 1.05 : 1,
         }}
         transition={{ type: "spring", stiffness: 400, damping: 22 }}
-        className="relative z-10"
+        className={cn(
+          "relative z-10 transition-colors",
+          active ? "text-text-gold" : "text-muted-foreground"
+        )}
       >
         {children}
       </motion.span>
       <motion.span
         animate={{
           opacity: active ? 1 : 0,
-          height: active ? 10 : 0,
+          height: active ? "auto" : 0,
         }}
-        className="relative z-10 overflow-hidden text-[9px] font-medium tracking-wide text-text-gold"
+        className={cn(
+          "relative z-10 overflow-hidden text-[9px] font-medium tracking-wide whitespace-nowrap",
+          active ? "text-text-gold" : "text-muted-foreground"
+        )}
       >
         {label}
       </motion.span>

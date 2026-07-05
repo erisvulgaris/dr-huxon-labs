@@ -72,15 +72,17 @@ export function ProductView() {
   const [flavor, setFlavor] = React.useState(product.flavor);
   const [activeImg, setActiveImg] = React.useState(0);
 
-  // Reset state when product changes + track recently viewed
+  // Reset state when product changes + track recently viewed + scroll to top
   React.useEffect(() => {
     setQty(1);
     setFlavor(product.flavor);
     setActiveImg(0);
     pushRecent(product.id);
-    // scroll to top on product change
+    // Instant scroll to top so the user sees the product image immediately
     const main = document.querySelector(".app-scroll") as HTMLElement | null;
-    if (main) main.scrollTo({ top: 0, behavior: "smooth" });
+    if (main) main.scrollTo({ top: 0, behavior: "auto" });
+    // Also scroll the window itself as fallback
+    window.scrollTo({ top: 0, behavior: "auto" });
   }, [product.id, pushRecent]);
 
   const { addItem, openCart } = useCart();

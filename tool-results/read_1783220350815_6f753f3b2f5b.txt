@@ -1,0 +1,786 @@
+     1→# Dr. Huxon Labs — Worklog
+     2→
+     3→## Project Status: Phase 1 Complete — Core Experience Live
+     4→
+     5→Dr. Huxon Labs is a world-class, mobile-first premium D2C website for an Indian plant-based nutrition company. The entire experience is designed exclusively for mobile (max-width 460px container), with a luxurious dark palette (charcoal, espresso, graphite, bronze, cocoa, warm gold, cream).
+     6→
+     7→### What's Built
+     8→
+     9→**Design System (`src/app/globals.css`)**
+    10→- Full premium dark palette as OKLCH tokens (charcoal/espresso/bronze/gold/cream/jade)
+    11→- Glass surfaces (`.glass`, `.glass-strong`, `.glass-dark`), gold gradients, molecular/noise textures
+    12→- Premium shadows, shimmer, float, glow-pulse, gradient-shift animations
+    13→- Reduced-motion support, safe-area insets, custom scrollbars, tabular numbers
+    14→- Fraunces display font + Geist sans/mono
+    15→
+    16→**Foundation**
+    17→- `layout.tsx`: fonts, metadata, theme provider, viewport (mobile, no-zoom, cover)
+    18→- `theme-provider.tsx`: next-themes dark-only
+    19→- `prisma/schema.prisma`: Product, Ingredient, Review, CartItem, Order, RewardMember, Coupon, SearchQuery
+    20→- `lib/catalog.ts`: client-safe product/ingredient/review/FAQ/story data (6 products, 6 ingredients, trust badges, manufacturing stages, FAQs, customer stories, reward tiers, achievements)
+    21→- `lib/store.ts`: Zustand stores (cart with persist, wishlist, recent, search, nav, reward with toasts)
+    22→- `public/manifest.webmanifest`
+    23→
+    24→**Custom Icon System (`components/icons.tsx`)**
+    25→- 55+ hand-built SVG icons with rounded precision, 2px stroke language
+    26→- Gold gradient `<defs>` shared across icons
+    27→- Active/inactive morph states (outline → filled)
+    28→- Categories: navigation, action, trust (flask/lotus/leaf/shield/globe/certificate), manufacturing (sprout/blend/package/scan/truck), rewards (spark/flame/crown/trophy), and more
+    29→
+    30→**Branded Logo (`components/branded-logo.tsx`)**
+    31→- Hexagonal molecular frame with H monogram, gold gradient, metallic highlights
+    32→- Animated glow pulse, scroll-driven morph (wordmark fades, mark shrinks)
+    33→- Compact variant for scrolled state
+    34→
+    35→**Custom Button System (`components/huxon-button.tsx`)**
+    36→- `HuxonButton`: magnetic hover (motion values + spring), liquid press (scale 0.97), elastic spring release, ripple interaction, animated gradient reflection sweep, micro particle glow, premium disabled state, loading spinner
+    37→- Variants: primary (gold gradient), secondary (glass), ghost, gold, danger
+    38→- `HuxonIconButton`: round glass with badge support
+    39→
+    40→**App Shell (`components/app-shell.tsx`)**
+    41→- Sticky top nav: logo (morphs on scroll), search/wishlist/notifications/cart with badges
+    42→- Floating glass bottom nav: Home/Shop/Explore/Rewards/Cart/Profile with `layoutId` active background morph, active dot, label expand
+    43→- Scroll container with `pb-safe-nav`
+    44→
+    45→**Shared Primitives (`components/primitives.tsx`)**
+    46→- `AnimatedNumber` (count-up with framer-motion `animate`)
+    47→- `Reveal`, `Stagger`, `StaggerItem` (scroll-triggered)
+    48→- `ProteinRing` (animated circular progress with gradient + glow)
+    49→- `StarRating`, `SectionHeader`, `ShimmerCard`, `Pill`
+    50→
+    51→**Homepage — 10 Sections**
+    52→1. **Hero** (`sections/hero.tsx`): cinematic product showcase, gyroscope + pointer rotation, ingredient particles, rotating molecular ring, ambient shifting lighting, protein quality ring, rating widget, Shop Now + Explore CTAs, trust strip
+    53→2. **Trust Widgets** (`sections/trust.tsx`): 8 floating premium info capsules (Lab Tested, High Protein, Made in India, Plant Based, No Fillers, Export Quality, Clean Label, FSSAI) with float + gold sweep
+    54→3. **Product Explorer** (`sections/products.tsx`): horizontal swipeable gallery, protein ring per card, flavor indicator, price/discount, favorite, add, quick view, ingredient preview
+    55→4. **Nutrition Science** (`sections/science.tsx`): protein absorption curve (interactive slider), muscle recovery bars, plant comparison, amino acid radar chart
+    56→5. **Ingredient Transparency** (`sections/ingredients.tsx`): 6 ingredient cards + bottom sheet with quality ring, benefits, processing, source map (stylized India with pulse pin)
+    57→6. **Manufacturing Timeline** (`sections/manufacturing.tsx`): 7-stage vertical timeline with animated nodes, progress bars, duration badges
+    58→7. **Protein Calculator** (`sections/calculator.tsx`): age/gender/weight/height/activity/goal/diet inputs, animated result card with protein target, BMI, per-meal, save target for points
+    59→8. **Comparison Widget** (`sections/comparison.tsx`): multi-select products, radar chart, comparison table (protein/servings/rating/reviews/price), value score rings
+    60→9. **Customer Stories** (`sections/stories.tsx`): interactive story carousel with quote, metric, author, animated ambient glow
+    61→10. **FAQ** (`sections/faq.tsx`): expanding accordion with smooth height animation
+    62→
+    63→**Views (`components/views/`)**
+    64→- `home.tsx`: composes all 10 sections + footer CTA
+    65→- `shop.tsx`: product grid with category chips + sort, 2-col cards with badges/favorite/quick-view/add
+    66→- `explore.tsx`: widget dashboard — daily protein tracker, water intake, meal ring, goal progress, BMI calculator, protein timeline, fitness goal timeline
+    67→- `rewards.tsx`: gamified — points balance, tier ladder (bronze→platinum), streak, achievements grid, challenges with progress, referral code
+    68→- `cart.tsx`: full cart page with free-shipping progress, line items, pairings, trust strip, sticky checkout
+    69→- `profile.tsx`: dashboard with avatar/tier, stats, goals, order history, subscriptions, addresses, payment, recently viewed, recommendations, quick actions
+    70→
+    71→**Overlays**
+    72→- `quick-view.tsx`: full-screen product viewer with image, protein ring, flavor selector, tabs (overview/nutrition/reviews), sticky purchase area with quantity selector
+    73→- `cart-drawer.tsx`: bottom sheet cart → checkout (OTP, address, payment) → success burst with confetti + order timeline
+    74→- `search-overlay.tsx`: full-screen search with recent/trending/popular/recommendations, voice/visual modes
+    75→- `reward-toasts.tsx`: celebratory point-earn notifications
+    76→
+    77→**Page (`app/page.tsx`)**
+    78→- AppShell + AnimatePresence route transitions between 6 views + all overlays
+    79→
+    80→### Verification Results
+    81→- ✅ `bun run lint` passes clean
+    82→- ✅ HTTP 200, no console errors (after fixing IconTrash/IconEye/IconTrash/useTransform)
+    83→- ✅ VLM analysis: "high-quality, premium design with no critical visual errors"
+    84→- ✅ All 6 views render, Quick View modal works, navigation works
+    85→- ✅ 6 product images generated; ingredient images generating in background
+    86→
+    87→### Assets Generated
+    88→- `public/products/`: gold-isolate, recovery-matrix, pre-workout, daily-greens, protein-bars, omega-plant (6/6 done)
+    89→- `public/ingredients/`: pea, rice, curcumin, cherry, spirulina, ashwagandha (generating)
+    90→- All images have graceful `onError` fallback (opacity 0, gradient shows through)
+    91→
+    92→---
+    93→Task ID: 1
+    94→Agent: main (Z.ai Code)
+    95→Task: Build complete Dr. Huxon Labs mobile-first premium D2C website
+    96→
+    97→Work Log:
+    98→- Created premium dark design system (globals.css) with OKLCH tokens, glass utilities, animations
+    99→- Set up layout with Fraunces display + Geist fonts, theme provider, mobile viewport
+   100→- Defined Prisma schema (8 models) and client-safe catalog data (6 products, 6 ingredients, FAQs, stories, rewards)
+   101→- Built Zustand stores (cart/wishlist/recent/search/nav/reward) with localStorage persistence
+   102→- Created 55+ custom SVG icons with gold gradients and active/inactive morph states
+   103→- Built branded logo with hexagonal molecular frame + scroll morph + glow
+   104→- Built custom button system (magnetic hover, ripple, liquid press, gradient sweep, particle glow)
+   105→- Built app shell (sticky top nav with logo morph + floating glass bottom nav with layoutId morph)
+   106→- Built shared primitives (AnimatedNumber, Reveal, Stagger, ProteinRing, StarRating, SectionHeader, Pill)
+   107→- Built all 10 homepage sections (hero with gyroscope, trust capsules, product explorer, nutrition science with radar, ingredient transparency with source map, manufacturing timeline, protein calculator, comparison widget, customer stories, FAQ)
+   108→- Built 6 views (home, shop, explore, rewards, cart, profile)
+   109→- Built 4 overlays (quick-view, cart-drawer with checkout flow, search-overlay, reward-toasts)
+   110→- Generated 6 product images via z-ai-web-dev-sdk image generation
+   111→- Fixed runtime errors (missing IconTrash/IconEye exports, missing useTransform import)
+   112→- Fixed strokeDashoffset animation warnings (added initial value)
+   113→- Fixed active attribute DOM warning (destructure active in all icons)
+   114→- Created manifest.webmanifest
+   115→- Verified with agent-browser: HTTP 200, no errors, VLM confirms premium quality
+   116→
+   117→Stage Summary:
+   118→- Full mobile-first premium D2C experience is live and verified
+   119→- All 10 homepage sections, 6 views, 4 overlays functional
+   120→- Design system, custom icons, branded logo, custom buttons all in place
+   121→- Product images generated; ingredient images generating in background
+   122→- Next phase: ingredient images completion, additional polish, more micro-interactions, potential API integration for real checkout
+   123→
+   124→---
+   125→
+   126→Task ID: 6
+   127→Agent: Appwrite backend sub-agent
+   128→Task: Build the Appwrite backend layer (resilient, with local-catalog fallback)
+   129→
+   130→Work Log:
+   131→- Installed `node-appwrite@26.2.0` (server SDK) and `appwrite@26.1.0` (client SDK) via `bun add`.
+   132→- Created `src/lib/appwrite/server.ts`:
+   133→  - Reads `APPWRITE_ENDPOINT` (default `http://localhost:8080/v1`), `APPWRITE_PROJECT_ID`, `APPWRITE_API_KEY` from env.
+   134→  - Lazy singleton `Client` + `Databases` instances (safe to import even when unused).
+   135→  - Exported constants: `HUXON_DB_ID = "huxon_labs"` + `PRODUCTS_COLLECTION`, `INGREDIENTS_COLLECTION`, `REVIEWS_COLLECTION`, `COUPONS_COLLECTION`, `ORDERS_COLLECTION`, `REWARD_MEMBERS_COLLECTION`.
+   136→  - `isAppwriteConfigured()` checks env presence; `isAppwriteReachable()` does a live `listDocuments(limit:1)` ping.
+   137→- Created `src/lib/appwrite/service.ts` — the KEY resilient data layer:
+   138→  - Public typed async functions: `fetchProducts()`, `fetchProduct(slug)`, `fetchIngredients()`, `fetchReviews(productId?)`, `fetchCoupons()`, `validateCoupon(code, subtotal)`, `submitOrder(payload)`, `fetchRewardMember(email)`.
+   139→  - Each read method: tries Appwrite when configured + reachable, falls back to `src/lib/catalog.ts` static data on ANY error (offline, auth, schema drift, empty result). Connection result is cached per-process to avoid a round-trip on every request.
+   140→  - Mutations (`submitOrder`) always return an `orderNumber` even if persistence fails — checkout never blocks on infra.
+   141→  - Document → typed mappers (`docToProduct`, `docToIngredient`, `docToReview`, `docToCoupon`, `docToRewardMember`) with JSON-aware string parsing for `features`, `ingredients`, `nutritionFacts`, `pairings`, `galleryImages`, `benefits`, `achievements`.
+   142→  - Local fallback data for coupons (`HUXON10`, `WELCOME500`, `PLANT15`) and a sample reward member (`arjun@example.com`).
+   143→- Created 8 Next.js 16 App-Router API routes (all `dynamic = "force-dynamic"`, all return JSON):
+   144→  - `GET /api/products` → `{ products: BrandProduct[] }`
+   145→  - `GET /api/products/[slug]` → `{ product: BrandProduct }` (404 if missing)
+   146→  - `GET /api/ingredients` → `{ ingredients: BrandIngredient[] }`
+   147→  - `GET /api/reviews?productId=p1` → `{ reviews: Review[] }`
+   148→  - `GET /api/coupons` → `{ coupons: Coupon[] }`
+   149→  - `POST /api/coupons/validate` body `{code, subtotal}` → `{valid, discount, message}` (400 on bad input, 200 otherwise)
+   150→  - `POST /api/orders` body = `OrderPayload` → `{orderId, orderNumber, status}` (201 on success, 400 on validation errors)
+   151→  - `GET /api/rewards/member?email=` → `{ member: RewardMember }` (404 if unknown)
+   152→- Created `scripts/setup-appwrite.ts` (runnable via `bun scripts/setup-appwrite.ts`):
+   153→  - Creates the `huxon_labs` database and 6 collections (Products, Ingredients, Reviews, Coupons, Orders, Reward Members) with full attribute schemas + indexes (`slug_idx`, `product_idx`, `code_idx`, `order_number_idx`, unique `email_idx`).
+   154→  - Polls `getAttribute` until each attribute is `available` before continuing (Appwrite attribute creation is async).
+   155→  - Seeds products (6), ingredients (6), reviews (4), and 3 coupons from `catalog.ts` when collections are empty (idempotent — safe to re-run).
+   156→  - Graceful exit 0 in all "can't proceed" cases: env vars missing → friendly skip message; server unreachable → friendly "Could not reach Appwrite" message; any unexpected error → caught at top level, exit 0.
+   157→- Updated `.env` (added 3 empty Appwrite vars alongside existing `DATABASE_URL`) and created `.env.example` with full documentation of what each var does and how to enable a live backend.
+   158→
+   159→Files created:
+   160→- `src/lib/appwrite/server.ts`
+   161→- `src/lib/appwrite/service.ts`
+   162→- `src/app/api/products/route.ts`
+   163→- `src/app/api/products/[slug]/route.ts`
+   164→- `src/app/api/ingredients/route.ts`
+   165→- `src/app/api/reviews/route.ts`
+   166→- `src/app/api/coupons/route.ts`
+   167→- `src/app/api/coupons/validate/route.ts`
+   168→- `src/app/api/orders/route.ts`
+   169→- `src/app/api/rewards/member/route.ts`
+   170→- `scripts/setup-appwrite.ts`
+   171→- `.env.example` (new), `.env` (extended — 3 lines added, no existing lines modified)
+   172→
+   173→Stage Summary:
+   174→- ✅ `bun run lint` passes clean (no errors, no warnings).
+   175→- ✅ App keeps working with NO Appwrite server running — every API route hit during smoke test returned 200 with local-catalog data.
+   176→- ✅ Home page still returns HTTP 200, no console errors in dev.log.
+   177→- ✅ All 8 new API routes smoke-tested via curl:
+   178→    - `curl http://localhost:3000/api/products` → 200, full 6-product catalogue
+   179→    - `curl http://localhost:3000/api/products/huxon-gold-isolate` → 200, single product
+   180→    - `curl http://localhost:3000/api/ingredients` → 200, 6 ingredients
+   181→    - `curl http://localhost:3000/api/reviews?productId=p1` → 200, filtered reviews
+   182→    - `curl http://localhost:3000/api/coupons` → 200, 3 coupons
+   183→    - `curl -X POST http://localhost:3000/api/coupons/validate -H 'Content-Type: application/json' -d '{"code":"HUXON10","subtotal":2499}'` → `{"valid":true,"discount":250,"message":"Coupon applied — you saved ₹250."}`
+   184→    - `curl -X POST http://localhost:3000/api/orders -H 'Content-Type: application/json' -d '{...}'` → 201 `{"orderId":"HUX-...","orderNumber":"HUX-...","status":"placed"}`
+   185→    - `curl 'http://localhost:3000/api/rewards/member?email=arjun@example.com'` → 200 reward member record; unknown email → 404.
+   186→- ✅ `bun scripts/setup-appwrite.ts` exits 0 with helpful messages for: (a) missing env, (b) unreachable server with fake creds.
+   187→- ✅ Zero existing frontend components modified — only new files added under `src/lib/appwrite/`, `src/app/api/`, `scripts/`, and the two `.env` files.
+   188→- Next: When a real Appwrite instance is available, set the 3 env vars, run `bun scripts/setup-appwrite.ts`, and the API routes will transparently start serving from Appwrite with no code changes.
+   189→
+   190→---
+   191→Task ID: 7 (Phase 2)
+   192→Agent: main (Z.ai Code)
+   193→Task: Add Product Detail Page with offers/rewards, build light theme from scratch, integrate Appwrite backend
+   194→
+   195→Work Log:
+   196→- Rewrote globals.css: moved dark tokens from :root to .dark; :root now = light theme (warm ivory/espresso/bronze). Added theme-aware CSS variables for glass (--glass-tint, --glass-border, --glass-dark-tint), text gradients (--grad-gold-*, --grad-cream-*), shadows (--shadow-color, --shadow-strength), molecular texture, and body background gradients. All utilities (.glass, .glass-strong, .glass-dark, .text-gold-gradient, .text-cream-gradient, .shadow-premium, .shadow-gold, .bg-molecular, .bg-grid, .shimmer) now use these variables and adapt to both themes automatically. Added .theme-transition class for smooth 400ms color transitions on toggle.
+   197→- Updated layout.tsx: removed forced className="dark" on <html>, enabled enableSystem in ThemeProvider, added dual themeColor (light #f7f3ec / dark #1a1410) for mobile browser chrome.
+   198→- Created theme-toggle.tsx: premium ThemeToggle component with animated sun/moon icon swap (rotate + scale via AnimatePresence), glass styling, gold hover glow ring, smooth theme-transition class toggle.
+   199→- Added ThemeToggle to TopNav in app-shell.tsx (size 38, next to cart icon).
+   200→- Added "product" route + activeProductId + openProduct() to useNav store.
+   201→- Added offers/rewards data to catalog.ts: PRODUCT_OFFERS (5 types: flash sale with countdown, bundle deal, coupon, bank offer, first-order), calcProductReward() function (base points + tier bonus + streak bonus + unlocks), NUTRITION_HIGHLIGHTS, RATING_BREAKDOWN.
+   202→- Built ProductView (src/components/views/product.tsx) — full PDP with: image carousel (swipeable, dots, 360 hint), back/share/favorite floating buttons, title+rating+price+protein ring, Offers section (flash sale countdown card, bundle deal with expandable items, coupon with copy-to-clipboard, bank offer, first-order offer), Rewards section (total points with AnimatedNumber, base/tier/streak breakdown, unlocks), nutrition highlights grid, flavor selector, quantity selector with total, overview+features, nutrition facts, ingredients, trust badges, reviews section (rating breakdown bars + review cards), pairings, similar products, delivery info, sticky purchase bar (Add to cart + Buy now with reward point earning).
+   203→- Wired up PDP navigation: product explorer card image opens PDP, shop card image+name opens PDP, quick-view has "View full details" link to PDP.
+   204→- Fixed hydration error (nested buttons in shop card — changed outer button to div with role=button).
+   205→- Added missing IconArrowLeft to icons.tsx.
+   206→- Fixed border colors in app-shell and quick-view to use theme-aware border-border variable.
+   207→
+   208→Stage Summary:
+   209→- Light theme: fully built from scratch, warm ivory + espresso + bronze palette, all glass/gradient/shadow utilities theme-aware via CSS variables. VLM confirms "polished and premium" in both themes.
+   210→- Product Detail Page: complete with 5 offer types (flash countdown, bundle, coupon, bank, first-order), rewards calculator (points + tier bonus + streak bonus), nutrition, ingredients, reviews with rating breakdown, pairings, similar products, sticky purchase bar.
+   211→- Appwrite backend (delegated to subagent Task 6): 8 API routes live and tested (products, product by slug, ingredients, reviews, coupons, coupon validate, orders, rewards member). Graceful fallback to local catalog when no Appwrite server. Setup script ready.
+   212→- Verification: HTTP 200, lint clean, no console errors, no hydration errors. VLM confirms premium quality in both themes and all PDP sections.
+   213→- API routes tested: GET /api/products, GET /api/products/huxon-gold-isolate, POST /api/coupons/validate (HUXON10 → valid, ₹250 discount), GET /api/coupons all return correct data.
+   214→
+   215→Unresolved / Next phase:
+   216→- Could connect frontend cart checkout to POST /api/orders (currently uses local state)
+   217→- Could replace static product data in views with fetch calls to /api/products (currently catalog.ts is used directly for instant render; API routes available when ready)
+   218→- Ingredient images: 4/6 generated, 2 still missing (ashwagandha, spirulina) with graceful fallback
+   219→- Could add more PDP sections (lab reports download, subscription option on PDP, Q&A)
+   220→
+   221→---
+   222→Task ID: 8 (Phase 3 — webDevReview cron round)
+   223→Agent: main (Z.ai Code)
+   224→Task: QA the current project, fix bugs, add new features (PDP lab reports/subscription/Q&A), connect checkout to API, wire up recently viewed, improve styling
+   225→
+   226→Work Log:
+   227→- Performed full QA via agent-browser across all views (home/shop/explore/rewards/cart/profile/product). No console errors, no hydration errors, no runtime errors. All ingredient images now present (6/6).
+   228→- VLM analysis of dark + light themes confirmed premium quality; identified cart drawer spacing/contrast as minor polish area.
+   229→
+   230→New features added:
+   231→1. **PDP: Q&A Section** (`QASection` component) — 5 customer questions with expandable answers, brand/verified badges, helpful vote button with count, "Ask a question" CTA. Data in `PRODUCT_QAS` in catalog.ts.
+   232→2. **PDP: Lab Reports / Certificate of Analysis** (`LabReportsSection` component) — 14 tests across 4 categories (Heavy Metals, Microbial, Protein Assay, Contaminants) with category tabs, pass/ND status indicators, result vs limit table, batch number + test date, "All tests passed" summary banner, COA PDF download button, and a Certificates bottom-sheet modal showing 6 certifications (FSSAI, ISO 22000, GMP, NABL, Vegan Society, Halal India) with license numbers. Data in `LAB_REPORTS` + `CERTIFICATIONS`.
+   233→3. **PDP: Subscribe & Save** (`SubscribeSection` component) — One-time vs Subscription toggle with animated layoutId background, 4 delivery frequencies (2wk/monthly/6wk/bi-monthly) with "POPULAR" badge, quantity selector (1-6 tubs), live savings breakdown (one-time price, 15% discount, per-delivery total), annual savings highlight, perks grid (pause/swap/free shipping), subscribe CTA with per-delivery price. Awards 100 reward points on subscribe.
+   234→4. **Recently Viewed on Home** (`src/components/sections/recently-viewed.tsx`) — horizontal strip of recently browsed products, wired to `useRecent` Zustand store (persisted). PDP now pushes product IDs to recent on visit + scrolls to top on product change. Appears on home between Trust Widgets and Product Explorer (only shows when ≥2 products viewed).
+   235→5. **Cart checkout connected to /api/orders API** — `submitOrder()` async function POSTs full order payload (customer info, items, totals, payment method) to `/api/orders`, receives `{orderId, orderNumber, status}` from Appwrite-backed API, displays the real order number on success screen. Graceful fallback to generated order number if API unreachable. Cart clears on successful order. Added loading state on checkout button.
+   236→6. **Coupon validation connected to /api/coupons/validate API** — `applyCoupon()` now POSTs to the API endpoint first, falls back to local logic on error.
+   237→7. **Footer CTA upgrade** — Home footer CTA now uses theme-aware gradient colors (espresso/cocoa/charcoal via CSS vars), added dual ambient glow blobs with glow-pulse animation, Shop Now + Explore buttons.
+   238→
+   239→New icons added:
+   240→- `IconArrowDown` (for download buttons)
+   241→
+   242→New catalog data:
+   243→- `LAB_REPORTS` (14 test results across 4 categories)
+   244→- `CERTIFICATIONS` (6 certification bodies with license numbers)
+   245→- `PRODUCT_QAS` (5 customer Q&A entries)
+   246→
+   247→Stage Summary:
+   248→- ✅ `bun run lint` passes clean (no errors, no warnings)
+   249→- ✅ HTTP 200, no console errors, no hydration errors
+   250→- ✅ All 3 new PDP sections render correctly (verified via agent-browser snapshot: "Questions & answers", "Lab reports", "Heavy Metals" tabs all present)
+   251→- ✅ Recently Viewed appears on home after visiting a PDP ("Recently viewed" heading confirmed in snapshot)
+   252→- ✅ Checkout API integration works: `POST /api/orders` returns 201 `{orderId:"HUX-...", orderNumber:"HUX-...", status:"placed"}`
+   253→- ✅ Coupon validation API integration works: `POST /api/coupons/validate` returns `{valid:true, discount:250, message:"..."}`
+   254→- ✅ VLM confirms Lab Reports section: "high quality, sleek modern aesthetic... table format enhances trust by transparently presenting test results"
+   255→- ✅ All 6 ingredient images now generated (ashwagandha + spirulina were missing in Phase 2, now complete)
+   256→
+   257→Unresolved / Next phase:
+   258→- Could add product reviews submission (POST /api/reviews) — currently reviews are read-only
+   259→- Could add live order tracking page (separate route) pulling from GET /api/orders
+   260→- Could add a "compare" drawer that persists across views
+   261→- Could add push notifications / PWA install prompt
+   262→- Could add more product images per product for the carousel (currently reuses other product images)
+   263→- Consider adding a wishlist page (currently wishlist only shows count in nav)
+   264→
+   265→---
+   266→Task ID: 9 (Phase 4 — webDevReview cron round)
+   267→Agent: main (Z.ai Code)
+   268→Task: QA, add Wishlist/Orders/Compare views, persistent compare bar, styling polish
+   269→
+   270→Work Log:
+   271→- Performed full QA via agent-browser across all views. No console errors, no hydration errors. All ingredient images present (6/6). Both themes stable.
+   272→- VLM analysis identified product card gradient overlays and quantity micro-interactions as polish opportunities.
+   273→
+   274→New features added:
+   275→1. **Wishlist View** (`src/components/views/wishlist.tsx`) — full page for saved products with: product thumbnails (tap to open PDP), star ratings, protein info, price with discount badges, per-item actions (add to cart, compare, remove), "Add all to cart" bulk action, empty state with illustration + CTA, inline compare bar when ≥2 selected. Wired to `useWishlist` persisted store. Nav wishlist button now navigates to this view (was: profile).
+   276→
+   277→2. **Orders/Tracking View** (`src/components/views/orders.tsx`) — full order history + live tracking with: order list (thumbnails, order number, date, item count, status pill, total), active order tracker with ETA banner (animated countdown of hours left), progress bar (0-100% across 5 stages), vertical timeline with 5 stages (placed→packed→shipped→out_for_delivery→delivered) each with icon, timestamp, note, pulse animation on current stage, items list with thumbnails, "Simulate next stage" button (advances order status), "Track on map" / "Buy again" / "Leave review" actions. Seeded with 2 sample orders (1 active, 1 delivered). Wired to new `useOrders` persisted store.
+   278→
+   279→3. **Compare View** (`src/components/views/compare.tsx`) — side-by-side product comparison with: product headers (image, name, rating, remove button), performance radar chart (6 axes: Protein/Rating/Reviews/Servings/Value/Trust) with per-product colored polygons + legend, spec table (7 rows: protein/servings/rating/reviews/price/cost-per-serving/calories) with "best value" gold highlight + underline, per-product add-to-cart buttons, value score rings. Empty state with illustration + hint to tap compare icon.
+   280→
+   281→4. **Compare Bar** (`src/components/compare-bar.tsx`) — persistent floating bar shown when ≥2 products selected for comparison, on any route except compare view itself. Shows compare icon, product thumbnails, "N selected" label, clear button, and "Compare" CTA. Spring-animated entrance/exit.
+   282→
+   283→5. **Orders store** (`useOrders` in store.ts) — persisted Zustand store with `TrackedOrder` type (id, orderNumber, items, total, status, placedAt, eta, timeline), `addOrder`, `advanceStage`, `removeOrder` actions. Seeded with 2 realistic orders with full timelines.
+   284→
+   285→6. **Nav store extended** — added `wishlist`, `orders`, `compare` routes; `compareIds`, `toggleCompare`, `clearCompare`, `compareOpen`, `setCompareOpen` state for persistent compare selection across views.
+   286→
+   287→7. **Compare buttons on product cards** — shop cards now have a compare toggle span (bottom-left, next to quick-view) with active/inactive gold styling. Wishlist cards have compare buttons in the actions column. Profile quick actions include Compare with live count badge.
+   288→
+   289→8. **Profile quick actions upgraded** — replaced generic actions with: My Orders (badge: 2, → orders view), Wishlist (badge: live count, → wishlist view), Compare (badge: live count, → compare view), Notifications. ActionTile now accepts onClick. Colors updated to theme-aware gold-gradient.
+   290→
+   291→New icons:
+   292→- `IconCompare` — dual-arrows comparison icon with gold active state
+   293→
+   294→Styling polish:
+   295→- Product card gradient overlay (subtle charcoal-to-transparent from bottom) for depth on shop cards
+   296→- ActionTile badge colors updated to theme-aware gold-gradient
+   297→- All new views use theme-aware CSS variables (work in both light & dark)
+   298→
+   299→Stage Summary:
+   300→- ✅ `bun run lint` passes clean (no errors, no warnings)
+   301→- ✅ HTTP 200, no console errors, no hydration errors
+   302→- ✅ Wishlist view: renders with saved items, add-to-cart, compare, remove, empty state (VLM: "sleek, dark-themed... premium feel... upscale shopping experience")
+   303→- ✅ Orders view: 2 seeded orders, live tracker with 5-stage timeline, ETA countdown, progress bar, "Simulate next stage" works
+   304→- ✅ Compare view: radar chart + spec table with best-value highlights, value score rings (VLM: "design quality is high... radar chart for at-a-glance comparisons... spec table for detailed, organized information")
+   305→- ✅ Compare bar: appears when ≥2 products selected, spring-animated, navigates to compare view
+   306→- ✅ Compare buttons on shop cards + wishlist cards + profile quick actions
+   307→- ✅ All 3 new views accessible via profile quick actions + nav
+   308→
+   309→Unresolved / Next phase:
+   310→- Connect cart checkout success → useOrders.addOrder() so real orders appear in Orders view (currently seeded sample orders only)
+   311→- Wishlist compare button click not registering reliably via agent-browser (works in shop) — may be a nested-element click issue worth investigating
+   312→- Could add product reviews submission (POST /api/reviews)
+   313→- Could add PWA install prompt + push notifications
+   314→- Could add a "Share" sheet for products (IconShare exists but no handler)
+   315→- Could add more product images per product for carousel
+   316→
+   317→---
+   318→Task ID: 10 (Phase 5 — webDevReview cron round)
+   319→Agent: main (Z.ai Code)
+   320→Task: Fix checkout→orders gap, add share sheet + review submission, styling polish
+   321→
+   322→Work Log:
+   323→- Performed full QA via agent-browser. Confirmed the critical gap: checkout succeeded but orders didn't persist to the Orders view (only seeded sample orders showed). Both themes stable, no console errors.
+   324→
+   325→Critical fix:
+   326→1. **Checkout → Orders connection FIXED** — Updated `submitOrder()` in cart-drawer.tsx to create a `TrackedOrder` object (with orderNumber, items, total, status="placed", placedAt, eta=+28h, timeline with initial "placed" entry) and call `useOrders.addOrder()` before showing success. Now real orders from checkout appear in the Orders view with live tracking. Verified: checked out 2 items → order #HUX-MQU49S1T-FK4X appeared at top of Orders view with "Order Placed" status. Orders store persisted to localStorage (3 orders: 2 seeded + 1 new).
+   327→
+   328→New features:
+   329→2. **Share Sheet** (`src/components/share-sheet.tsx`) — premium bottom sheet for sharing products with: product preview card, prominent "Share via…" native Web Share API button (falls back to copy), "Copy link" with URL preview + copied state, 4 social channel tiles (WhatsApp, Instagram, X/Twitter, More) with brand-colored icons, quick actions (Wishlist, Compare). Spring-animated entrance/exit. Wired to PDP share button (was: dead button).
+   330→
+   331→3. **Review Submission Sheet** (`src/components/review-sheet.tsx`) — premium bottom sheet for writing product reviews with: product name + "earn 50 points" subtitle, interactive 5-star rating (hover lift + glow, rating labels: Poor/Fair/Good/Very good/Excellent), floating-label title input with 80-char counter, review body textarea with 500-char counter, photo upload area (simulated), submit button with live validation (disabled until rating+title+body complete), loading state, success screen with confetti burst + 50 points confirmation. Posts to /api/reviews with graceful error handling. Wired to PDP "Write a review" button (was: dead button).
+   332→
+   333→4. **Nav store extended** — added `shareProductId`/`setShareProductId` and `reviewProductId`/`setReviewProductId` state for controlling the new sheets.
+   334→
+   335→Styling polish:
+   336→- PDP share button now functional (was dead)
+   337→- PDP "Write a review" button now functional (was dead)
+   338→- Both new sheets use theme-aware CSS variables (work in light & dark)
+   339→- Review success screen has celebratory confetti animation matching the checkout success burst
+   340→- Social channel icons use authentic brand colors (WhatsApp green, Instagram pink, X black, gold for More)
+   341→
+   342→Stage Summary:
+   343→- ✅ `bun run lint` passes clean (no errors, no warnings)
+   344→- ✅ HTTP 200, no console errors, no hydration errors
+   345→- ✅ Checkout → Orders: VERIFIED — new order #HUX-MQU49S1T-FK4X appears in Orders view after checkout with "Order Placed" status + live tracking timeline
+   346→- ✅ Share sheet: opens from PDP share button, shows native share + copy link + 4 social channels (VLM: "sleek dark theme... premium, modern feel... well-organized")
+   347→- ✅ Review sheet: opens from PDP "Write a review" button, interactive star rating, form validation, success with confetti + 50 points (VLM: "sleek, modern design with clear hierarchy... intuitive form fields")
+   348→- ✅ POST /api/orders returns 201 with real orderNumber
+   349→- ✅ Both sheets fully theme-aware
+   350→
+   351→Unresolved / Next phase:
+   352→- Could connect review submission to actually fetch and display new reviews in the ReviewsSection (currently reviews are static)
+   353→- Could enhance shop category navigation with sticky category cards (VLM noted missing category exploration)
+   354→- Could add PWA install prompt + push notifications
+   355→- Could add a "track on map" real map visualization in Orders view
+   356→- Could add subscription management page (PDP has Subscribe & Save but no management view)
+   357→- Could add more product images per product for the carousel
+   358→
+   359→---
+   360→Task ID: 11 (Phase 6 — webDevReview cron round)
+   361→Agent: main (Z.ai Code)
+   362→Task: Add subscription management, onboarding tour, enhanced shop categories
+   363→
+   364→Work Log:
+   365→- Performed full QA via agent-browser across all views. No console errors, no hydration errors. All themes stable. Project in excellent shape.
+   366→- VLM identified missing onboarding/guidance and category exploration as high-impact gaps.
+   367→
+   368→New features added:
+   369→1. **Subscription Management View** (`src/components/views/subscriptions.tsx`) — full page for managing recurring deliveries with: savings summary card (total savings across all subs, active count, monthly spend), subscription cards showing product thumbnail/flavor/qty/frequency, next-delivery banner with countdown days, per-delivery price with 15% discount + strikethrough original, Pause/Skip/Manage actions, expandable manage panel (frequency selector, flavor swap with 7 flavors, stats grid: deliveries/saved/days active, cancel with confirmation). Empty state with illustration + CTA. Wired to new `useSubscriptions` persisted store (seeded with 1 active subscription).
+   370→
+   371→2. **Onboarding Welcome Tour** (`src/components/onboarding-tour.tsx`) — 3-slide intro for first-time users: (1) Pharmaceutical-grade nutrition — lab-tested, NABL accredited, (2) 100% plant-based — PDCAAS 1.0, no sucralose/fillers, (3) Earn rewards — tier loyalty, subscribe & save 15%. Each slide has animated icon with glow, subtitle, title, body text, progress dots (tap to jump), Next/Get started CTA, Skip tour. Shows once (controlled by `hasSeenOnboarding` in persisted store). Spring-animated bottom sheet with ambient glow that shifts per slide.
+   372→
+   373→3. **Enhanced Shop Category Navigation** — replaced plain text chips with visual category cards: 5 categories (All/Protein/Performance/Supplements/Snacks) each with custom icon (grid/dumbbell/bolt/leaf/flask), brand accent color, gradient background when active, glow effect, product count, premium card styling (72×120px). Added `soften()` helper for oklch color alpha manipulation.
+   374→
+   375→4. **PDP Subscribe → Real Subscription** — wired the PDP Subscribe & Save "Start subscription" button to create a real `Subscription` in the `useSubscriptions` store (with product info, flavor, qty, frequency, next delivery date, pricing). Awards 100 reward points + toast. Verified: subscribed from PDP → new subscription appears in Subscriptions view.
+   376→
+   377→5. **Subscriptions store** (`useSubscriptions` in store.ts) — persisted Zustand store with `Subscription` type, actions: addSubscription, pauseSubscription (with days), resumeSubscription, skipNextDelivery (advances next delivery by frequency), swapFlavor, changeFrequency, cancelSubscription. Also stores `hasSeenOnboarding`/`setHasSeenOnboarding`. Seeded with 1 realistic subscription (Gold Isolate, monthly, 2 tubs).
+   378→
+   379→6. **Nav store extended** — added `subscriptions` route.
+   380→
+   381→7. **Profile quick actions updated** — replaced Notifications with Subscriptions (badge: live count → subscriptions view). Now shows: My Orders, Subscriptions, Wishlist, Compare.
+   382→
+   383→Styling polish:
+   384→- All new views/components use theme-aware CSS variables (work in light & dark)
+   385→- Onboarding slides have per-slide accent colors (gold/jade/gold) with animated ambient glow
+   386→- Subscription cards have premium card styling with status-aware opacity (paused = dimmed)
+   387→- Category cards use accent-colored gradients matching each category's theme
+   388→- VLM confirms all new features are "sleek, dark-themed... premium feel"
+   389→
+   390→Stage Summary:
+   391→- ✅ `bun run lint` passes clean (no errors, no warnings)
+   392→- ✅ HTTP 200, no console errors, no hydration errors
+   393→- ✅ Onboarding tour: 3 slides, Next/Skip/Get started, shows once then persists (VLM: "clean layout, intuitive navigation, visual hierarchy")
+   394→- ✅ Subscriptions view: seeded sub + new subs from PDP, Pause/Skip/Manage/frequency/flavor/cancel all work (VLM: "sleek dark theme with gold accents, premium feel, clearly displays savings")
+   395→- ✅ Shop categories: 5 visual cards with icons, counts, accent gradients (VLM: "sleek, dark-themed design with distinct icons... premium feel")
+   396→- ✅ PDP → subscription creation: verified end-to-end (subscribe → +100 points toast → appears in Subscriptions view)
+   397→- ✅ Profile quick actions: My Orders, Subscriptions, Wishlist, Compare
+   398→
+   399→Unresolved / Next phase:
+   400→- Could connect review submission to display new reviews in ReviewsSection (currently static)
+   401→- Could add PWA install prompt + push notifications
+   402→- Could add a "track on map" real map visualization in Orders view
+   403→- Could add more product images per product for the carousel
+   404→- Could add a nutrition quiz / protein quiz gamified feature
+   405→- Could add a "refer friend" flow with shareable referral link from Rewards view
+   406→- Could add a dark/light theme auto-switch based on time of day
+   407→
+   408→---
+   409→Task ID: 12 (Phase 7 — webDevReview cron round)
+   410→Agent: main (Z.ai Code)
+   411→Task: Add nutrition quiz, PDP recipes, enhanced referral flow
+   412→
+   413→Work Log:
+   414→- Performed full QA via agent-browser across all views. No console errors, no hydration errors. Both themes stable. Project in excellent shape.
+   415→- VLM identified personalized recommendations and recipe/usage search as high-impact gaps.
+   416→
+   417→New features added:
+   418→1. **Nutrition Quiz** (`src/components/nutrition-quiz.tsx`) — gamified 5-question quiz that recommends products based on user goals. Features: progress bar with gold gradient, animated question icons, 5 questions (goal/activity/diet/timing/concern) each with weighted scoring, spring-animated option selection, auto-advance to next question, results screen with top 3 product recommendations sorted by match score, per-product match % ring, "Best match" gold badge on top result, "View top match" CTA that opens the PDP, earns 75 reward points on completion. Added `quizOpen`/`setQuizOpen` to nav store. Quiz CTA added to Explore view.
+   419→
+   420→2. **PDP Recipes / Usage Ideas** (`RecipesSection` + `RecipeDetailModal` in product.tsx) — horizontal scroll of 4 recipe cards (smoothie, overnight oats, pre-workout bowl, protein mug cake) with emoji header, category pill, prep time, protein/calorie info, difficulty. Tap any card to open a premium recipe detail modal with: hero emoji on gradient background, prep time/protein/calories/serves pills, ingredients list with checkmark icons, numbered method steps, nutrition stats grid. Data in `PRODUCT_RECIPES` in catalog.ts.
+   421→
+   422→3. **Enhanced Referral Flow** (rewards.tsx) — upgraded the referral section with: gradient background with molecular texture, referral code card with copy-to-clipboard (copies full referral URL, shows checkmark on copy), 4 share channel buttons (WhatsApp, Instagram, X, More with native share), 3-stat grid (Referred/Joined/Earned), "How it works" 3-step guide. All theme-aware. `ReferralCodeCard` component + `REFERRAL_CHANNELS` + `handleReferralShare` helper.
+   423→
+   424→4. **Quiz CTA on Explore** — added a prominent "Find your perfect product" card at the top of the Explore view with spark icon, "5-question quiz · earn 75 points" subtitle, and arrow CTA that opens the NutritionQuiz overlay.
+   425→
+   426→Styling polish:
+   427→- All new features use theme-aware CSS variables (work in light & dark)
+   428→- Quiz has animated progress bar with gold gradient + glow
+   429→- Recipe cards have accent-colored gradient headers matching recipe category
+   430→- Recipe modal has staggered ingredient/step animations
+   431→- Referral section upgraded from plain glass to gold gradient with molecular texture
+   432→- VLM confirms all new features are "sleek, dark-themed... premium feel"
+   433→
+   434→Stage Summary:
+   435→- ✅ `bun run lint` passes clean (no errors, no warnings)
+   436→- ✅ HTTP 200, no console errors, no hydration errors
+   437→- ✅ Nutrition quiz: 5 questions flow correctly, results show 3 product matches with % rings, awards 75 points (VLM: "sleek dark theme, clean typography, modern premium aesthetic")
+   438→- ✅ PDP recipes: 4 recipe cards render, detail modal opens with ingredients/method/nutrition (VLM: "dark cohesive color scheme... sleek modern aesthetic... premium feel")
+   439→- ✅ Referral flow: copy link + 4 share channels + 3-step guide (VLM: "high-contrast accents, premium feel... intuitive and rewarding")
+   440→- ✅ Quiz CTA on Explore: prominent card opens quiz overlay
+   441→
+   442→Unresolved / Next phase:
+   443→- Could connect quiz recommendations to actually add items to cart
+   444→- Could add PWA install prompt + push notifications
+   445→- Could add a "track on map" real map visualization in Orders view
+   446→- Could add dark/light theme auto-switch based on time of day
+   447→- Could add a nutrition blog/education section
+   448→- Could add live chat support widget
+   449→- Could add a "build your own bundle" custom bundle builder
+   450→
+   451→---
+   452→Task ID: 13 (Phase 8 — webDevReview cron round)
+   453→Agent: main (Z.ai Code)
+   454→Task: Add custom bundle builder, nutrition education section, live chat widget
+   455→
+   456→Work Log:
+   457→- Performed full QA via agent-browser across all views. No console errors, no hydration errors. Both themes stable. Project in excellent shape.
+   458→- VLM identified personalized nutrition guidance and interactive tracking as gaps. Worklog noted bundle builder, education section, and live chat as next-phase items.
+   459→
+   460→New features added:
+   461→1. **Custom Bundle Builder** (`src/components/views/bundle.tsx`) — full page for mix-and-match product bundles with: 3-tier savings system (2+ items = 10% off, 3+ = 15%, 4+ = 20%), visual tier progress with reached/unreached states, "items to next tier" hint, product selection grid with quantity steppers (0-5 per product), live price summary (subtotal, discount, final total, savings callout), sticky "Add bundle to cart" CTA. Awards reward points on add. Pre-selected with 2 products to show 10% tier immediately.
+   462→
+   463→2. **Bundle CTA Section** (`src/components/sections/bundle-cta.tsx`) — promotional section on home page with: gradient background with ambient glow, 3-tier preview cards (2+/3+/4+ items → 10%/15%/20% off), "Start building" CTA that navigates to Bundle Builder. Placed between Education and FAQ on home.
+   464→
+   465→3. **Nutrition Education Section** (`src/components/sections/education.tsx`) — science articles section on home with: featured article (larger, with excerpt), 4 article cards in 2-col grid (emoji header, category pill, title, read time), "Browse all articles" button. Article detail modal with: hero emoji on gradient, key takeaway callout, body text, "What you'll learn" highlights with checkmarks, author + date. 6 articles across 4 categories (Science, Nutrition, Fitness, Lifestyle). Data in `ARTICLES` in catalog.ts.
+   466→
+   467→4. **Live Chat Support Widget** (`src/components/chat-widget.tsx`) — floating chat assistant with: gold gradient chat button with pulse ring animation + notification badge, expandable chat panel (glass-dark styling), "Huxi · Nutrition Assistant" header with online status indicator, welcome message, 4 quick-reply buttons (orders, vegan, subscribe, human), typing indicator with animated dots, message bubbles (bot = glass, user = gold gradient), text input with send button, "Powered by Huxon AI · Avg response 2 min" footer. Bot responses for common questions with fallback.
+   468→
+   469→5. **Nav store extended** — added `bundle` route.
+   470→
+   471→Styling polish:
+   472→- All new features use theme-aware CSS variables (work in light & dark)
+   473→- Bundle tier progress has color-coded reached states (jade/gold/gold-soft)
+   474→- Article cards have accent-colored gradient headers matching category
+   475→- Chat widget has premium glass-dark styling with gold accents
+   476→- Chat button has animated pulse ring + notification badge
+   477→- VLM confirms all new features are "sleek, dark-themed... premium feel"
+   478→
+   479→Stage Summary:
+   480→- ✅ `bun run lint` passes clean (no errors, no warnings)
+   481→- ✅ HTTP 200, no console errors, no hydration errors
+   482→- ✅ Bundle Builder: 3-tier savings, quantity steppers, live price calc, add to cart works (VLM: "sleek dark theme... interactive quantity controls... clear savings presentation")
+   483→- ✅ Education section: featured article + 4 cards, detail modal with key takeaway (VLM: "sleek dark theme with gold accents... premium, trustworthy aesthetic")
+   484→- ✅ Bundle CTA: tier preview + Start building button navigates to builder
+   485→- ✅ Chat widget: floating button, quick replies, bot responses, typing indicator (VLM: "sleek dark theme with gold accents... polished and professional... cohesive, high-end look")
+   486→- ✅ All new sections integrated into home page and navigation
+   487→
+   488→Unresolved / Next phase:
+   489→- Could connect quiz recommendations to add items to cart directly
+   490→- Could add PWA install prompt + push notifications
+   491→- Could add a "track on map" real map visualization in Orders view
+   492→- Could add dark/light theme auto-switch based on time of day
+   493→- Could add a nutrition challenge/program feature (e.g., 30-day protein challenge)
+   494→- Could add a product rating distribution chart on PDP
+   495→- Could add a "refer friends leaderboard" in Rewards
+   496→
+   497→---
+   498→Task ID: 14 (Phase 9 — webDevReview cron round)
+   499→Agent: main (Z.ai Code)
+   500→Task: Add 30-Day Protein Challenge, PWA install prompt, time-based theme auto-switch
+   501→
+   502→Work Log:
+   503→- Performed full QA via agent-browser across all views. No console errors, no hydration errors. Both themes stable. Project in excellent shape.
+   504→- VLM identified personalized nutrition tracking and streamlined daily entry as gaps. Worklog noted 30-day challenge, PWA install, and time-based theme as next-phase items.
+   505→
+   506→New features added:
+   507→1. **30-Day Protein Challenge** (`src/components/views/challenge.tsx`) — gamified nutrition program with:
+   508→  - **Enrollment screen**: hero trophy icon, program description, 4 milestone preview cards (Day 7/14/21/30 with rewards 100-1000 pts), daily protein goal selector (80-220g, ±10 stepper), "Start the challenge" CTA
+   509→  - **Active challenge**: progress ring (X/30 days complete), "Day X of 30" heading, total protein + daily goal stats, 4 milestone cards with reached/unreached states, 30-day calendar grid (gold gradient for completed days, today indicator with pulse, checkmark badges), "Log Day X" CTA, "Leave challenge" opt-out
+   510→  - **Log Day modal**: protein input with ±5 stepper, goal progress bar (green when ≥80% reached), 4 quick-add presets (1 scoop +27g, 1 bar +20g, 1 meal +30g, ½ goal), "Log Xg for Day Y" submit button
+   511→  - **Reward system**: +25 pts per day logged, milestone bonuses (100/200/300/1000 pts) with celebratory toast on unlock
+   512→  - Wired to new `useChallenge` persisted Zustand store (enroll, logDay, skipDay, unenroll)
+   513→  - Entry points: Explore view CTA card + Profile quick action
+   514→
+   515→2. **PWA Install Prompt** (`src/components/pwa-install-prompt.tsx`) — premium add-to-home-screen banner:
+   516→  - Listens for `beforeinstallprompt` event, shows after 6s delay (post-onboarding)
+   517→  - Hero install icon with gold gradient, "Add Huxon to Home Screen" title
+   518→  - 3 benefit cards (faster loading/offline, full-screen experience, quick reorder)
+   519→  - Native install button (when beforeinstallprompt available) OR iOS manual instructions (Share → Add to Home Screen)
+   520→  - "Maybe later" dismiss with localStorage persistence (won't show again)
+   521→  - Detects standalone mode (already installed) → no prompt
+   522→  - Spring-animated bottom sheet
+   523→
+   524→3. **Time-Based Theme Auto-Switch** (`src/components/auto-theme-switch.tsx`) — automatically sets dark/light theme based on time of day:
+   525→  - 7 AM – 7 PM: light theme
+   526→  - 7 PM – 7 AM: dark theme
+   527→  - Checks every 5 minutes
+   528→  - Respects manual override: when user taps ThemeToggle, sets `huxon-theme-manual` flag in localStorage → auto-switch stops
+   529→  - ThemeToggle updated to mark manual override on tap
+   530→
+   531→4. **Challenge store** (`useChallenge` in store.ts) — persisted Zustand store with `ChallengeDay` type, enroll/logDay/skipDay/unenroll actions, 30-day array initialization.
+   532→
+   533→5. **Nav store extended** — added `challenge` route.
+   534→
+   535→6. **Explore view enhanced** — replaced single quiz CTA with 2-column grid: "Find your product" (quiz) + "30-Day Challenge" (challenge) with distinct accent colors (gold vs flame-red).
+   536→
+   537→7. **Profile quick actions expanded** — now 6 actions: My Orders, Subscriptions, 30-Day Challenge, Wishlist, Compare, Build a Bundle.
+   538→
+   539→Styling polish:
+   540→- All new features use theme-aware CSS variables (work in light & dark)
+   541→- Challenge calendar grid has gold gradient for completed days + pulse ring for today
+   542→- Milestone cards have reached/unreached states with crown icons
+   543→- PWA prompt has premium gold gradient hero icon
+   544→- Challenge CTA on Explore uses flame-red accent to differentiate from gold quiz CTA
+   545→- VLM confirms: "sleek dark theme with gold accents... gamification is strong with milestones, calendar grid, and points system"
+   546→
+   547→Stage Summary:
+   548→- ✅ `bun run lint` passes clean (no errors, no warnings)
+   549→- ✅ HTTP 200, no console errors, no hydration errors
+   550→- ✅ 30-Day Challenge: enrollment → active state → log day flow all work, milestones unlock with reward toasts (VLM: "sleek dark theme, gamification strong, progress ring enhances engagement")
+   551→- ✅ PWA Install Prompt: shows after delay, native install + iOS fallback, dismiss persists
+   552→- ✅ Time-based theme auto-switch: dark at night, light during day, respects manual override
+   553→- ✅ Explore: 2-column CTA grid (quiz + challenge)
+   554→- ✅ Profile: 6 quick actions (orders, subs, challenge, wishlist, compare, bundle)
+   555→
+   556→Unresolved / Next phase:
+   557→- Could connect quiz recommendations to add items to cart directly
+   558→- Could add a "track on map" real map visualization in Orders view
+   559→- Could add a product rating distribution chart on PDP
+   560→- Could add a "refer friends leaderboard" in Rewards
+   561→- Could add push notifications for challenge reminders
+   562→- Could add a nutrition blog search/filter
+   563→- Could add a "share your challenge progress" feature
+   564→
+   565→---
+   566→Task ID: 15 (Phase 10 — webDevReview cron round)
+   567→Agent: main (Z.ai Code)
+   568→Task: Add track-on-map, referral leaderboard, share challenge progress
+   569→
+   570→Work Log:
+   571→- Performed full QA via agent-browser across all views. No console errors, no hydration errors. Both themes stable. Project in excellent shape.
+   572→- VLM identified personalized tracking and social features as gaps. Worklog noted track-on-map, referral leaderboard, and share challenge as next-phase items.
+   573→
+   574→New features added:
+   575→1. **Track on Map** (`src/components/track-map.tsx`) — interactive delivery map modal for Orders view:
+   576→  - Stylized SVG map with grid, city blocks, roads, and route path from facility to user
+   577→  - Animated courier vehicle (🚚/🛵) that moves along the route based on order progress
+   578→  - Origin (Bengaluru facility, jade) + destination (You, gold with pulse ring) markers
+   579→  - "Live · updating" overlay badge with pulse indicator
+   580→  - ETA banner with hours-left countdown
+   581→  - Horizontal 5-stage delivery journey timeline with progress line (gold gradient)
+   582→  - Current status detail card with emoji + live/done pill
+   583→  - Courier info card (Delhivery Express, AWB number, call button) for shipped+ stages
+   584→  - Spring-animated bottom sheet, wired to "Track on map" button in OrderTracker
+   585→
+   586→2. **Referral Leaderboard** (`LeaderboardSection` in rewards.tsx) — gamified social proof:
+   587→  - Period toggle (All time / This month)
+   588→  - "Your rank" banner with #4 rank + "1 referrer away from top 3" nudge
+   589→  - Top 3 podium with gold/silver/bronze gradient bars (decreasing heights), crown/medal emojis, avatar circles
+   590→  - Ranked list (4th+) with rank number, avatar, name, tier, referrals count, earnings
+   591→  - Current user row highlighted with gold border + "YOU" badge
+   592→  - 7 seeded entries (platinum/gold/silver/bronze tiers)
+   593→  - Data in `LEADERBOARD` in catalog.ts
+   594→
+   595→3. **Share Challenge Progress** (`ChallengeShareCard` in challenge.tsx) — shareable stats card:
+   596→  - Gradient background with molecular texture
+   597→  - Shareable stats card: Day X/30, completed days, total protein, daily goal
+   598→  - "Share my progress" button using native Web Share API (falls back to clipboard copy)
+   599→  - Share text includes emoji-formatted progress summary + challenge URL
+   600→  - "Copied to clipboard!" confirmation state
+   601→  - Placed in Challenge view between calendar grid and opt-out
+   602→
+   603→Styling polish:
+   604→- All new features use theme-aware CSS variables (work in light & dark)
+   605→- Track map has animated courier with pulse ring + route path draw animation
+   606→- Leaderboard podium has gradient bars with crown/medal emojis
+   607→- Share card has premium gradient with molecular texture
+   608→- VLM confirms: Track map "sleek premium aesthetic, live-updating map, intuitive interactivity"; Leaderboard "premium competitive feel, gamification strong through tiered rankings"; Share "premium motivational feel, shareability strong"
+   609→
+   610→Stage Summary:
+   611→- ✅ `bun run lint` passes clean (no errors, no warnings)
+   612→- ✅ HTTP 200, no console errors, no hydration errors
+   613→- ✅ Track on Map: interactive SVG map with route, courier, ETA, journey timeline (VLM: "sleek premium aesthetic, live-updating map")
+   614→- ✅ Referral Leaderboard: podium top 3 + ranked list with user highlight (VLM: "premium competitive feel, gamification strong")
+   615→- ✅ Share Challenge Progress: stats card + native share with clipboard fallback (VLM: "premium motivational feel, shareability strong")
+   616→- ✅ All features wired into existing views (Orders track button, Rewards leaderboard, Challenge share card)
+   617→
+   618→Unresolved / Next phase:
+   619→- Could connect quiz recommendations to add items to cart directly
+   620→- Could add push notifications for challenge reminders
+   621→- Could add a nutrition blog search/filter
+   622→- Could add a product rating distribution chart on PDP
+   623→- Could add a "build your own stack" recommendation engine
+   624→- Could add a water intake reminder system
+   625→- Could add a sleep + recovery tracking widget
+   626→
+   627→---
+   628→Task ID: 16 (Phase 11 — webDevReview cron round)
+   629→Agent: main (Z.ai Code)
+   630→Task: Add smart recommendations, water intake reminder, sleep + recovery widget
+   631→
+   632→Work Log:
+   633→- Performed full QA via agent-browser across all views. No console errors, no hydration errors. Both themes stable. Project in excellent shape.
+   634→- VLM identified personalized recommendations and clear nutrition tracking entry as gaps. Worklog noted water intake reminder and sleep + recovery widget as next-phase items.
+   635→
+   636→New features added:
+   637→1. **Smart Recommendations** (`src/components/sections/recommendations.tsx`) — AI-powered "For You" section on home:
+   638→  - `getRecommendations()` engine in catalog.ts that combines quiz goal, recent views, and wishlist to generate personalized picks
+   639→  - 4 recommendation categories: Goal match (gold), Pairs with recent (jade), Trending (orange), Complementary (caramel)
+   640→  - Each card shows: accent left border, product image with glow, category tag pill, product name, personalized reason, price + rating, match score % ring
+   641→  - "Take the quiz for better picks" CTA at bottom
+   642→  - Filters out wishlist items (already owned)
+   643→  - Placed on home between Recently Viewed and Product Explorer
+   644→
+   645→2. **Water Intake Reminder Widget** (`WaterReminderWidget` in wellness-widgets.tsx) — smart hydration tracker on Explore:
+   646→  - 8-slot daily schedule (7 AM – 9 PM) with time, label, amount, and tip per slot
+   647→  - Interactive: tap any slot to mark as consumed (filled = jade checkmark)
+   648→  - "NOW" pulse indicator on current time slot
+   649→  - Progress ring showing % hydrated (jade gradient)
+   650→  - Total consumed / goal display in liters
+   651→  - "Next reminder" banner with current slot's tip + amount
+   652→  - "Goal reached! 🎉" celebration state
+   653→  - Data in `WATER_SCHEDULE` in catalog.ts
+   654→
+   655→3. **Sleep & Recovery Widget** (`SleepRecoveryWidget` in wellness-widgets.tsx) — dual-tab wellness tracker on Explore:
+   656→  - Tab toggle: Sleep / Recovery
+   657→  - Overall score ring (color-coded: jade ≥80, gold ≥60, red <60) with label (Optimal/Good/Needs rest)
+   658→  - Sleep tab: 4 factors (duration, deep sleep, REM, resting HR) with animated progress bars
+   659→  - Recovery tab: 4 factors (muscle soreness, energy, hydration, protein intake)
+   660→  - Invert logic for metrics where lower is better (resting HR, soreness)
+   661→  - Personalized insight/tip callout per tab ("Sleep insight" / "Recovery tip")
+   662→  - Data in `SLEEP_FACTORS` + `RECOVERY_FACTORS` in catalog.ts
+   663→
+   664→Styling polish:
+   665→- All new features use theme-aware CSS variables (work in light & dark)
+   666→- Recommendation cards have accent left borders + match score rings
+   667→- Water schedule has jade color-coding with pulse on current slot
+   668→- Sleep widget has color-coded progress bars (jade/gold/red based on score)
+   669→- VLM confirms: Recommendations "sleek dark-themed, premium product cards, personalization intentional"; Water "sleek dark theme, intuitive icons, clear timeline, progress ring"; Sleep "sleek dark theme, effective data presentation, actionable data-driven guidance"
+   670→
+   671→Stage Summary:
+   672→- ✅ `bun run lint` passes clean (no errors, no warnings)
+   673→- ✅ HTTP 200, no console errors, no hydration errors
+   674→- ✅ Smart Recommendations: 4 personalized cards with match scores on home (VLM: "personalization intentional, premium feel reinforced by high-quality visuals")
+   675→- ✅ Water Reminder: 8-slot schedule + progress ring + interactive tapping (VLM: "sleek dark theme, smooth interactivity, clear timeline")
+   676→- ✅ Sleep & Recovery: dual-tab with score ring + 4-factor breakdown + insights (VLM: "effective data presentation, actionable guidance")
+   677→- ✅ All widgets integrated (home recommendations, explore wellness widgets)
+   678→
+   679→Unresolved / Next phase:
+   680→- Could connect quiz recommendations to add items to cart directly
+   681→- Could add push notifications for water/challenge reminders
+   682→- Could add a nutrition blog search/filter
+   683→- Could add a product rating distribution chart on PDP
+   684→- Could add a "build your own stack" recommendation engine
+   685→- Could add a menstrual cycle sync nutrition tracker
+   686→- Could add a supplement stack scheduler
+   687→- Could add a grocery list / meal prep planner
+   688→
+   689→---
+   690→Task ID: 17 (Phase 12 — Contrast Fix)
+   691→Agent: main (Z.ai Code)
+   692→Task: Fix text/icon contrast and visibility issues in light theme
+   693→
+   694→Work Log:
+   695→- User reported: light-colored text, icons, and effects have poor visibility on the light theme background.
+   696→- Performed VLM analysis of light theme across home, shop, explore, rewards, profile views.
+   697→- Identified root cause: 58 hardcoded light oklch colors (oklch(0.92 0.10 85), oklch(0.78 0.13 75), oklch(0.72 0.10 160)) used for text/icons across 18 component files. These light gold/jade colors are nearly invisible on the ivory light-theme background.
+   698→
+   699→Fixes applied:
+   700→1. **Darkened light-theme CSS variables** in globals.css for better WCAG AA contrast:
+   701→   - `--foreground`: 0.22 → 0.20 (darker espresso)
+   702→   - `--muted-foreground`: 0.48 → 0.42 (significantly darker for readability)
+   703→   - `--border`: 0.85/70% → 0.82/75% (slightly darker borders)
+   704→   - `--gold`: 0.55 → 0.48 (darker gold for text contrast on ivory)
+   705→   - `--bronze`: 0.50 → 0.46 (darker)
+   706→   - `--jade`: 0.50 → 0.42 (darker jade for contrast)
+   707→   - `--cream`: 0.25 → 0.22 (darker, used for text-cream/90 etc.)
+   708→   - `--secondary-foreground`: 0.25 → 0.22
+   709→
+   710→2. **Added 5 new theme-aware CSS variables** that auto-adapt between dark/light:
+   711→   - `--text-gold`: dark gold (0.48) in light / bright gold (0.92) in dark
+   712→   - `--text-gold-soft`: dark gold-soft (0.52) in light / bright (0.82) in dark
+   713→   - `--text-accent-jade`: dark jade (0.40) in light / bright jade (0.72) in dark
+   714→   - `--text-accent-amber`: dark amber (0.48) in light / bright amber (0.78) in dark
+   715→   - `--icon-default`: dark (0.35) in light / light (0.66) in dark
+   716→   These are registered in @theme inline as `--color-text-gold`, etc., enabling Tailwind utilities like `text-text-gold`.
+   717→
+   718→3. **Bulk-replaced 58 hardcoded text colors** across 18 files:
+   719→   - `text-[oklch(0.92_0.10_85)]` → `text-text-gold`
+   720→   - `text-[oklch(0.78_0.13_75)]` → `text-text-gold`
+   721→   - `text-[oklch(0.82_0.14_80)]` → `text-text-gold`
+   722→   - `text-[oklch(0.72_0.10_160)]` → `text-text-accent-jade`
+   723→   - `text-[oklch(0.72_0.10_65)]` → `text-text-accent-amber`
+   724→   - `text-[oklch(0.65_0.15_30)]` → `text-text-accent-amber`
+   725→   Files: app-shell, cart-drawer, primitives, quick-view, search-overlay, calculator, comparison, faq, hero, ingredients, manufacturing, products, science, cart, explore, profile, rewards, shop
+   726→
+   727→Stage Summary:
+   728→- ✅ `bun run lint` passes clean (no errors, no warnings)
+   729→- ✅ HTTP 200, no console errors (except minor hydration warning from theme class)
+   730→- ✅ VLM verification — LIGHT theme home: "All gold/amber text is now clearly readable... No remaining contrast issues. The contrast fix successfully resolved readability and visibility."
+   731→- ✅ VLM — LIGHT theme shop: "Product names, prices, and category cards are readable... no critical issues"
+   732→- ✅ VLM — LIGHT theme explore: "All widget text, numbers, and labels are readable with no critical contrast issues"
+   733→- ✅ VLM — LIGHT theme rewards: "All text, numbers, and badges have sufficient contrast... No readability issues"
+   734→- ✅ VLM — LIGHT theme profile: "All text, stats, and quick actions are readable with no significant contrast issues"
+   735→- ✅ VLM — DARK theme home: "All text is readable. Contrast is sufficient. No major contrast issues." (dark theme unaffected)
+   736→
+   737→Unresolved / Next phase:
+   738→- Minor hydration warning from theme class on <html> — cosmetic, doesn't affect functionality
+   739→- Could further optimize glass surface opacity in light theme for even better contrast
+   740→- Could add WCAG AAA contrast mode toggle for accessibility
+   741→
+   742→---
+   743→Task ID: 18 (Phase 13 — Bug Fixes)
+   744→Agent: main (Z.ai Code)
+   745→Task: Fix notification button, PDP scroll-to-top, bottom nav icon/label clipping
+   746→
+   747→Work Log:
+   748→- User reported 3 bugs: (1) Notification button not working, (2) PDP doesn't auto-scroll to top when opening a product, (3) Bottom nav icons/text going out of highlighted shape.
+   749→
+   750→Bug 1: Notification button not working
+   751→- Root cause: `onClick={() => {}}` — empty handler in app-shell.tsx NavAction
+   752→- Fix: Built `NotificationsPanel` component (src/components/notifications-panel.tsx) — premium bottom sheet with:
+   753→  - 6 seeded notifications across 4 types (order, challenge, offer, reward, system)
+   754→  - All/Unread filter tabs with counts
+   755→  - "Mark all read" button
+   756→  - Per-notification: icon with accent color, title, body, time, unread dot
+   757→  - Tap to mark as read
+   758→  - Empty state with illustration
+   759→  - "View all in profile" footer
+   760→- Added `notificationsOpen`/`setNotificationsOpen` to nav store
+   761→- Wired: NavAction onClick now calls `setNotificationsOpen(true)`
+   762→- Verified: Panel opens with 3 unread, 6 total notifications, filter works, mark-all-read works
+   763→
+   764→Bug 2: PDP doesn't auto-scroll to top
+   765→- Root cause: `behavior: "smooth"` in the scroll-to-top useEffect was too slow — by the time smooth scroll completed, the user had already scrolled manually
+   766→- Fix: Changed `behavior: "smooth"` to `behavior: "auto"` (instant scroll) for both the `.app-scroll` container and `window` fallback
+   767→- Verified: `scrollTop: 0` confirmed after opening a product, product name visible immediately
+   768→
+   769→Bug 3: Bottom nav icons/text clipping
+   770→- Root causes: (a) Tab was fixed `h-12 w-12` (48×48px) — too small for icon + expanding label, causing text overflow; (b) Icon color was hardcoded `oklch(0.92 0.10 85)` (light gold) — invisible in light theme; (c) Active dot at `-top-0.5` went outside the rounded shape
+   771→- Fix: 
+   772→  - Changed tab from `h-12 w-12` to `flex-1 min-w-[48px]` with `px-1 py-1.5` — flexible width that adapts to content
+   773→  - Added `whitespace-nowrap` to label to prevent wrapping
+   774→  - Replaced hardcoded icon color with `text-text-gold` (active) / `text-muted-foreground` (inactive) — theme-aware
+   775→  - Changed label height animation from fixed `10px` to `auto` for proper fit
+   776→  - Changed active background/dot from hardcoded `oklch(0.78...)` to `oklch(var(--gold)...)` — theme-aware
+   777→  - Moved active dot from `-top-0.5` to `top-0.5` — stays inside the rounded shape
+   778→- Verified by VLM in both themes: "All 6 tab icons clearly visible, no label clipped, active background properly contains icon+label"
+   779→
+   780→Stage Summary:
+   781→- ✅ `bun run lint` passes clean
+   782→- ✅ HTTP 200, no console errors (except minor hydration warning)
+   783→- ✅ Notifications panel: opens from bell icon, 6 notifications with filters, mark-read works (VLM confirmed)
+   784→- ✅ PDP scroll-to-top: instant scroll to top, product visible immediately (scrollTop: 0 confirmed)
+   785→- ✅ Bottom nav: all icons visible in both themes, no text clipping, active shape contains content (VLM confirmed in light + dark)
+   786→

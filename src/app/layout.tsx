@@ -4,6 +4,11 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
+import {
+  OrganizationJsonLd,
+  WebSiteJsonLd,
+} from "@/components/structured-data";
+import { AllProductsStructuredData } from "@/components/product-structured-data";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,10 +30,17 @@ const fraunces = Fraunces({
   style: ["normal", "italic"],
 });
 
+const SITE_URL = "https://drhuxon.com";
+
 export const metadata: Metadata = {
-  title: "Dr. Huxon Labs — Premium Plant-Based Nutrition",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Dr. Huxon Labs — Premium Plant-Based Nutrition",
+    template: "%s · Dr. Huxon Labs",
+  },
   description:
     "Pharmaceutical-grade plant-based protein & supplements, engineered in India. Lab-tested, clean-label, export-quality nutrition for performance living.",
+  applicationName: "Dr. Huxon Labs",
   keywords: [
     "plant protein",
     "vegan protein",
@@ -37,25 +49,79 @@ export const metadata: Metadata = {
     "Dr. Huxon Labs",
     "clean label supplements",
     "premium nutrition",
+    "pea protein isolate",
+    "plant-based protein India",
+    "recovery matrix",
+    "pre-workout plant-based",
+    "daily greens",
+    "omega-3 algae oil",
+    "protein bars",
   ],
-  authors: [{ name: "Dr. Huxon Labs" }],
+  authors: [{ name: "Dr. Huxon Labs", url: SITE_URL }],
+  creator: "Dr. Huxon Labs",
+  publisher: "Dr. Huxon Labs",
   manifest: "/manifest.webmanifest",
+  alternates: {
+    canonical: "/",
+  },
+  category: "Health & Nutrition",
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: SITE_URL,
+    siteName: "Dr. Huxon Labs",
+    title: "Dr. Huxon Labs — Premium Plant-Based Nutrition",
+    description:
+      "Pharmaceutical-grade plant-based protein engineered in India. Lab-tested, clean-label, export-quality nutrition for performance living.",
+    images: [
+      {
+        url: "/products/gold-isolate.png",
+        width: 1200,
+        height: 1200,
+        alt: "Huxon Gold Isolate — flagship plant protein",
+      },
+      {
+        url: "/products/recovery-matrix.png",
+        width: 1200,
+        height: 1200,
+        alt: "Huxon Recovery Matrix — post-workout recovery",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@drhuxonlabs",
+    creator: "@drhuxonlabs",
+    title: "Dr. Huxon Labs — Premium Plant-Based Nutrition",
+    description:
+      "Pharmaceutical-grade plant-based protein & supplements, engineered in India.",
+    images: ["/products/gold-isolate.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  icons: {
+    icon: "/logo.svg",
+    apple: "/logo.svg",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "Huxon",
   },
-  openGraph: {
-    title: "Dr. Huxon Labs — Premium Plant-Based Nutrition",
-    description:
-      "Pharmaceutical-grade plant-based protein engineered in India.",
-    siteName: "Dr. Huxon Labs",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Dr. Huxon Labs",
-    description: "Premium plant-based nutrition, engineered in India.",
+  formatDetection: {
+    telephone: false,
+    address: false,
+    email: false,
   },
 };
 
@@ -87,6 +153,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          {/* Site-wide JSON-LD: Organization + WebSite (with SearchAction) */}
+          <OrganizationJsonLd />
+          <WebSiteJsonLd />
+          {/* Per-product structured data for rich product snippets */}
+          <AllProductsStructuredData />
           {children}
           <Toaster />
           <SonnerToaster position="top-center" />
