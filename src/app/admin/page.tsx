@@ -61,6 +61,8 @@ import {
   IconFilter,
   IconFlask,
   IconLeaf,
+  IconShield,
+  IconArrowRight,
 } from "@/components/icons";
 import { AnimatedNumber, Reveal } from "@/components/primitives";
 import { PRODUCTS, formatINR } from "@/lib/catalog";
@@ -76,6 +78,12 @@ type Section =
   | "customers"
   | "inventory"
   | "marketing"
+  | "analytics"
+  | "returns"
+  | "shipping"
+  | "tax"
+  | "reviews"
+  | "audit"
   | "settings";
 
 type OrderStatus =
@@ -1712,15 +1720,437 @@ function IntegrationRow({ name, desc, status }: { name: string; desc: string; st
 }
 
 /* ============================================================
+   Shared helpers for new admin sections
+   ============================================================ */
+function KpiCard({ label, value, trend, up }: { label: string; value: string; trend?: string; up?: boolean }) {
+  return (
+    <GlassCard>
+      <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+        {label}
+      </div>
+      <div className="mt-1.5 font-display text-[22px] font-bold text-cream-gradient tabular">
+        {value}
+      </div>
+      {trend ? (
+        <div className={`mt-1 flex items-center gap-1 text-[10px] font-semibold ${up ? "text-text-accent-jade" : "text-[oklch(0.72_0.18_25)]"}`}>
+          <span>{up ? "↑" : "↓"}</span>
+          {trend}
+        </div>
+      ) : null}
+    </GlassCard>
+  );
+}
+
+function AdminCardHeader({ title, subtitle }: { title: string; subtitle?: string }) {
+  return (
+    <div className="mb-4">
+      <h3 className="font-display text-[16px] font-semibold text-cream-gradient">{title}</h3>
+      {subtitle ? <p className="mt-0.5 text-[11px] text-muted-foreground">{subtitle}</p> : null}
+    </div>
+  );
+}
+
+function AdminCardContent({ children }: { children: React.ReactNode }) {
+  return <div>{children}</div>;
+}
+
+/* ============================================================
+   Analytics Section — Traffic, conversion funnels, sources
+   ============================================================ */
+function AnalyticsSection() {
+  const trafficSources = [
+    { source: "Direct", visitors: 4820, pct: 32, color: "oklch(0.78 0.13 75)" },
+    { source: "Google Organic", visitors: 3640, pct: 24, color: "oklch(0.62 0.10 160)" },
+    { source: "Instagram", visitors: 2180, pct: 14, color: "oklch(0.62 0.20 350)" },
+    { source: "WhatsApp", visitors: 1950, pct: 13, color: "oklch(0.62 0.18 145)" },
+    { source: "Referral", visitors: 1240, pct: 8, color: "oklch(0.65 0.15 30)" },
+    { source: "Paid Ads", visitors: 1290, pct: 9, color: "oklch(0.55 0.08 280)" },
+  ];
+
+  const funnel = [
+    { stage: "Visitors", count: 15120, pct: 100 },
+    { stage: "Product views", count: 8940, pct: 59 },
+    { stage: "Added to cart", count: 3210, pct: 21 },
+    { stage: "Checkout started", count: 1820, pct: 12 },
+    { stage: "Order placed", count: 1240, pct: 8.2 },
+  ];
+
+  return (
+    <div>
+      <SectionHeader title="Analytics" subtitle="Traffic, conversion funnel & visitor insights" />
+
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {[
+          { label: "Total visitors", value: "15,120", trend: "+12.4%", up: true },
+          { label: "Page views", value: "48,320", trend: "+8.1%", up: true },
+          { label: "Bounce rate", value: "32.4%", trend: "-2.1%", up: true },
+          { label: "Avg session", value: "4m 12s", trend: "+0.8%", up: true },
+        ].map((kpi) => (
+          <KpiCard key={kpi.label} label={kpi.label} value={kpi.value} trend={kpi.trend} up={kpi.up} />
+        ))}
+      </div>
+
+      <div className="mt-5 grid gap-4 lg:grid-cols-2">
+        {/* Traffic sources */}
+        <Card>
+          <AdminCardHeader title="Traffic Sources" subtitle="Last 30 days" />
+          <AdminCardContent>
+            <div className="space-y-3">
+              {trafficSources.map((src) => (
+                <div key={src.source} className="flex items-center gap-3">
+                  <span className="w-28 text-[12px] text-muted-foreground">{src.source}</span>
+                  <div className="h-2 flex-1 overflow-hidden rounded-full bg-[oklch(var(--glass-tint)/0.06)]">
+                    <motion.div
+                      className="h-full rounded-full"
+                      style={{ background: src.color }}
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${src.pct}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                    />
+                  </div>
+                  <span className="w-16 text-right text-[11px] font-semibold tabular">{src.visitors.toLocaleString("en-IN")}</span>
+                </div>
+              ))}
+            </div>
+          </AdminCardContent>
+        </Card>
+
+        {/* Conversion funnel */}
+        <Card>
+          <AdminCardHeader title="Conversion Funnel" subtitle="Visitor → Order" />
+          <AdminCardContent>
+            <div className="space-y-2">
+              {funnel.map((f, i) => (
+                <div key={f.stage} className="flex items-center gap-3">
+                  <span className="w-24 text-[11px] text-muted-foreground">{f.stage}</span>
+                  <div className="flex-1">
+                    <div className="h-7 overflow-hidden rounded-lg bg-[oklch(var(--glass-tint)/0.04)]">
+                      <motion.div
+                        className="flex h-full items-center justify-end rounded-lg px-2"
+                        style={{
+                          background: `linear-gradient(90deg, oklch(var(--gold)/0.3), oklch(var(--gold)/0.1))`,
+                        }}
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${f.pct}%` }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1, delay: i * 0.1 }}
+                      >
+                        <span className="text-[10px] font-bold text-text-gold">{f.pct}%</span>
+                      </motion.div>
+                    </div>
+                  </div>
+                  <span className="w-16 text-right text-[11px] font-semibold tabular">{f.count.toLocaleString("en-IN")}</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 rounded-lg bg-[oklch(var(--gold)/0.06)] p-2.5 text-[11px]">
+              <span className="font-semibold text-text-gold">Overall conversion:</span>{" "}
+              <span className="font-bold">8.2%</span>
+              <span className="ml-2 text-[oklch(var(--jade))]">+0.6% vs last month</span>
+            </div>
+          </AdminCardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   Returns Section — Return/refund management
+   ============================================================ */
+function ReturnsSection() {
+  const returns = [
+    { id: "RET-001", order: "HUX-48291", customer: "Arjun Mehta", reason: "Wrong flavor", status: "pending", amount: 2499, date: "2h ago" },
+    { id: "RET-002", order: "HUX-47820", customer: "Priya Sharma", reason: "Damaged packaging", status: "approved", amount: 2199, date: "5h ago" },
+    { id: "RET-003", order: "HUX-47012", customer: "Rohan Kapoor", reason: "Not satisfied", status: "refunded", amount: 1299, date: "1d ago" },
+    { id: "RET-004", order: "HUX-46890", customer: "Sneha Iyer", reason: "Expired product", status: "rejected", amount: 999, date: "2d ago" },
+  ];
+
+  const statusColors: Record<string, string> = {
+    pending: "oklch(0.72 0.15 65)",
+    approved: "oklch(0.62 0.10 160)",
+    refunded: "oklch(0.55 0.08 280)",
+    rejected: "oklch(0.72 0.18 25)",
+  };
+
+  return (
+    <div>
+      <SectionHeader title="Returns & Refunds" subtitle="Manage return requests and refunds" />
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <KpiCard label="Pending returns" value="3" trend="2 new" up={false} />
+        <KpiCard label="Approved today" value="5" trend="+2" up={true} />
+        <KpiCard label="Refunded (₹)" value="12,497" trend="+8.2%" up={false} />
+        <KpiCard label="Return rate" value="2.4%" trend="-0.3%" up={true} />
+      </div>
+      <Card className="mt-5">
+        <AdminCardHeader title="Return Requests" subtitle={`${returns.length} total`} />
+        <AdminCardContent>
+          <div className="space-y-2">
+            {returns.map((ret) => (
+              <div key={ret.id} className="flex items-center gap-3 rounded-xl border border-border/40 p-3">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[12px] font-semibold">{ret.id}</span>
+                    <span className="text-[10px] text-muted-foreground">· {ret.order}</span>
+                  </div>
+                  <div className="text-[11px] text-muted-foreground truncate">{ret.customer} — {ret.reason}</div>
+                </div>
+                <span
+                  className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase"
+                  style={{ background: `${statusColors[ret.status].replace(")", " / 0.18)")}`, color: statusColors[ret.status] }}
+                >
+                  {ret.status}
+                </span>
+                <span className="text-[12px] font-semibold tabular text-text-gold">₹{ret.amount.toLocaleString("en-IN")}</span>
+                <Button variant="outline" size="sm">Review</Button>
+              </div>
+            ))}
+          </div>
+        </AdminCardContent>
+      </Card>
+    </div>
+  );
+}
+
+/* ============================================================
+   Shipping Section — Shipping providers & zones
+   ============================================================ */
+function ShippingSection() {
+  const providers = [
+    { name: "Delhivery", status: "active", rate: 45, avgTime: "2.1 days", zones: 28, color: "oklch(0.62 0.10 160)" },
+    { name: "BlueDart", status: "active", rate: 38, avgTime: "1.8 days", zones: 22, color: "oklch(0.78 0.13 75)" },
+    { name: "Ekart", status: "active", rate: 52, avgTime: "2.5 days", zones: 19, color: "oklch(0.65 0.15 30)" },
+    { name: "India Post", status: "inactive", rate: 28, avgTime: "5.2 days", zones: 35, color: "oklch(0.55 0.08 280)" },
+  ];
+
+  return (
+    <div>
+      <SectionHeader title="Shipping" subtitle="Providers, zones & delivery rates" />
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <KpiCard label="Active providers" value="3" trend="All operational" up={true} />
+        <KpiCard label="Avg delivery" value="2.1 days" trend="-0.3 days" up={true} />
+        <KpiCard label="On-time rate" value="94.2%" trend="+1.2%" up={true} />
+        <KpiCard label="Avg cost/ship" value="₹45" trend="-₹2" up={true} />
+      </div>
+      <Card className="mt-5">
+        <AdminCardHeader title="Shipping Providers" />
+        <AdminCardContent>
+          <div className="space-y-2">
+            {providers.map((p) => (
+              <div key={p.name} className="flex items-center gap-3 rounded-xl border border-border/40 p-3">
+                <div className="grid h-10 w-10 place-items-center rounded-xl" style={{ background: `${p.color.replace(")", " / 0.18)")}` }}>
+                  <IconTruck size={16} active />
+                </div>
+                <div className="flex-1">
+                  <div className="text-[13px] font-semibold">{p.name}</div>
+                  <div className="text-[10px] text-muted-foreground">{p.zones} zones · {p.avgTime} avg</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-[14px] font-bold text-text-gold tabular">₹{p.rate}</div>
+                  <div className="text-[9px] text-muted-foreground">per shipment</div>
+                </div>
+                <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase ${p.status === "active" ? "bg-[oklch(var(--jade)/0.18)] text-text-accent-jade" : "bg-[oklch(var(--glass-tint)/0.06)] text-muted-foreground"}`}>
+                  {p.status}
+                </span>
+              </div>
+            ))}
+          </div>
+        </AdminCardContent>
+      </Card>
+    </div>
+  );
+}
+
+/* ============================================================
+   Tax Section — GST & tax compliance
+   ============================================================ */
+function TaxSection() {
+  return (
+    <div>
+      <SectionHeader title="Tax & GST" subtitle="GST compliance, HSN codes & tax reports" />
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <KpiCard label="GST collected (₹)" value="2,84,500" trend="+12.4%" up={true} />
+        <KpiCard label="GST paid (₹)" value="1,12,300" trend="+8.1%" up={false} />
+        <KpiCard label="Net liability" value="1,72,200" trend="Due Jul 20" up={false} />
+        <KpiCard label="GST rate" value="18%" trend="Food supplement" up={true} />
+      </div>
+      <Card className="mt-5">
+        <AdminCardHeader title="GST Summary" subtitle="Current quarter (Apr–Jun 2025)" />
+        <AdminCardContent>
+          <div className="space-y-3">
+            {[
+              { component: "CGST (9%)", collected: 142250, paid: 56150 },
+              { component: "SGST (9%)", collected: 142250, paid: 56150 },
+              { component: "IGST (18%)", collected: 0, paid: 0 },
+            ].map((row) => (
+              <div key={row.component} className="flex items-center justify-between rounded-xl border border-border/40 p-3">
+                <span className="text-[13px] font-medium">{row.component}</span>
+                <div className="flex gap-6 text-[12px]">
+                  <div>
+                    <span className="text-muted-foreground">Collected: </span>
+                    <span className="font-semibold text-text-gold tabular">₹{row.collected.toLocaleString("en-IN")}</span>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Paid: </span>
+                    <span className="font-semibold tabular">₹{row.paid.toLocaleString("en-IN")}</span>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Net: </span>
+                    <span className="font-semibold text-text-accent-jade tabular">₹{(row.collected - row.paid).toLocaleString("en-IN")}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <Button className="mt-4 w-full" variant="outline">
+            <IconArrowRight size={14} className="mr-2" />
+            Download GSTR-1 (JSON)
+          </Button>
+        </AdminCardContent>
+      </Card>
+    </div>
+  );
+}
+
+/* ============================================================
+   Reviews Section — Product review moderation
+   ============================================================ */
+function ReviewsSection() {
+  const reviews = [
+    { id: "r1", product: "Huxon Gold Isolate", author: "Arjun M.", rating: 5, title: "Best plant protein", status: "published", date: "2h ago" },
+    { id: "r2", product: "Huxon Protein Bars", author: "Priya S.", rating: 5, title: "Finally clean label", status: "published", date: "5h ago" },
+    { id: "r3", product: "Recovery Matrix", author: "Rohan K.", rating: 4, title: "Great recovery boost", status: "pending", date: "1d ago" },
+    { id: "r4", product: "Daily Greens+", author: "Sneha I.", rating: 3, title: "Taste needs work", status: "pending", date: "2d ago" },
+    { id: "r5", product: "Huxon Gold Isolate", author: "Vikram R.", rating: 1, title: "Spam review", status: "flagged", date: "3d ago" },
+  ];
+
+  return (
+    <div>
+      <SectionHeader title="Reviews" subtitle="Moderate customer reviews & ratings" />
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <KpiCard label="Total reviews" value="12,148" trend="+248" up={true} />
+        <KpiCard label="Avg rating" value="4.8" trend="+0.1" up={true} />
+        <KpiCard label="Pending" value="8" trend="Needs review" up={false} />
+        <KpiCard label="Flagged" value="2" trend="Spam/inappropriate" up={false} />
+      </div>
+      <Card className="mt-5">
+        <AdminCardHeader title="Recent Reviews" subtitle={`${reviews.length} shown`} />
+        <AdminCardContent>
+          <div className="space-y-2">
+            {reviews.map((rev) => (
+              <div key={rev.id} className="flex items-start gap-3 rounded-xl border border-border/40 p-3">
+                <div className="flex">
+                  {[1,2,3,4,5].map((i) => (
+                    <IconStar key={i} size={11} active={i <= rev.rating} />
+                  ))}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[12px] font-semibold">{rev.title}</span>
+                    <span className={`rounded-full px-1.5 py-0.5 text-[8px] font-bold uppercase ${
+                      rev.status === "published" ? "bg-[oklch(var(--jade)/0.18)] text-text-accent-jade" :
+                      rev.status === "pending" ? "bg-[oklch(0.72_0.15_65/0.18)] text-[oklch(0.72_0.15_65)]" :
+                      "bg-[oklch(0.72_0.18_25/0.18)] text-[oklch(0.72_0.18_25)]"
+                    }`}>{rev.status}</span>
+                  </div>
+                  <div className="text-[10px] text-muted-foreground">{rev.product} · by {rev.author} · {rev.date}</div>
+                </div>
+                <div className="flex gap-1">
+                  <Button variant="outline" size="sm">Approve</Button>
+                  <Button variant="ghost" size="sm">Reject</Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </AdminCardContent>
+      </Card>
+    </div>
+  );
+}
+
+/* ============================================================
+   Audit Section — Audit logs & system events
+   ============================================================ */
+function AuditSection() {
+  const logs = [
+    { action: "Product updated", user: "admin@drhuxon.com", target: "Huxon Gold Isolate", ip: "103.21.x.x", time: "2 min ago", type: "update" },
+    { action: "Order refunded", user: "admin@drhuxon.com", target: "HUX-47820", ip: "103.21.x.x", time: "15 min ago", type: "refund" },
+    { action: "Coupon created", user: "admin@drhuxon.com", target: "FLASH25", ip: "103.21.x.x", time: "1h ago", type: "create" },
+    { action: "Customer banned", user: "system", target: "spam@bot.com", ip: "auto", time: "2h ago", type: "security" },
+    { action: "Inventory adjusted", user: "warehouse@drhuxon.com", target: "Protein Bars", ip: "103.21.x.x", time: "3h ago", type: "update" },
+    { action: "Admin login", user: "admin@drhuxon.com", target: "—", ip: "103.21.x.x", time: "4h ago", type: "auth" },
+    { action: "Price changed", user: "admin@drhuxon.com", target: "Recovery Matrix", ip: "103.21.x.x", time: "5h ago", type: "update" },
+    { action: "Feature flag toggled", user: "system", target: "new_checkout_flow", ip: "auto", time: "6h ago", type: "system" },
+  ];
+
+  const typeColors: Record<string, string> = {
+    update: "oklch(0.78 0.13 75)",
+    refund: "oklch(0.72 0.18 25)",
+    create: "oklch(0.62 0.10 160)",
+    security: "oklch(0.72 0.18 25)",
+    auth: "oklch(0.55 0.08 280)",
+    system: "oklch(0.66 0.015 70)",
+  };
+
+  return (
+    <div>
+      <SectionHeader title="Audit Logs" subtitle="System activity & security events" />
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <KpiCard label="Events today" value="248" trend="+12%" up={true} />
+        <KpiCard label="Security events" value="3" trend="2 blocked" up={false} />
+        <KpiCard label="Active sessions" value="5" trend="3 admins" up={true} />
+        <KpiCard label="Failed logins" value="2" trend="-5" up={true} />
+      </div>
+      <Card className="mt-5">
+        <AdminCardHeader title="Activity Log" subtitle="Last 24 hours" />
+        <AdminCardContent>
+          <div className="space-y-1">
+            {logs.map((log, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -8 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.03 }}
+                className="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-[oklch(var(--glass-tint)/0.03)]"
+              >
+                <span
+                  className="h-2 w-2 shrink-0 rounded-full"
+                  style={{ background: typeColors[log.type] }}
+                />
+                <div className="flex-1 min-w-0">
+                  <span className="text-[12px] font-medium">{log.action}</span>
+                  <span className="ml-2 text-[10px] text-muted-foreground">{log.target}</span>
+                </div>
+                <span className="text-[10px] text-muted-foreground">{log.user}</span>
+                <span className="text-[9px] text-muted-foreground tabular">{log.ip}</span>
+                <span className="w-16 text-right text-[9px] text-muted-foreground">{log.time}</span>
+              </motion.div>
+            ))}
+          </div>
+        </AdminCardContent>
+      </Card>
+    </div>
+  );
+}
+
+/* ============================================================
    Sidebar
    ============================================================ */
 const NAV_ITEMS: { id: Section; label: string; Icon: React.FC<{ size?: number; active?: boolean }>; badge?: string }[] = [
   { id: "dashboard", label: "Dashboard", Icon: IconGrid },
+  { id: "analytics", label: "Analytics", Icon: IconChartBar },
   { id: "products", label: "Products", Icon: IconShop },
   { id: "orders", label: "Orders", Icon: IconTruck, badge: "23" },
+  { id: "returns", label: "Returns", Icon: IconRefresh, badge: "3" },
   { id: "customers", label: "Customers", Icon: IconUsers },
   { id: "inventory", label: "Inventory", Icon: IconPackage },
   { id: "marketing", label: "Marketing", Icon: IconGift },
+  { id: "shipping", label: "Shipping", Icon: IconTruck },
+  { id: "tax", label: "Tax & GST", Icon: IconRupee },
+  { id: "reviews", label: "Reviews", Icon: IconStar },
+  { id: "audit", label: "Audit Logs", Icon: IconShield },
   { id: "settings", label: "Settings", Icon: IconSettings },
 ];
 
@@ -1927,11 +2357,17 @@ export default function AdminPage() {
                   transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 >
                   {section === "dashboard" && <DashboardSection />}
+                  {section === "analytics" && <AnalyticsSection />}
                   {section === "products" && <ProductsSection />}
                   {section === "orders" && <OrdersSection />}
+                  {section === "returns" && <ReturnsSection />}
                   {section === "customers" && <CustomersSection />}
                   {section === "inventory" && <InventorySection />}
                   {section === "marketing" && <MarketingSection />}
+                  {section === "shipping" && <ShippingSection />}
+                  {section === "tax" && <TaxSection />}
+                  {section === "reviews" && <ReviewsSection />}
+                  {section === "audit" && <AuditSection />}
                   {section === "settings" && <SettingsSection />}
                 </motion.div>
               </AnimatePresence>

@@ -4,7 +4,7 @@ import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HuxonButton } from "@/components/huxon-button";
 import { IconClose, IconCheck, IconArrowRight, IconBolt } from "@/components/icons";
-import { useSubscriptions } from "@/lib/store";
+import { useSubscriptions, useCart, useNav } from "@/lib/store";
 
 type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>;
@@ -23,6 +23,8 @@ export function PWAInstallPrompt() {
   const [visible, setVisible] = React.useState(false);
   const [installed, setInstalled] = React.useState(false);
   const { hasSeenOnboarding } = useSubscriptions();
+  const cartOpen = useCart((s) => s.isOpen);
+  const route = useNav((s) => s.route);
 
   React.useEffect(() => {
     // Already installed (standalone mode)
@@ -60,6 +62,13 @@ export function PWAInstallPrompt() {
       clearTimeout(fallbackTimer);
     };
   }, [deferredPrompt, hasSeenOnboarding]);
+
+  // CRITICAL: Never show PWA prompt when cart is open or user is in checkout flow
+  React.useEffect(() => {
+    if (cartOpen || route === "cart") {
+      setVisible(false);
+    }
+  }, [cartOpen, route]);
 
   const handleInstall = async () => {
     if (deferredPrompt) {
