@@ -56,7 +56,7 @@ export function CartView() {
                 Add <span className="font-semibold text-cream-gradient">{formatINR(freeShipRemaining)}</span> for free shipping
               </span>
             </div>
-            <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[oklch(0.96_0.012_80_/_0.06)]">
+            <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[oklch(var(--glass-tint)/0.06)]">
               <motion.div
                 className="h-full rounded-full bg-gradient-to-r from-[oklch(0.78_0.13_75)] to-[oklch(0.92_0.10_85)]"
                 initial={{ width: 0 }}
@@ -83,7 +83,7 @@ export function CartView() {
                 exit={{ opacity: 0, x: -60 }}
                 className="flex items-center gap-3 rounded-2xl glass p-3"
               >
-                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-[oklch(0.96_0.012_80_/_0.04)]">
+                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-[oklch(var(--glass-tint)/0.04)]">
                   <img
                     src={line.image}
                     alt={line.name}
@@ -108,7 +108,7 @@ export function CartView() {
                   >
                     <IconTrash size={14} />
                   </button>
-                  <div className="flex items-center gap-1 rounded-full bg-[oklch(0.96_0.012_80_/_0.06)] p-0.5">
+                  <div className="flex items-center gap-1 rounded-full bg-[oklch(var(--glass-tint)/0.06)] p-0.5">
                     <button
                       onClick={() => updateQty(line.productId, line.flavor, line.quantity - 1)}
                       className="grid h-7 w-7 place-items-center rounded-full"
@@ -180,7 +180,7 @@ export function CartView() {
 
       {/* Sticky checkout */}
       {lines.length > 0 ? (
-        <div className="fixed bottom-0 left-1/2 z-30 w-full max-w-[460px] -translate-x-1/2 border-t border-[oklch(0.96_0.012_80_/_0.08)] bg-background/95 px-4 py-3 pb-[calc(env(safe-area-inset-bottom)+90px)] backdrop-blur-xl">
+        <div className="fixed bottom-0 left-1/2 z-30 w-full max-w-[460px] -translate-x-1/2 border-t border-[oklch(var(--glass-tint)/0.08)] bg-background/95 px-4 py-3 pb-[calc(env(safe-area-inset-bottom)+90px)] backdrop-blur-xl">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-[12px] text-muted-foreground">Total</span>
             <div className="flex items-baseline gap-2">
@@ -242,7 +242,7 @@ function EmptyState() {
 
 function TrustChip({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
-    <div className="flex flex-col items-center gap-1 rounded-xl bg-[oklch(0.96_0.012_80_/_0.04)] py-2 text-[10px] text-muted-foreground">
+    <div className="flex flex-col items-center gap-1 rounded-xl bg-[oklch(var(--glass-tint)/0.04)] py-2 text-[10px] text-muted-foreground">
       <span className="text-text-gold">{icon}</span>
       {label}
     </div>

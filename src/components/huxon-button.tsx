@@ -102,9 +102,9 @@ export function HuxonButton({
     gold:
       "bg-gradient-to-br from-[oklch(0.92_0.10_85)] to-[oklch(0.72_0.13_70)] text-[oklch(0.14_0.01_50)] shadow-gold",
     secondary:
-      "glass text-foreground hover:glass-strong border border-[oklch(0.96_0.012_80_/_0.12)]",
+      "glass text-foreground hover:glass-strong border border-[oklch(var(--glass-tint)/0.12)]",
     ghost:
-      "bg-transparent text-foreground/80 hover:text-foreground hover:bg-[oklch(0.96_0.012_80_/_0.06)]",
+      "bg-transparent text-foreground/80 hover:text-foreground hover:bg-[oklch(var(--glass-tint)/0.06)]",
     danger:
       "bg-gradient-to-br from-[oklch(0.62_0.20_25)] to-[oklch(0.52_0.20_25)] text-white shadow-[0_8px_24px_-6px_oklch(0.62_0.20_25_/_0.5)]",
   };
@@ -238,7 +238,7 @@ export function HuxonIconButton({
       className={cn(
         "relative grid place-items-center rounded-full",
         "glass hover:glass-strong transition-all duration-300",
-        "border border-[oklch(0.96_0.012_80_/_0.08)]",
+        "border border-[oklch(var(--glass-tint)/0.08)]",
         active && "border-[oklch(0.78_0.13_75_/_40%)]",
         className
       )}

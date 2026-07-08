@@ -495,7 +495,7 @@ function StatusDonut() {
       </div>
       <div className="grid w-full grid-cols-2 gap-2.5">
         {ORDER_STATUS_DIST.map((d) => (
-          <div key={d.status} className="flex items-center justify-between gap-2 rounded-lg border border-border/50 bg-[oklch(0.96_0.012_80_/_0.03)] px-3 py-2">
+          <div key={d.status} className="flex items-center justify-between gap-2 rounded-lg border border-border/50 bg-[oklch(var(--glass-tint)/0.03)] px-3 py-2">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full" style={{ backgroundColor: d.color }} />
               <span className="text-[11px] text-muted-foreground">
@@ -638,7 +638,7 @@ function DashboardSection() {
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-[oklch(0.96_0.012_80_/_0.08)]">
+                      <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-[oklch(var(--glass-tint)/0.08)]">
                         <motion.div
                           initial={{ width: 0 }}
                           animate={{ width: `${pct}%` }}
@@ -798,7 +798,7 @@ function ProductsSection() {
               <TableRow key={p.id} className="border-border/40 group">
                 <TableCell className="pl-5">
                   <div className="flex items-center gap-3 py-2">
-                    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-border/60 bg-[oklch(0.96_0.012_80_/_0.04)]">
+                    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-border/60 bg-[oklch(var(--glass-tint)/0.04)]">
                       <img
                         src={p.heroImage}
                         alt={p.name}
@@ -937,7 +937,7 @@ function OrdersSection() {
               )}
             >
               {f.label}
-              <span className="rounded-full bg-[oklch(0.96_0.012_80_/_0.1)] px-1.5 text-[10px] tabular">{count}</span>
+              <span className="rounded-full bg-[oklch(var(--glass-tint)/0.1)] px-1.5 text-[10px] tabular">{count}</span>
             </button>
           );
         })}
@@ -997,7 +997,7 @@ function OrdersSection() {
                   </TableCell>
                 </TableRow>
                 {expanded === o.id ? (
-                  <TableRow className="border-border/40 bg-[oklch(0.96_0.012_80_/_0.02)]">
+                  <TableRow className="border-border/40 bg-[oklch(var(--glass-tint)/0.02)]">
                     <TableCell colSpan={7} className="py-5 pl-5 pr-5">
                       <OrderDetail order={o} />
                     </TableCell>
@@ -1028,8 +1028,8 @@ function OrderDetail({ order }: { order: (typeof MOCK_ORDERS)[number] }) {
         <div className="mb-3 text-[10px] uppercase tracking-[0.2em] text-text-gold">Items</div>
         <div className="space-y-2">
           {items.map((it, i) => (
-            <div key={i} className="flex items-center gap-3 rounded-lg border border-border/50 bg-[oklch(0.96_0.012_80_/_0.03)] p-2.5">
-              <div className="h-10 w-10 shrink-0 overflow-hidden rounded-md border border-border/60 bg-[oklch(0.96_0.012_80_/_0.04)]">
+            <div key={i} className="flex items-center gap-3 rounded-lg border border-border/50 bg-[oklch(var(--glass-tint)/0.03)] p-2.5">
+              <div className="h-10 w-10 shrink-0 overflow-hidden rounded-md border border-border/60 bg-[oklch(var(--glass-tint)/0.04)]">
                 <img src={it.image} alt={it.name} className="h-full w-full object-cover" onError={(e) => ((e.currentTarget as HTMLImageElement).style.opacity = "0")} />
               </div>
               <div className="flex-1">
@@ -1148,7 +1148,7 @@ function CustomersSection() {
                     <span className="text-[10px] text-muted-foreground tabular">{t.pct}%</span>
                   </div>
                 </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-[oklch(0.96_0.012_80_/_0.08)]">
+                <div className="h-1.5 overflow-hidden rounded-full bg-[oklch(var(--glass-tint)/0.08)]">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${t.pct}%` }}
@@ -1310,7 +1310,7 @@ function InventorySection() {
                 <TableRow key={p.id} className="border-border/40">
                   <TableCell className="pl-5">
                     <div className="flex items-center gap-3 py-1">
-                      <div className="h-9 w-9 shrink-0 overflow-hidden rounded-md border border-border/60 bg-[oklch(0.96_0.012_80_/_0.04)]">
+                      <div className="h-9 w-9 shrink-0 overflow-hidden rounded-md border border-border/60 bg-[oklch(var(--glass-tint)/0.04)]">
                         <img src={p.heroImage} alt={p.name} className="h-full w-full object-cover" onError={(e) => ((e.currentTarget as HTMLImageElement).style.opacity = "0")} />
                       </div>
                       <div className="text-sm font-medium">{p.name}</div>
@@ -1323,7 +1323,7 @@ function InventorySection() {
                     <span className="text-[11px] text-muted-foreground"> units</span>
                   </TableCell>
                   <TableCell>
-                    <div className="h-2 overflow-hidden rounded-full bg-[oklch(0.96_0.012_80_/_0.08)]">
+                    <div className="h-2 overflow-hidden rounded-full bg-[oklch(var(--glass-tint)/0.08)]">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${pct}%` }}
@@ -1430,7 +1430,7 @@ function MarketingSection() {
                           <span className="text-[12px] font-semibold tabular">{c.used.toLocaleString("en-IN")}</span>
                           <span className="text-[10px] text-muted-foreground tabular">/ {c.limit.toLocaleString("en-IN")}</span>
                         </div>
-                        <div className="h-1 w-24 overflow-hidden rounded-full bg-[oklch(0.96_0.012_80_/_0.08)]">
+                        <div className="h-1 w-24 overflow-hidden rounded-full bg-[oklch(var(--glass-tint)/0.08)]">
                           <div className="h-full rounded-full bg-gradient-to-r from-[oklch(0.62_0.10_55)] to-[oklch(0.92_0.10_85)]" style={{ width: `${pct}%` }} />
                         </div>
                       </div>
@@ -1478,7 +1478,7 @@ function MarketingSection() {
             {FLASH_SALES.map((f) => {
               const pct = Math.min(100, (f.sold / f.target) * 100);
               return (
-                <div key={f.name} className="rounded-xl border border-border/50 bg-[oklch(0.96_0.012_80_/_0.03)] p-3.5">
+                <div key={f.name} className="rounded-xl border border-border/50 bg-[oklch(var(--glass-tint)/0.03)] p-3.5">
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <div className="flex items-center gap-2">
@@ -1505,7 +1505,7 @@ function MarketingSection() {
                       <span>{f.sold} sold</span>
                       <span>{f.target} target</span>
                     </div>
-                    <div className="h-1.5 overflow-hidden rounded-full bg-[oklch(0.96_0.012_80_/_0.08)]">
+                    <div className="h-1.5 overflow-hidden rounded-full bg-[oklch(var(--glass-tint)/0.08)]">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${pct}%` }}
@@ -1514,7 +1514,7 @@ function MarketingSection() {
                           "h-full rounded-full",
                           f.active
                             ? "bg-gradient-to-r from-[oklch(0.62_0.20_25)] to-[oklch(0.82_0.10_65)]"
-                            : "bg-[oklch(0.96_0.012_80_/_0.18)]"
+                            : "bg-[oklch(var(--glass-tint)/0.18)]"
                         )}
                       />
                     </div>
@@ -1554,7 +1554,7 @@ function MarketingSection() {
                         className={cn(
                           "inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide",
                           c.status === "active" && "bg-[oklch(0.62_0.10_160_/_0.14)] text-text-accent-jade",
-                          c.status === "completed" && "bg-[oklch(0.96_0.012_80_/_0.08)] text-muted-foreground",
+                          c.status === "completed" && "bg-[oklch(var(--glass-tint)/0.08)] text-muted-foreground",
                           c.status === "scheduled" && "bg-[oklch(0.78_0.13_75_/_0.14)] text-text-gold"
                         )}
                       >
@@ -1655,7 +1655,7 @@ function SettingsSection() {
 
 function SettingRow({ label, value, tone = "default" }: { label: string; value: string; tone?: "default" | "jade" | "amber" }) {
   return (
-    <div className="flex items-center justify-between rounded-lg border border-border/50 bg-[oklch(0.96_0.012_80_/_0.03)] px-3 py-2.5">
+    <div className="flex items-center justify-between rounded-lg border border-border/50 bg-[oklch(var(--glass-tint)/0.03)] px-3 py-2.5">
       <span className="text-[12px] text-muted-foreground">{label}</span>
       <span
         className={cn(
@@ -1674,13 +1674,13 @@ function SettingRow({ label, value, tone = "default" }: { label: string; value: 
 function ToggleRow({ label, enabled: initialEnabled }: { label: string; enabled: boolean }) {
   const [on, setOn] = React.useState(initialEnabled);
   return (
-    <div className="flex items-center justify-between rounded-lg border border-border/50 bg-[oklch(0.96_0.012_80_/_0.03)] px-3 py-2.5">
+    <div className="flex items-center justify-between rounded-lg border border-border/50 bg-[oklch(var(--glass-tint)/0.03)] px-3 py-2.5">
       <span className="text-[12px] text-muted-foreground">{label}</span>
       <button
         onClick={() => setOn((v) => !v)}
         className={cn(
           "relative h-5 w-9 rounded-full transition-colors",
-          on ? "bg-[oklch(0.78_0.13_75)]" : "bg-[oklch(0.96_0.012_80_/_0.18)]"
+          on ? "bg-[oklch(0.78_0.13_75)]" : "bg-[oklch(var(--glass-tint)/0.18)]"
         )}
         role="switch"
         aria-checked={on}
@@ -1700,7 +1700,7 @@ function ToggleRow({ label, enabled: initialEnabled }: { label: string; enabled:
 
 function IntegrationRow({ name, desc, status }: { name: string; desc: string; status: "connected" | "disconnected" }) {
   return (
-    <div className="flex items-center justify-between rounded-lg border border-border/50 bg-[oklch(0.96_0.012_80_/_0.03)] px-3 py-2.5">
+    <div className="flex items-center justify-between rounded-lg border border-border/50 bg-[oklch(var(--glass-tint)/0.03)] px-3 py-2.5">
       <div>
         <div className="text-[12px] font-medium">{name}</div>
         <div className="text-[10px] text-muted-foreground">{desc}</div>
@@ -2183,7 +2183,7 @@ function Sidebar({ active, onSelect }: { active: Section; onSelect: (s: Section)
                 "group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] font-medium transition-all",
                 isActive
                   ? "bg-[oklch(0.78_0.13_75_/_0.12)] text-text-gold"
-                  : "text-muted-foreground hover:bg-[oklch(0.96_0.012_80_/_0.05)] hover:text-foreground"
+                  : "text-muted-foreground hover:bg-[oklch(var(--glass-tint)/0.05)] hover:text-foreground"
               )}
             >
               {isActive ? (
@@ -2198,7 +2198,7 @@ function Sidebar({ active, onSelect }: { active: Section; onSelect: (s: Section)
               {item.badge ? (
                 <span className={cn(
                   "rounded-full px-1.5 py-0.5 text-[10px] font-semibold tabular",
-                  isActive ? "bg-[oklch(0.78_0.13_75_/_0.25)] text-text-gold" : "bg-[oklch(0.96_0.012_80_/_0.1)] text-muted-foreground"
+                  isActive ? "bg-[oklch(0.78_0.13_75_/_0.25)] text-text-gold" : "bg-[oklch(var(--glass-tint)/0.1)] text-muted-foreground"
                 )}>
                   {item.badge}
                 </span>
@@ -2210,7 +2210,7 @@ function Sidebar({ active, onSelect }: { active: Section; onSelect: (s: Section)
 
       {/* Admin card */}
       <div className="px-3 pb-3">
-        <div className="rounded-xl border border-border/60 bg-[oklch(0.96_0.012_80_/_0.04)] p-3">
+        <div className="rounded-xl border border-border/60 bg-[oklch(var(--glass-tint)/0.04)] p-3">
           <div className="flex items-center gap-2.5">
             <div className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-[oklch(0.92_0.10_85)] to-[oklch(0.62_0.10_55)] text-[12px] font-bold text-[oklch(0.14_0.01_50)]">
               AM
@@ -2221,7 +2221,7 @@ function Sidebar({ active, onSelect }: { active: Section; onSelect: (s: Section)
             </div>
             <button
               onClick={() => toast.info("Signed out", { description: "Redirecting to store…" })}
-              className="grid h-7 w-7 place-items-center rounded-md text-muted-foreground hover:bg-[oklch(0.96_0.012_80_/_0.08)] hover:text-foreground"
+              className="grid h-7 w-7 place-items-center rounded-md text-muted-foreground hover:bg-[oklch(var(--glass-tint)/0.08)] hover:text-foreground"
               aria-label="Sign out"
             >
               <IconLogout size={14} />
@@ -2242,7 +2242,7 @@ function TopBar({ onMenu }: { onMenu: () => void }) {
     <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border/60 glass-dark px-4 sm:px-6">
       <button
         onClick={onMenu}
-        className="grid h-9 w-9 place-items-center rounded-md text-muted-foreground hover:bg-[oklch(0.96_0.012_80_/_0.06)] hover:text-foreground lg:hidden"
+        className="grid h-9 w-9 place-items-center rounded-md text-muted-foreground hover:bg-[oklch(var(--glass-tint)/0.06)] hover:text-foreground lg:hidden"
         aria-label="Open navigation"
       >
         <IconMenu size={18} />
@@ -2262,7 +2262,7 @@ function TopBar({ onMenu }: { onMenu: () => void }) {
           placeholder="Search orders, customers, products…"
           className="h-9 pl-9 pr-12"
         />
-        <kbd className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 rounded border border-border/60 bg-[oklch(0.96_0.012_80_/_0.06)] px-1.5 py-0.5 font-mono text-[9px] text-muted-foreground">
+        <kbd className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 rounded border border-border/60 bg-[oklch(var(--glass-tint)/0.06)] px-1.5 py-0.5 font-mono text-[9px] text-muted-foreground">
           ⌘K
         </kbd>
       </div>
@@ -2270,7 +2270,7 @@ function TopBar({ onMenu }: { onMenu: () => void }) {
       <div className="ml-auto flex items-center gap-1.5 md:ml-0">
         <button
           onClick={() => toast.info("You're all caught up", { description: "No new notifications." })}
-          className="relative grid h-9 w-9 place-items-center rounded-md text-muted-foreground hover:bg-[oklch(0.96_0.012_80_/_0.06)] hover:text-foreground"
+          className="relative grid h-9 w-9 place-items-center rounded-md text-muted-foreground hover:bg-[oklch(var(--glass-tint)/0.06)] hover:text-foreground"
           aria-label="Notifications"
         >
           <IconBell size={17} />
@@ -2332,7 +2332,7 @@ export default function AdminPage() {
               >
                 <button
                   onClick={() => setDrawerOpen(false)}
-                  className="absolute right-3 top-4 grid h-8 w-8 place-items-center rounded-md text-muted-foreground hover:bg-[oklch(0.96_0.012_80_/_0.08)] hover:text-foreground"
+                  className="absolute right-3 top-4 grid h-8 w-8 place-items-center rounded-md text-muted-foreground hover:bg-[oklch(var(--glass-tint)/0.08)] hover:text-foreground"
                   aria-label="Close navigation"
                 >
                   <IconClose size={16} />

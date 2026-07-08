@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 import { PRODUCTS, formatINR, discountPercent } from "@/lib/catalog";
 import {
   IconFilter,
@@ -150,7 +151,7 @@ export function ShopView() {
             className={cn(
               "shrink-0 rounded-full px-2.5 py-1 text-[11px] transition-colors",
               sort === s.id
-                ? "bg-[oklch(0.96_0.012_80_/_0.1)] text-foreground"
+                ? "bg-[oklch(var(--glass-tint)/0.1)] text-foreground"
                 : "text-muted-foreground"
             )}
           >
@@ -220,7 +221,13 @@ function ShopCard({
         </div>
         {/* Favorite */}
         <button
-          onClick={() => wishlist.toggle(product.id)}
+          onClick={() => {
+            const wasFav = fav;
+            wishlist.toggle(product.id);
+            toast(wasFav ? "Removed from wishlist" : "Added to wishlist ❤️", {
+              description: product.name,
+            });
+          }}
           className={cn(
             "absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full backdrop-blur-md transition-colors",
             fav ? "bg-[oklch(0.78_0.13_75_/_0.25)] text-text-gold" : "bg-black/30 text-cream/80"
@@ -280,7 +287,12 @@ function ShopCard({
             ) : null}
           </div>
           <button
-            onClick={() => addItem(product)}
+            onClick={() => {
+              addItem(product);
+              toast.success("Added to cart", {
+                description: `${product.name} · ${formatINR(product.price)}`,
+              });
+            }}
             className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-[oklch(0.92_0.10_85)] to-[oklch(0.62_0.10_55)] text-[oklch(0.14_0.01_50)] shadow-gold"
             aria-label="Add to cart"
           >

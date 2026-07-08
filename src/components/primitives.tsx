@@ -347,7 +347,7 @@ export function ShimmerCard({
 }) {
   return (
     <div
-      className={cn("shimmer rounded-2xl bg-[oklch(0.96_0.012_80_/_0.04)]", className)}
+      className={cn("shimmer rounded-2xl bg-[oklch(var(--glass-tint)/0.04)]", className)}
       style={{ height }}
     />
   );

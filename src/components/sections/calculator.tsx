@@ -189,7 +189,7 @@ export function ProteinCalculator() {
           </AnimatePresence>
 
           {/* Recommendation */}
-          <div className="mt-4 rounded-2xl bg-[oklch(0.96_0.012_80_/_0.04)] p-3">
+          <div className="mt-4 rounded-2xl bg-[oklch(var(--glass-tint)/0.04)] p-3">
             <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
               <IconTarget size={12} />
               <span>Recommended to hit this with</span>
@@ -221,14 +221,14 @@ function NumberField({
   suffix?: string;
 }) {
   return (
-    <div className="rounded-2xl bg-[oklch(0.96_0.012_80_/_0.04)] p-3">
+    <div className="rounded-2xl bg-[oklch(var(--glass-tint)/0.04)] p-3">
       <div className="mb-1.5 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
         {label}
       </div>
       <div className="flex items-center justify-between">
         <button
           onClick={() => onChange(Math.max(min, value - 1))}
-          className="grid h-8 w-8 place-items-center rounded-full bg-[oklch(0.96_0.012_80_/_0.06)] text-foreground/80"
+          className="grid h-8 w-8 place-items-center rounded-full bg-[oklch(var(--glass-tint)/0.06)] text-foreground/80"
           aria-label={`Decrease ${label}`}
         >
           −
@@ -241,7 +241,7 @@ function NumberField({
         </span>
         <button
           onClick={() => onChange(Math.min(max, value + 1))}
-          className="grid h-8 w-8 place-items-center rounded-full bg-[oklch(0.96_0.012_80_/_0.06)] text-foreground/80"
+          className="grid h-8 w-8 place-items-center rounded-full bg-[oklch(var(--glass-tint)/0.06)] text-foreground/80"
           aria-label={`Increase ${label}`}
         >
           +
@@ -267,7 +267,7 @@ function SliderField({
   suffix?: string;
 }) {
   return (
-    <div className="rounded-2xl bg-[oklch(0.96_0.012_80_/_0.04)] p-3">
+    <div className="rounded-2xl bg-[oklch(var(--glass-tint)/0.04)] p-3">
       <div className="mb-2 flex items-center justify-between">
         <span className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
           {label}
@@ -283,7 +283,7 @@ function SliderField({
         max={max}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-[oklch(0.96_0.012_80_/_0.1)] accent-[oklch(0.78_0.13_75)]"
+        className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-[oklch(var(--glass-tint)/0.1)] accent-[oklch(0.78_0.13_75)]"
         aria-label={label}
       />
     </div>
@@ -302,11 +302,11 @@ function SegmentField<T extends string>({
   options: { value: T; label: string }[];
 }) {
   return (
-    <div className="rounded-2xl bg-[oklch(0.96_0.012_80_/_0.04)] p-3">
+    <div className="rounded-2xl bg-[oklch(var(--glass-tint)/0.04)] p-3">
       <div className="mb-1.5 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
         {label}
       </div>
-      <div className="flex gap-1 rounded-full bg-[oklch(0.96_0.012_80_/_0.06)] p-1">
+      <div className="flex gap-1 rounded-full bg-[oklch(var(--glass-tint)/0.06)] p-1">
         {options.map((opt) => (
           <button
             key={opt.value}
@@ -359,7 +359,7 @@ function SegmentGrid({
               "rounded-xl px-2 py-2 text-[11px] font-medium transition-all " +
               (value === i
                 ? "bg-[oklch(0.78_0.13_75_/_0.18)] text-text-gold border border-[oklch(0.78_0.13_75_/_0.35)]"
-                : "bg-[oklch(0.96_0.012_80_/_0.04)] text-muted-foreground border border-transparent")
+                : "bg-[oklch(var(--glass-tint)/0.04)] text-muted-foreground border border-transparent")
             }
           >
             {opt}
@@ -372,7 +372,7 @@ function SegmentGrid({
 
 function MiniStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl bg-[oklch(0.96_0.012_80_/_0.04)] px-2 py-1.5 text-center">
+    <div className="rounded-xl bg-[oklch(var(--glass-tint)/0.04)] px-2 py-1.5 text-center">
       <div className="text-[9px] uppercase tracking-wide text-muted-foreground">
         {label}
       </div>

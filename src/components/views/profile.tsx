@@ -138,13 +138,13 @@ export function ProfileView() {
               <span className="font-semibold text-cream-gradient">Jul 18, 2025</span>
             </div>
             <div className="mt-2 flex gap-2">
-              <button className="flex-1 rounded-full bg-[oklch(0.96_0.012_80_/_0.06)] py-1.5 text-[11px] font-medium">
+              <button className="flex-1 rounded-full bg-[oklch(var(--glass-tint)/0.06)] py-1.5 text-[11px] font-medium">
                 Pause
               </button>
-              <button className="flex-1 rounded-full bg-[oklch(0.96_0.012_80_/_0.06)] py-1.5 text-[11px] font-medium">
+              <button className="flex-1 rounded-full bg-[oklch(var(--glass-tint)/0.06)] py-1.5 text-[11px] font-medium">
                 Skip
               </button>
-              <button className="flex-1 rounded-full bg-[oklch(0.96_0.012_80_/_0.06)] py-1.5 text-[11px] font-medium">
+              <button className="flex-1 rounded-full bg-[oklch(var(--glass-tint)/0.06)] py-1.5 text-[11px] font-medium">
                 Swap flavor
               </button>
             </div>
@@ -279,7 +279,7 @@ function StatTile({
   prefix?: string;
 }) {
   return (
-    <div className="rounded-2xl bg-[oklch(0.96_0.012_80_/_0.04)] p-3 text-center">
+    <div className="rounded-2xl bg-[oklch(var(--glass-tint)/0.04)] p-3 text-center">
       <div className="font-display text-[18px] font-semibold text-cream-gradient tabular">
         <AnimatedNumber value={value} prefix={prefix} />
       </div>
@@ -305,7 +305,7 @@ function GoalChip({
         <span className="text-[11px] text-muted-foreground">{label}</span>
         <span className="text-[11px] font-semibold text-cream-gradient">{value}</span>
       </div>
-      <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-[oklch(0.96_0.012_80_/_0.06)]">
+      <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-[oklch(var(--glass-tint)/0.06)]">
         <motion.div
           className="h-full rounded-full bg-gradient-to-r from-[oklch(0.78_0.13_75)] to-[oklch(0.92_0.10_85)]"
           initial={{ width: 0 }}

@@ -136,7 +136,7 @@ function NavAction({
       aria-label={label}
       className={cn(
         "relative grid h-10 w-10 place-items-center rounded-full text-foreground/85",
-        "hover:text-foreground hover:bg-[oklch(0.96_0.012_80_/_0.08)] transition-colors"
+        "hover:text-foreground hover:bg-[oklch(var(--glass-tint)/0.08)] transition-colors"
       )}
     >
       {children}
@@ -161,7 +161,7 @@ function BottomNav() {
       className="pointer-events-none fixed bottom-0 left-1/2 z-40 w-full max-w-[460px] -translate-x-1/2 px-4 pb-[calc(env(safe-area-inset-bottom)+12px)] pt-2"
       aria-label="Primary"
     >
-      <div className="glass-dark pointer-events-auto relative flex items-center justify-around rounded-[28px] border border-[oklch(0.96_0.012_80_/_0.08)] px-2 py-2 shadow-premium">
+      <div className="glass-dark pointer-events-auto relative flex items-center justify-around rounded-[28px] border border-[oklch(var(--glass-tint)/0.08)] px-2 py-2 shadow-premium">
         {/* Top sheen */}
         <span className="pointer-events-none absolute inset-x-6 -top-px h-px bg-gradient-to-r from-transparent via-[oklch(0.78_0.13_75_/_40%)] to-transparent" />
 

@@ -939,3 +939,69 @@ Stage Summary:
 - ✅ Admin: 13 sections all render (verified Analytics, Returns, Audit via agent-browser)
 - ✅ VLM: admin analytics "design quality strong, sleek dark theme, data clarity excellent"
 - ✅ Report generated at reports/2026-07-05_03-35-ecommerce-improvement-report.md
+
+---
+Task ID: 21 (Cycles 1-2 — Autonomous Improvement)
+Agent: main (Z.ai Code)
+Task: Deep human-level testing, fix PWA blocking, integrate SmartImage, replace glass tints, add rate limiting, keyboard navigation, checkout form validation
+
+Cycle 1 Improvements:
+1. Configured next.config.ts for image optimization (AVIF/WebP, device sizes, cache TTL)
+2. Replaced ALL 75+ hardcoded oklch(0.96_0.012_80) glass tint colors with oklch(var(--glass-tint)...) CSS variable across 18+ files
+3. Added API rate limiting to middleware (100 req/min per IP with X-RateLimit headers, 429 response, Retry-After)
+4. Created SmartImage component (next/image wrapper with optimization, lazy loading, error fallback)
+5. Created skeleton loaders (ProductCardSkeleton, ProductGridSkeleton, PDPSkeleton, CartSkeleton, DashboardSkeleton, Spinner)
+
+Cycle 2 Improvements:
+1. Added keyboard navigation: Escape-to-close on cart drawer and search overlay
+2. Added body scroll lock when modals are open
+3. Added ARIA dialog attributes (role="dialog", aria-modal, aria-label)
+4. Completely rewrote checkout form with real-time validation:
+   - Phone: 10-digit numeric validation with error/success states
+   - OTP: 6-digit auto-focus flow with completion indicator
+   - Name: min 2 chars validation
+   - Address: min 5 chars validation
+   - Pincode: 6-digit numeric validation
+   - Payment method: selectable with visual feedback
+   - Form validation indicator (all fields valid → ready to pay)
+   - Green ring on valid fields, red ring on errors
+5. Added focus management hooks (useEscapeKey, useBodyScrollLock)
+
+Testing Performed:
+- Home: scrolled all 14 sections, no errors
+- Shop: category filter, product card click, PDP load, add to cart
+- Cart: opens, Escape closes it, checkout form validation works
+- Search: opens, trending/recent visible, Escape closes it
+- Notifications: opens, 6 notifications visible, mark-all-read
+- Theme toggle: dark ↔ light, both render correctly
+- All views: Explore, Rewards, Profile, Shop — all clean
+- Admin: all 13 sections accessible, Orders table renders
+- Rate limiting: X-RateLimit headers present on API responses
+- Security: 6 headers verified on all responses
+- Console: zero errors after fixes
+
+Stage Summary:
+- ✅ bun run lint passes clean
+- ✅ HTTP 200 on / and /admin
+- ✅ Rate limiting: 100 req/min with proper headers
+- ✅ Cart Escape-to-close works
+- ✅ Search Escape-to-close works
+- ✅ Checkout form: real-time validation, OTP auto-focus, payment selector
+- ✅ All 75+ glass tints replaced with CSS variables
+- ✅ Zero console errors
+
+---
+Task ID: 22 (Cycle 3 — Toast Notifications)
+Agent: main (Z.ai Code)
+Task: Add sonner toast notifications for add-to-cart and wishlist actions
+
+- Added sonner import to shop.tsx and products.tsx
+- Add-to-cart: toast.success with product name + price
+- Wishlist toggle: toast with add/remove feedback
+- All toasts use sonner's premium notification system
+- Verified: cart opens after add, toast shows product context
+
+Stage Summary:
+- ✅ Lint clean, HTTP 200, zero console errors
+- ✅ All 3 cycles verified via agent-browser
+- ✅ Report at reports/2026-07-05_03-55-ecommerce-improvement-report.md

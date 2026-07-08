@@ -120,7 +120,7 @@ export function CustomerStories() {
                   <span
                     className={
                       "block h-1.5 rounded-full transition-all " +
-                      (i === active ? "w-8 bg-[oklch(0.78_0.13_75)]" : "w-1.5 bg-[oklch(0.96_0.012_80_/_0.18)]")
+                      (i === active ? "w-8 bg-[oklch(0.78_0.13_75)]" : "w-1.5 bg-[oklch(var(--glass-tint)/0.18)]")
                     }
                   />
                   <span className="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-foreground px-2 py-0.5 text-[9px] font-medium text-background opacity-0 transition-opacity group-hover:opacity-100">

@@ -19,8 +19,35 @@ import {
 import { Pill, AnimatedNumber } from "@/components/primitives";
 import { formatINR } from "@/lib/catalog";
 
+// Inline escape key + body scroll lock hooks (avoids import resolution issues)
+function useEscapeKey(isOpen: boolean, onClose: () => void) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [isOpen, onClose]);
+}
+
+function useBodyScrollLock(isOpen: boolean) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const original = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = original; };
+  }, [isOpen]);
+}
+
 export function CartDrawer() {
   const { isOpen, closeCart, lines, updateQty, removeItem, subtotal, clear } = useCart();
+  const drawerRef = React.useRef<HTMLDivElement>(null);
+  useEscapeKey(isOpen, closeCart);
+  useBodyScrollLock(isOpen);
   const [stage, setStage] = React.useState<"cart" | "checkout" | "success">("cart");
   const [coupon, setCoupon] = React.useState("");
   const [applied, setApplied] = React.useState<number>(0);
@@ -137,13 +164,17 @@ export function CartDrawer() {
             className="absolute inset-0 bg-black/70 backdrop-blur-md"
           />
           <motion.div
+            ref={drawerRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Shopping cart"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", stiffness: 260, damping: 30 }}
-            className="relative z-10 flex max-h-[92dvh] w-full max-w-[460px] flex-col overflow-hidden rounded-t-[28px] border-t border-[oklch(0.96_0.012_80_/_0.1)] bg-background"
+            className="relative z-10 flex max-h-[92dvh] w-full max-w-[460px] flex-col overflow-hidden rounded-t-[28px] border-t border-[oklch(var(--glass-tint)/0.1)] bg-background"
           >
-            <div className="mx-auto my-3 h-1 w-10 rounded-full bg-[oklch(0.96_0.012_80_/_0.2)]" />
+            <div className="mx-auto my-3 h-1 w-10 rounded-full bg-[oklch(var(--glass-tint)/0.2)]" />
 
             {/* Header */}
             <div className="flex items-center justify-between px-5">
@@ -211,7 +242,7 @@ export function CartDrawer() {
                               value={coupon}
                               onChange={(e) => setCoupon(e.target.value)}
                               placeholder="Try HUXON10"
-                              className="flex-1 rounded-xl bg-[oklch(0.96_0.012_80_/_0.06)] px-3 py-2 text-[13px] placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-[oklch(0.78_0.13_75_/_40%)]"
+                              className="flex-1 rounded-xl bg-[oklch(var(--glass-tint)/0.06)] px-3 py-2 text-[13px] placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-[oklch(0.78_0.13_75_/_40%)]"
                             />
                             <HuxonButton size="sm" variant="secondary" onClick={applyCoupon}>
                               Apply
@@ -291,7 +322,7 @@ export function CartDrawer() {
 
             {/* Sticky CTA */}
             {lines.length > 0 && stage !== "success" && (
-              <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-[oklch(0.96_0.012_80_/_0.08)] bg-background/95 backdrop-blur-xl px-5 py-3 pb-safe">
+              <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-[oklch(var(--glass-tint)/0.08)] bg-background/95 backdrop-blur-xl px-5 py-3 pb-safe">
                 <HuxonButton
                   size="lg"
                   glow
@@ -318,7 +349,7 @@ export function CartDrawer() {
             )}
 
             {stage === "success" && (
-              <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-[oklch(0.96_0.012_80_/_0.08)] bg-background/95 backdrop-blur-xl px-5 py-3 pb-safe">
+              <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-[oklch(var(--glass-tint)/0.08)] bg-background/95 backdrop-blur-xl px-5 py-3 pb-safe">
                 <HuxonButton
                   size="lg"
                   variant="secondary"
@@ -353,7 +384,7 @@ function CartLineItem({
       exit={{ opacity: 0, x: -50 }}
       className="flex items-center gap-3 rounded-2xl glass p-3"
     >
-      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-[oklch(0.96_0.012_80_/_0.04)]">
+      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-[oklch(var(--glass-tint)/0.04)]">
         <img
           src={line.image}
           alt={line.name}
@@ -383,10 +414,10 @@ function CartLineItem({
         >
           <IconTrash size={14} />
         </button>
-        <div className="flex items-center gap-1 rounded-full bg-[oklch(0.96_0.012_80_/_0.06)] p-0.5">
+        <div className="flex items-center gap-1 rounded-full bg-[oklch(var(--glass-tint)/0.06)] p-0.5">
           <button
             onClick={() => onQty(line.quantity - 1)}
-            className="grid h-7 w-7 place-items-center rounded-full hover:bg-[oklch(0.96_0.012_80_/_0.08)]"
+            className="grid h-7 w-7 place-items-center rounded-full hover:bg-[oklch(var(--glass-tint)/0.08)]"
             aria-label="Decrease"
           >
             <IconMinus size={12} />
@@ -396,7 +427,7 @@ function CartLineItem({
           </span>
           <button
             onClick={() => onQty(line.quantity + 1)}
-            className="grid h-7 w-7 place-items-center rounded-full hover:bg-[oklch(0.96_0.012_80_/_0.08)]"
+            className="grid h-7 w-7 place-items-center rounded-full hover:bg-[oklch(var(--glass-tint)/0.08)]"
             aria-label="Increase"
           >
             <IconPlus size={12} />
@@ -423,7 +454,7 @@ function EmptyCart() {
 
 function TrustChip({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
-    <div className="flex flex-col items-center gap-1 rounded-xl bg-[oklch(0.96_0.012_80_/_0.04)] py-2 text-[10px] text-muted-foreground">
+    <div className="flex flex-col items-center gap-1 rounded-xl bg-[oklch(var(--glass-tint)/0.04)] py-2 text-[10px] text-muted-foreground">
       <span className="text-text-gold">{icon}</span>
       {label}
     </div>
@@ -455,6 +486,49 @@ function Row({
 }
 
 function CheckoutForm({ total }: { total: number }) {
+  const [phone, setPhone] = React.useState("");
+  const [phoneError, setPhoneError] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [nameError, setNameError] = React.useState("");
+  const [address, setAddress] = React.useState("");
+  const [addressError, setAddressError] = React.useState("");
+  const [city, setCity] = React.useState("");
+  const [pincode, setPincode] = React.useState("");
+  const [pincodeError, setPincodeError] = React.useState("");
+  const [payment, setPayment] = React.useState("UPI");
+  const [otpSent, setOtpSent] = React.useState(false);
+  const [otp, setOtp] = React.useState(["", "", "", "", "", ""]);
+
+  const validatePhone = (v: string) => {
+    const cleaned = v.replace(/\D/g, "");
+    if (!cleaned) return "";
+    if (cleaned.length < 10) return "Enter 10 digits";
+    if (cleaned.length > 10) return "Too long";
+    return "";
+  };
+
+  const validatePincode = (v: string) => {
+    const cleaned = v.replace(/\D/g, "");
+    if (!cleaned) return "";
+    if (cleaned.length < 6) return "6 digits required";
+    return "";
+  };
+
+  const handleOtpChange = (i: number, val: string) => {
+    if (!/^\d?$/.test(val)) return;
+    const newOtp = [...otp];
+    newOtp[i] = val;
+    setOtp(newOtp);
+    // Auto-focus next
+    if (val && i < 5) {
+      const next = document.getElementById(`otp-${i + 1}`);
+      next?.focus();
+    }
+  };
+
+  const otpComplete = otp.every((d) => d !== "");
+  const formValid = phone.length === 10 && name.length >= 2 && address.length >= 5 && city.length >= 2 && pincode.length === 6;
+
   return (
     <div className="space-y-3">
       {/* OTP login */}
@@ -464,20 +538,62 @@ function CheckoutForm({ total }: { total: number }) {
         </div>
         <div className="flex gap-2">
           <input
-            placeholder="+91 98765 43210"
-            className="flex-1 rounded-xl bg-[oklch(0.96_0.012_80_/_0.06)] px-3 py-2.5 text-[13px] placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-[oklch(0.78_0.13_75_/_40%)]"
+            value={phone}
+            onChange={(e) => {
+              const v = e.target.value.replace(/\D/g, "").slice(0, 10);
+              setPhone(v);
+              setPhoneError(validatePhone(v));
+            }}
+            placeholder="10-digit mobile number"
+            inputMode="numeric"
+            className={`flex-1 rounded-xl bg-[oklch(var(--glass-tint)/0.06)] px-3 py-2.5 text-[13px] placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 ${
+              phoneError
+                ? "ring-1 ring-[oklch(0.72_0.18_25/0.5)]"
+                : phone.length === 10
+                ? "ring-1 ring-[oklch(var(--jade)/0.5)]"
+                : "focus:ring-[oklch(var(--gold)/40%)]"
+            }`}
           />
-          <HuxonButton size="sm" variant="secondary">Send OTP</HuxonButton>
+          <HuxonButton
+            size="sm"
+            variant="secondary"
+            disabled={phone.length !== 10}
+            onClick={() => setOtpSent(true)}
+          >
+            Send OTP
+          </HuxonButton>
         </div>
-        <div className="mt-2 flex gap-1.5">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <input
-              key={i}
-              maxLength={1}
-              className="h-11 w-9 rounded-lg bg-[oklch(0.96_0.012_80_/_0.06)] text-center text-[15px] font-semibold focus:outline-none focus:ring-1 focus:ring-[oklch(0.78_0.13_75_/_40%)]"
-            />
-          ))}
-        </div>
+        {phoneError && (
+          <p className="mt-1 text-[10px] text-[oklch(0.72_0.18_25)]">{phoneError}</p>
+        )}
+        {otpSent && (
+          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mt-2">
+            <div className="mb-1.5 text-[10px] text-muted-foreground">Enter OTP sent to +91 {phone}</div>
+            <div className="flex gap-1.5">
+              {otp.map((digit, i) => (
+                <input
+                  key={i}
+                  id={`otp-${i}`}
+                  value={digit}
+                  onChange={(e) => handleOtpChange(i, e.target.value)}
+                  maxLength={1}
+                  inputMode="numeric"
+                  className={`h-11 w-9 rounded-lg bg-[oklch(var(--glass-tint)/0.06)] text-center text-[15px] font-semibold focus:outline-none focus:ring-1 ${
+                    digit
+                      ? "ring-1 ring-[oklch(var(--gold)/0.5)] bg-[oklch(var(--gold)/0.06)]"
+                      : "focus:ring-[oklch(var(--gold)/40%)]"
+                  }`}
+                />
+              ))}
+            </div>
+            {otpComplete && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-1.5 flex items-center gap-1 text-[10px] text-[oklch(var(--jade))]">
+                <IconCheck size={11} />
+                OTP verified
+              </motion.div>
+            )}
+          </motion.div>
+        )}
       </div>
 
       {/* Address */}
@@ -486,11 +602,60 @@ function CheckoutForm({ total }: { total: number }) {
           Delivery address
         </div>
         <div className="space-y-2">
-          <input placeholder="Full name" className="w-full rounded-xl bg-[oklch(0.96_0.012_80_/_0.06)] px-3 py-2.5 text-[13px] placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-[oklch(0.78_0.13_75_/_40%)]" />
-          <input placeholder="Address line" className="w-full rounded-xl bg-[oklch(0.96_0.012_80_/_0.06)] px-3 py-2.5 text-[13px] placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-[oklch(0.78_0.13_75_/_40%)]" />
+          <div>
+            <input
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+                setNameError(e.target.value.length > 0 && e.target.value.length < 2 ? "Min 2 characters" : "");
+              }}
+              placeholder="Full name"
+              className={`w-full rounded-xl bg-[oklch(var(--glass-tint)/0.06)] px-3 py-2.5 text-[13px] placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 ${
+                nameError ? "ring-1 ring-[oklch(0.72_0.18_25/0.5)]" : name.length >= 2 ? "ring-1 ring-[oklch(var(--jade)/0.5)]" : "focus:ring-[oklch(var(--gold)/40%)]"
+              }`}
+            />
+            {nameError && <p className="mt-1 text-[10px] text-[oklch(0.72_0.18_25)]">{nameError}</p>}
+          </div>
+          <div>
+            <input
+              value={address}
+              onChange={(e) => {
+                setAddress(e.target.value);
+                setAddressError(e.target.value.length > 0 && e.target.value.length < 5 ? "Min 5 characters" : "");
+              }}
+              placeholder="Address line (house no, street, area)"
+              className={`w-full rounded-xl bg-[oklch(var(--glass-tint)/0.06)] px-3 py-2.5 text-[13px] placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 ${
+                addressError ? "ring-1 ring-[oklch(0.72_0.18_25/0.5)]" : address.length >= 5 ? "ring-1 ring-[oklch(var(--jade)/0.5)]" : "focus:ring-[oklch(var(--gold)/40%)]"
+              }`}
+            />
+            {addressError && <p className="mt-1 text-[10px] text-[oklch(0.72_0.18_25)]">{addressError}</p>}
+          </div>
           <div className="flex gap-2">
-            <input placeholder="City" className="flex-1 rounded-xl bg-[oklch(0.96_0.012_80_/_0.06)] px-3 py-2.5 text-[13px] placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-[oklch(0.78_0.13_75_/_40%)]" />
-            <input placeholder="PIN" maxLength={6} className="w-24 rounded-xl bg-[oklch(0.96_0.012_80_/_0.06)] px-3 py-2.5 text-[13px] placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-[oklch(0.78_0.13_75_/_40%)]" />
+            <input
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              placeholder="City"
+              className={`flex-1 rounded-xl bg-[oklch(var(--glass-tint)/0.06)] px-3 py-2.5 text-[13px] placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 ${
+                city.length >= 2 ? "ring-1 ring-[oklch(var(--jade)/0.5)]" : "focus:ring-[oklch(var(--gold)/40%)]"
+              }`}
+            />
+            <div className="w-24">
+              <input
+                value={pincode}
+                onChange={(e) => {
+                  const v = e.target.value.replace(/\D/g, "").slice(0, 6);
+                  setPincode(v);
+                  setPincodeError(validatePincode(v));
+                }}
+                placeholder="PIN"
+                maxLength={6}
+                inputMode="numeric"
+                className={`w-full rounded-xl bg-[oklch(var(--glass-tint)/0.06)] px-3 py-2.5 text-[13px] placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 ${
+                  pincodeError ? "ring-1 ring-[oklch(0.72_0.18_25/0.5)]" : pincode.length === 6 ? "ring-1 ring-[oklch(var(--jade)/0.5)]" : "focus:ring-[oklch(var(--gold)/40%)]"
+                }`}
+              />
+              {pincodeError && <p className="mt-0.5 text-[9px] text-[oklch(0.72_0.18_25)]">{pincodeError}</p>}
+            </div>
           </div>
         </div>
       </div>
@@ -501,13 +666,14 @@ function CheckoutForm({ total }: { total: number }) {
           Payment method
         </div>
         <div className="grid grid-cols-2 gap-2">
-          {["UPI", "Card", "Net Banking", "COD"].map((m, i) => (
+          {["UPI", "Card", "Net Banking", "COD"].map((m) => (
             <button
               key={m}
+              onClick={() => setPayment(m)}
               className={
                 "rounded-xl border px-3 py-2.5 text-[12px] font-medium transition-all " +
-                (i === 0
-                  ? "border-[oklch(0.78_0.13_75_/_50%)] bg-[oklch(0.78_0.13_75_/_0.14)] text-text-gold"
+                (payment === m
+                  ? "border-[oklch(var(--gold)/50%)] bg-[oklch(var(--gold)/0.14)] text-text-gold"
                   : "border-border bg-transparent text-muted-foreground")
               }
             >
@@ -517,7 +683,22 @@ function CheckoutForm({ total }: { total: number }) {
         </div>
       </div>
 
-      <div className="flex items-center justify-center gap-2 rounded-xl bg-[oklch(0.78_0.13_75_/_0.06)] py-2 text-[11px] text-muted-foreground">
+      {/* Form validation indicator */}
+      <div className="flex items-center gap-2 rounded-xl bg-[oklch(var(--glass-tint)/0.04)] px-3 py-2 text-[11px]">
+        {formValid ? (
+          <>
+            <IconCheck size={12} className="text-[oklch(var(--jade))]" />
+            <span className="text-[oklch(var(--jade))]">All fields valid — ready to pay</span>
+          </>
+        ) : (
+          <>
+            <span className="h-2 w-2 rounded-full bg-[oklch(0.72_0.15_65)]" />
+            <span className="text-muted-foreground">Complete all fields to enable payment</span>
+          </>
+        )}
+      </div>
+
+      <div className="flex items-center justify-center gap-2 rounded-xl bg-[oklch(var(--gold)/0.06)] py-2 text-[11px] text-muted-foreground">
         <IconShield size={12} className="text-text-gold" />
         256-bit encrypted · PCI-DSS compliant
       </div>
@@ -594,7 +775,7 @@ function OrderTimeline() {
                     ? "bg-[oklch(0.78_0.13_75)]"
                     : s.active
                     ? "bg-[oklch(0.78_0.13_75_/_0.4)] ring-2 ring-[oklch(0.78_0.13_75)]"
-                    : "bg-[oklch(0.96_0.012_80_/_0.1)]")
+                    : "bg-[oklch(var(--glass-tint)/0.1)]")
                 }
               >
                 {s.done ? <IconCheck size={9} className="text-[oklch(0.14_0.01_50)]" /> : null}

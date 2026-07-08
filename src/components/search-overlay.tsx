@@ -4,6 +4,18 @@ import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSearch } from "@/lib/store";
 import { PRODUCTS } from "@/lib/catalog";
+
+// Inline escape key hook
+function useEscapeKey(isOpen: boolean, onClose: () => void) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { e.preventDefault(); onClose(); }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [isOpen, onClose]);
+}
 import { HuxonButton } from "@/components/huxon-button";
 import {
   IconClose,
@@ -24,6 +36,8 @@ const POPULAR = ["High protein bars", "Curcumin", "Ashwagandha KSM-66", "Daily g
 
 export function SearchOverlay() {
   const { isOpen, close } = useSearch();
+  const overlayRef = React.useRef<HTMLDivElement>(null);
+  useEscapeKey(isOpen, close);
   const [q, setQ] = React.useState("");
   const [recent, setRecent] = React.useState<string[]>([
     "Gold Isolate",
@@ -59,6 +73,10 @@ export function SearchOverlay() {
     <AnimatePresence>
       {isOpen && (
         <motion.div
+          ref={overlayRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Search"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

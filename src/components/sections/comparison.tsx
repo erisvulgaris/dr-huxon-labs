@@ -148,7 +148,7 @@ export function ComparisonWidget() {
               return (
                 <div
                   key={row.label}
-                  className="grid items-center gap-3 rounded-xl bg-[oklch(0.96_0.012_80_/_0.025)] px-2 py-2"
+                  className="grid items-center gap-3 rounded-xl bg-[oklch(var(--glass-tint)/0.025)] px-2 py-2"
                   style={{ gridTemplateColumns: `90px repeat(${prods.length}, 1fr)` }}
                 >
                   <span className="text-[10px] uppercase tracking-wide text-muted-foreground">
@@ -178,7 +178,7 @@ export function ComparisonWidget() {
             {prods.map((p) => (
               <div
                 key={p.id}
-                className="flex items-center gap-3 rounded-2xl bg-[oklch(0.96_0.012_80_/_0.04)] p-3"
+                className="flex items-center gap-3 rounded-2xl bg-[oklch(var(--glass-tint)/0.04)] p-3"
               >
                 <ProteinRing
                   value={valueScore(p)}

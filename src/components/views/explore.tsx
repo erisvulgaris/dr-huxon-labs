@@ -140,7 +140,7 @@ function DailyProteinTracker() {
       </div>
 
       {/* Bar */}
-      <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-[oklch(0.96_0.012_80_/_0.06)]">
+      <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-[oklch(var(--glass-tint)/0.06)]">
         <motion.div
           className="h-full rounded-full bg-gradient-to-r from-[oklch(0.92_0.10_85)] to-[oklch(0.62_0.10_55)]"
           initial={{ width: 0 }}
@@ -164,7 +164,7 @@ function DailyProteinTracker() {
           <button
             key={q.label}
             onClick={() => setConsumed((c) => Math.min(goal + 40, c + q.v))}
-            className="flex items-center gap-1 rounded-full bg-[oklch(0.96_0.012_80_/_0.06)] px-2.5 py-1 text-[11px] font-medium text-foreground/80"
+            className="flex items-center gap-1 rounded-full bg-[oklch(var(--glass-tint)/0.06)] px-2.5 py-1 text-[11px] font-medium text-foreground/80"
           >
             <IconPlus size={10} />
             {q.label}
@@ -172,7 +172,7 @@ function DailyProteinTracker() {
         ))}
         <button
           onClick={() => setConsumed((c) => Math.max(0, c - 10))}
-          className="flex items-center gap-1 rounded-full bg-[oklch(0.96_0.012_80_/_0.06)] px-2.5 py-1 text-[11px] font-medium text-muted-foreground"
+          className="flex items-center gap-1 rounded-full bg-[oklch(var(--glass-tint)/0.06)] px-2.5 py-1 text-[11px] font-medium text-muted-foreground"
         >
           <IconMinus size={10} />
           Undo
@@ -281,7 +281,7 @@ function GoalProgressCard() {
         <div className="flex items-baseline gap-1">
           <AnimatedNumber value={62} suffix="%" className="text-[22px] font-bold text-gold-gradient" />
         </div>
-        <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-[oklch(0.96_0.012_80_/_0.06)]">
+        <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-[oklch(var(--glass-tint)/0.06)]">
           <motion.div
             className="h-full rounded-full bg-gradient-to-r from-[oklch(0.78_0.13_75)] to-[oklch(0.92_0.10_85)]"
             initial={{ width: 0 }}
@@ -342,13 +342,13 @@ function BMICalculator() {
           <div className="mb-1 flex justify-between text-[10px] text-muted-foreground">
             <span>Weight</span><span className="tabular">{w}kg</span>
           </div>
-          <input type="range" min={35} max={150} value={w} onChange={(e) => setW(Number(e.target.value))} className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-[oklch(0.96_0.012_80_/_0.1)] accent-[oklch(0.78_0.13_75)]" />
+          <input type="range" min={35} max={150} value={w} onChange={(e) => setW(Number(e.target.value))} className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-[oklch(var(--glass-tint)/0.1)] accent-[oklch(0.78_0.13_75)]" />
         </div>
         <div>
           <div className="mb-1 flex justify-between text-[10px] text-muted-foreground">
             <span>Height</span><span className="tabular">{h}cm</span>
           </div>
-          <input type="range" min={120} max={220} value={h} onChange={(e) => setH(Number(e.target.value))} className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-[oklch(0.96_0.012_80_/_0.1)] accent-[oklch(0.78_0.13_75)]" />
+          <input type="range" min={120} max={220} value={h} onChange={(e) => setH(Number(e.target.value))} className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-[oklch(var(--glass-tint)/0.1)] accent-[oklch(0.78_0.13_75)]" />
         </div>
       </div>
     </div>
@@ -424,7 +424,7 @@ function FitnessGoalTimeline() {
           <div key={m.week} className="flex flex-1 flex-col items-center text-center">
             <div className="relative flex w-full items-center">
               {i > 0 ? (
-                <div className={"h-0.5 flex-1 " + (m.done ? "bg-[oklch(0.78_0.13_75)]" : "bg-[oklch(0.96_0.012_80_/_0.1)]")} />
+                <div className={"h-0.5 flex-1 " + (m.done ? "bg-[oklch(0.78_0.13_75)]" : "bg-[oklch(var(--glass-tint)/0.1)]")} />
               ) : <div className="h-0.5 flex-1" />}
               <motion.div
                 initial={{ scale: 0 }}
@@ -437,11 +437,11 @@ function FitnessGoalTimeline() {
                     ? "bg-[oklch(0.78_0.13_75)] shadow-gold"
                     : m.active
                     ? "bg-[oklch(0.78_0.13_75_/_0.5)] ring-2 ring-[oklch(0.78_0.13_75)]"
-                    : "bg-[oklch(0.96_0.012_80_/_0.15)]")
+                    : "bg-[oklch(var(--glass-tint)/0.15)]")
                 }
               />
               {i < milestones.length - 1 ? (
-                <div className={"h-0.5 flex-1 " + (m.done ? "bg-[oklch(0.78_0.13_75)]" : "bg-[oklch(0.96_0.012_80_/_0.1)]")} />
+                <div className={"h-0.5 flex-1 " + (m.done ? "bg-[oklch(0.78_0.13_75)]" : "bg-[oklch(var(--glass-tint)/0.1)]")} />
               ) : <div className="h-0.5 flex-1" />}
             </div>
             <span className="mt-1.5 text-[9px] font-semibold text-cream-gradient">{m.week}</span>

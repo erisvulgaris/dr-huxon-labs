@@ -154,9 +154,9 @@ function IngredientSheetContent({
         animate={{ y: 0 }}
         exit={{ y: "100%" }}
         transition={{ type: "spring", stiffness: 260, damping: 30 }}
-        className="relative z-10 flex max-h-[88dvh] w-full max-w-[460px] flex-col overflow-hidden rounded-t-[28px] border-t border-[oklch(0.96_0.012_80_/_0.1)] bg-background"
+        className="relative z-10 flex max-h-[88dvh] w-full max-w-[460px] flex-col overflow-hidden rounded-t-[28px] border-t border-[oklch(var(--glass-tint)/0.1)] bg-background"
       >
-        <div className="mx-auto my-3 h-1 w-10 rounded-full bg-[oklch(0.96_0.012_80_/_0.2)]" />
+        <div className="mx-auto my-3 h-1 w-10 rounded-full bg-[oklch(var(--glass-tint)/0.2)]" />
         <button
           onClick={onClose}
           aria-label="Close"

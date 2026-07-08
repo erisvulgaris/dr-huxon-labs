@@ -90,7 +90,7 @@ export function RewardsView() {
               <span>{currentTier.name} tier</span>
               <span>{nextTier ? `${nextTier.name} at ${nextTier.min.toLocaleString("en-IN")} pts` : "Max tier"}</span>
             </div>
-            <div className="h-2 w-full overflow-hidden rounded-full bg-[oklch(0.96_0.012_80_/_0.06)]">
+            <div className="h-2 w-full overflow-hidden rounded-full bg-[oklch(var(--glass-tint)/0.06)]">
               <motion.div
                 className="h-full rounded-full bg-gradient-to-r from-[oklch(0.78_0.13_75)] to-[oklch(0.92_0.10_85)]"
                 initial={{ width: 0 }}
@@ -130,7 +130,7 @@ export function RewardsView() {
                 transition={{ delay: i * 0.06 }}
                 className={cn(
                   "h-7 w-3 rounded-full",
-                  i < streak ? "bg-gradient-to-t from-[oklch(0.72_0.18_25)] to-[oklch(0.92_0.10_85)]" : "bg-[oklch(0.96_0.012_80_/_0.08)]"
+                  i < streak ? "bg-gradient-to-t from-[oklch(0.72_0.18_25)] to-[oklch(0.92_0.10_85)]" : "bg-[oklch(var(--glass-tint)/0.08)]"
                 )}
               />
             ))}
@@ -158,7 +158,7 @@ export function RewardsView() {
                     ? "border-[oklch(0.78_0.13_75_/_0.5)] bg-[oklch(0.78_0.13_75_/_0.08)]"
                     : unlocked
                     ? "border-[oklch(0.78_0.13_75_/_0.2)] glass"
-                    : "border-border bg-[oklch(0.96_0.012_80_/_0.02)] opacity-60"
+                    : "border-border bg-[oklch(var(--glass-tint)/0.02)] opacity-60"
                 )}
               >
                 <div className="flex items-center justify-between">
@@ -199,13 +199,13 @@ export function RewardsView() {
                     "flex flex-col items-center gap-1.5 rounded-2xl border p-3 text-center",
                     a.earned
                       ? "border-[oklch(0.78_0.13_75_/_0.3)] bg-[oklch(0.78_0.13_75_/_0.06)]"
-                      : "border-border bg-[oklch(0.96_0.012_80_/_0.02)] opacity-50"
+                      : "border-border bg-[oklch(var(--glass-tint)/0.02)] opacity-50"
                   )}
                 >
                   <div
                     className={cn(
                       "grid h-10 w-10 place-items-center rounded-full",
-                      a.earned ? "bg-[oklch(0.78_0.13_75_/_0.2)] text-text-gold" : "bg-[oklch(0.96_0.012_80_/_0.06)] text-muted-foreground"
+                      a.earned ? "bg-[oklch(0.78_0.13_75_/_0.2)] text-text-gold" : "bg-[oklch(var(--glass-tint)/0.06)] text-muted-foreground"
                     )}
                   >
                     <Icon size={18} active={a.earned} />
@@ -370,7 +370,7 @@ function ChallengeCard({
             key={i}
             className={cn(
               "h-1 flex-1 rounded-full",
-              i < progress ? "bg-[oklch(0.78_0.13_75)]" : "bg-[oklch(0.96_0.012_80_/_0.1)]"
+              i < progress ? "bg-[oklch(0.78_0.13_75)]" : "bg-[oklch(var(--glass-tint)/0.1)]"
             )}
           />
         ))}

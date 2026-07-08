@@ -183,7 +183,7 @@ function MuscleRecoveryCard() {
                 />
                 {/* Control bar (below, thinner) */}
                 <motion.div
-                  className="absolute left-0 top-3.5 h-1.5 rounded-full bg-[oklch(0.96_0.012_80_/_0.18)]"
+                  className="absolute left-0 top-3.5 h-1.5 rounded-full bg-[oklch(var(--glass-tint)/0.18)]"
                   initial={{ width: 0 }}
                   whileInView={{ width: `${d.control}%` }}
                   viewport={{ once: true }}
@@ -202,7 +202,7 @@ function MuscleRecoveryCard() {
             <span className="h-2 w-2 rounded-full bg-[oklch(0.78_0.13_75)]" /> Huxon
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full bg-[oklch(0.96_0.012_80_/_0.3)]" /> Whey control
+            <span className="h-2 w-2 rounded-full bg-[oklch(var(--glass-tint)/0.3)]" /> Whey control
           </span>
         </div>
       </div>
@@ -235,7 +235,7 @@ function PlantComparisonCard() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, duration: 0.6 }}
-              className="relative overflow-hidden rounded-2xl bg-[oklch(0.96_0.012_80_/_0.04)] p-3"
+              className="relative overflow-hidden rounded-2xl bg-[oklch(var(--glass-tint)/0.04)] p-3"
             >
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-medium text-foreground/85">
@@ -245,7 +245,7 @@ function PlantComparisonCard() {
                   {s.protein}%
                 </span>
               </div>
-              <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[oklch(0.96_0.012_80_/_0.06)]">
+              <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[oklch(var(--glass-tint)/0.06)]">
                 <motion.div
                   className="h-full rounded-full"
                   style={{ background: s.color }}
@@ -360,7 +360,7 @@ function AminoAcidCard() {
             {aminos.map((am) => (
               <StaggerItem
                 key={am.name}
-                className="rounded-lg bg-[oklch(0.96_0.012_80_/_0.04)] px-2 py-1.5 text-center"
+                className="rounded-lg bg-[oklch(var(--glass-tint)/0.04)] px-2 py-1.5 text-center"
               >
                 <div className="text-[9px] text-muted-foreground">{am.name}</div>
                 <div className="text-[12px] font-semibold text-cream-gradient tabular">

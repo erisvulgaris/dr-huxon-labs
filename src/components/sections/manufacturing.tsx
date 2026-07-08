@@ -107,7 +107,7 @@ function TimelineStage({
 
         {/* Animated progress bar */}
         <motion.div
-          className="mt-3 h-0.5 w-full overflow-hidden rounded-full bg-[oklch(0.96_0.012_80_/_0.06)]"
+          className="mt-3 h-0.5 w-full overflow-hidden rounded-full bg-[oklch(var(--glass-tint)/0.06)]"
         >
           <motion.div
             className="h-full bg-gradient-to-r from-[oklch(0.78_0.13_75)] to-[oklch(0.92_0.10_85)]"

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 import {
   PRODUCTS,
   type BrandProduct,
@@ -196,7 +197,12 @@ function ProductCard({
           <HuxonButton
             size="sm"
             className="flex-1"
-            onClick={() => addItem(product)}
+            onClick={() => {
+              addItem(product);
+              toast.success("Added to cart", {
+                description: `${product.name} · ${formatINR(product.price)}`,
+              });
+            }}
           >
             <IconPlus size={14} />
             Add
@@ -216,7 +222,7 @@ function ProductCard({
           {product.ingredients.slice(0, 3).map((ing) => (
             <span
               key={ing.name}
-              className="rounded-full bg-[oklch(0.96_0.012_80_/_0.05)] px-2 py-0.5 text-[9px] text-muted-foreground"
+              className="rounded-full bg-[oklch(var(--glass-tint)/0.05)] px-2 py-0.5 text-[9px] text-muted-foreground"
             >
               {ing.name}
             </span>
