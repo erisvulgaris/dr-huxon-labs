@@ -96,8 +96,21 @@ const SEED_NOTIFICATIONS: Notification[] = [
 /**
  * NotificationsPanel — premium bottom sheet for notifications.
  */
+// Inline escape-to-close hook
+function useEscapeClose(isOpen: boolean, onClose: () => void) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { e.preventDefault(); onClose(); }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [isOpen, onClose]);
+}
+
 export function NotificationsPanel() {
   const { notificationsOpen, setNotificationsOpen } = useNav();
+  useEscapeClose(notificationsOpen, () => setNotificationsOpen(false));
   const [notifications, setNotifications] = React.useState(SEED_NOTIFICATIONS);
   const [filter, setFilter] = React.useState<"all" | "unread">("all");
 

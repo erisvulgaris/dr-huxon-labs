@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
+import { toast } from "sonner";
 import {
   PRODUCTS,
   formatINR,
@@ -117,6 +118,7 @@ export function ProductView() {
   }
 
   const handleAddToCart = () => {
+    toast.success("Added to cart", { description: `${qty} × ${product.name}` });
     addItem(product, flavor, qty);
     addPoints(reward.totalPoints);
     pushToast({

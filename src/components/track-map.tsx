@@ -25,6 +25,18 @@ const STAGE_POSITIONS: Record<OrderStage, { progress: number; label: string; ico
 /**
  * TrackMapModal — interactive delivery map with route + live courier position.
  */
+// Inline escape-to-close hook
+function useEscapeClose(isOpen: boolean, onClose: () => void) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { e.preventDefault(); onClose(); }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [isOpen, onClose]);
+}
+
 export function TrackMapModal({
   order,
   onClose,
@@ -32,6 +44,7 @@ export function TrackMapModal({
   order: TrackedOrder;
   onClose: () => void;
 }) {
+  useEscapeClose(true, onClose);
   const stageInfo = STAGE_POSITIONS[order.status];
   const isActive = order.status !== "delivered";
 

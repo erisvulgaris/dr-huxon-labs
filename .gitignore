@@ -1,24 +1,17 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
-node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+node_modules/
+.pnp
+.pnp.js
 
 # testing
-/coverage
+coverage/
 
 # next.js
-/.next/
-/out/
+.next/
+out/
 
 # production
-/build
+build/
 
 # misc
 .DS_Store
@@ -28,27 +21,50 @@ node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+bun.lockb
 
-# env files (can opt-in for committing if needed)
-.env*
+# local env files
+.env
+.env*.local
 
 # vercel
 .vercel
 
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-local-*
-.claude
-.z-ai-config
-*.log
-dev.log
-dev.out.log
-test
-prompt
 
+# database
+db/*.db
+db/*.db-journal
+
+# logs
+dev.log
 server.log
-# Skills directory
-/skills/
+
+# agent context
+agent-ctx/
+
+# scripts generated images cache
+scripts/*.log
+
+# Skills (not part of the project)
+skills/
+
+# Z-scripts
+.zscripts/
+
+# Download
+download/
+
+# Reports (keep history.md only)
+reports/*.png
+
+# Screenshots
+screenshots/
+
+# Agent context
+agent-ctx/
+
+# Bun lockfile
+bun.lock

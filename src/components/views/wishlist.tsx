@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 import { PRODUCTS, formatINR, discountPercent } from "@/lib/catalog";
 import { useWishlist, useCart, useNav } from "@/lib/store";
 import { HuxonButton } from "@/components/huxon-button";
@@ -132,7 +133,7 @@ export function WishlistView() {
                   {/* Actions */}
                   <div className="flex flex-col gap-1.5">
                     <button
-                      onClick={() => addItem(p)}
+                      onClick={() => { addItem(p); toast.success("Added to cart", { description: p.name }); }}
                       className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-[oklch(var(--gold))] to-[oklch(var(--bronze))] text-[oklch(var(--charcoal))] shadow-gold"
                       aria-label="Add to cart"
                     >
@@ -151,7 +152,7 @@ export function WishlistView() {
                       <IconCompare size={14} />
                     </button>
                     <button
-                      onClick={() => wishlist.remove(p.id)}
+                      onClick={() => { wishlist.remove(p.id); toast("Removed from wishlist"); }}
                       className="grid h-9 w-9 place-items-center rounded-full glass text-muted-foreground hover:text-[oklch(0.72_0.18_25)]"
                       aria-label="Remove"
                     >

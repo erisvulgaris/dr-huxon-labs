@@ -21,9 +21,22 @@ import { useWishlist } from "@/lib/store";
  * ShareSheet — premium bottom sheet for sharing a product.
  * Supports native Web Share API, copy link, and social channels.
  */
+// Inline escape-to-close hook
+function useEscapeClose(isOpen: boolean, onClose: () => void) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { e.preventDefault(); onClose(); }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [isOpen, onClose]);
+}
+
 export function ShareSheet() {
   const { shareProductId, setShareProductId } = useShareSheetState();
   const product = PRODUCTS.find((p) => p.id === shareProductId);
+  useEscapeClose(!!shareProductId, () => setShareProductId(null));
   const isOpen = !!product;
   const [copied, setCopied] = React.useState(false);
 

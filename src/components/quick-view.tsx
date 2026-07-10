@@ -25,8 +25,21 @@ import { ProteinRing, StarRating, Pill } from "@/components/primitives";
 /**
  * Quick View — full-screen premium product viewer.
  */
+// Inline escape-to-close hook
+function useEscapeClose(isOpen: boolean, onClose: () => void) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { e.preventDefault(); onClose(); }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [isOpen, onClose]);
+}
+
 export function QuickView() {
   const { quickViewProductId, setQuickView } = useNav();
+  useEscapeClose(!!quickViewProductId, () => setQuickView(null));
   const product = PRODUCTS.find((p) => p.id === quickViewProductId);
   const isOpen = !!product;
 

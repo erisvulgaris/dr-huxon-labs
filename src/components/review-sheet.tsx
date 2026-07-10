@@ -18,9 +18,22 @@ import { cn } from "@/lib/utils";
  * ReviewSheet — premium bottom sheet for submitting product reviews.
  * Rating stars + title + body + photo upload (simulated) + submit.
  */
+// Inline escape-to-close hook
+function useEscapeClose(isOpen: boolean, onClose: () => void) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { e.preventDefault(); onClose(); }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [isOpen, onClose]);
+}
+
 export function ReviewSheet() {
   const { reviewProductId, setReviewProductId } = useNav();
   const product = PRODUCTS.find((p) => p.id === reviewProductId);
+  useEscapeClose(!!reviewProductId, () => setReviewProductId(null));
   const isOpen = !!product;
 
   const [rating, setRating] = React.useState(0);

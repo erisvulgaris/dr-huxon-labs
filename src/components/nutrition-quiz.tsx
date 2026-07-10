@@ -89,8 +89,21 @@ const QUESTIONS: Question[] = [
 /**
  * NutritionQuiz — gamified 5-question quiz that recommends products.
  */
+// Inline escape-to-close hook
+function useEscapeClose(isOpen: boolean, onClose: () => void) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { e.preventDefault(); onClose(); }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [isOpen, onClose]);
+}
+
 export function NutritionQuiz() {
   const { quizOpen, setQuizOpen } = useNavHook();
+  useEscapeClose(quizOpen, () => setQuizOpen(false));
   const [step, setStep] = React.useState(0);
   const [answers, setAnswers] = React.useState<Record<string, string>>({});
   const [showResults, setShowResults] = React.useState(false);
