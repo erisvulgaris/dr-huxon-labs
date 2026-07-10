@@ -781,11 +781,49 @@ function ProductsSection() {
         </div>
       </GlassCard>
 
+      {/* Bulk actions bar */}
+      {filtered.length > 0 && (
+        <div className="mb-3 flex items-center justify-between rounded-xl border border-border/40 px-3 py-2">
+          <span className="text-[11px] text-muted-foreground">
+            {filtered.length} product{filtered.length !== 1 ? "s" : ""} shown
+          </span>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-7 text-[11px]"
+              onClick={() => {
+                const csv = ["Name,Category,Price,Rating,Stock"];
+                filtered.forEach((p) => {
+                  csv.push(`"${p.name}","${p.category}",${p.price},${p.rating},${p.inStock ? "In Stock" : "Out"}`);
+                });
+                const blob = new Blob([csv.join("\n")], { type: "text/csv" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "huxon-products.csv";
+                a.click();
+                toast.success("Products exported", { description: `${filtered.length} products downloaded as CSV` });
+              }}
+            >
+              <IconArrowRight size={12} className="mr-1" />
+              Export CSV
+            </Button>
+            <Button variant="outline" size="sm" className="h-7 text-[11px]" onClick={() => toast.info("Bulk edit mode", { description: "Select products to edit in bulk" })}>
+              Bulk Edit
+            </Button>
+          </div>
+        </div>
+      )}
+
       <GlassCard className="p-0">
         <Table>
           <TableHeader>
             <TableRow className="border-border/60 hover:bg-transparent">
-              <TableHead className="pl-5">Product</TableHead>
+              <TableHead className="pl-5 w-8">
+                <input type="checkbox" className="h-4 w-4 rounded border-border accent-[oklch(var(--gold))]" onChange={(e) => toast.info(e.target.checked ? "All selected" : "Selection cleared")} />
+              </TableHead>
+              <TableHead>Product</TableHead>
               <TableHead>Category</TableHead>
               <TableHead>Price</TableHead>
               <TableHead>Stock</TableHead>
@@ -796,7 +834,10 @@ function ProductsSection() {
           <TableBody>
             {filtered.map((p) => (
               <TableRow key={p.id} className="border-border/40 group">
-                <TableCell className="pl-5">
+                <TableCell className="pl-5 w-8">
+                  <input type="checkbox" className="h-4 w-4 rounded border-border accent-[oklch(var(--gold))]" />
+                </TableCell>
+                <TableCell>
                   <div className="flex items-center gap-3 py-2">
                     <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-border/60 bg-[oklch(var(--glass-tint)/0.04)]">
                       <img

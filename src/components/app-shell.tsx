@@ -4,6 +4,7 @@ import * as React from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { BrandedLogo } from "@/components/branded-logo";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { BackToTop } from "@/components/back-to-top";
 import {
   IconHome,
   IconShop,
@@ -38,13 +39,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="relative mx-auto flex min-h-[100dvh] w-full max-w-[460px] flex-col bg-background">
+      {/* Skip to content for keyboard/screen reader users */}
+      <a href="#main-content" className="skip-link">Skip to content</a>
       {/* Top nav — sticky, logo morphs to compact icon as user scrolls */}
       <TopNav scrolled={scrolled} />
 
       {/* Main scroll container */}
       <main
         ref={scrollRef}
+        id="main-content"
         className="app-scroll relative flex-1 overflow-y-auto pb-safe-nav"
+        role="main"
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -61,6 +66,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       {/* Floating glass bottom nav */}
       <BottomNav />
+      <BackToTop />
     </div>
   );
 }
