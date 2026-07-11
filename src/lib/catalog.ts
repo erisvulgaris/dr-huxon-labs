@@ -20,6 +20,7 @@ export type BrandProduct = {
   rating: number;
   reviewCount: number;
   inStock: boolean;
+  stockCount?: number;
   badge?: string;
   features: string[];
   ingredients: { name: string; amount: string }[];
@@ -48,7 +49,7 @@ export const PRODUCTS: BrandProduct[] = [
     flavorColor: "oklch(0.55 0.08 50)",
     rating: 4.9,
     reviewCount: 2148,
-    inStock: true,
+    inStock: true, stockCount: 47,
     badge: "Bestseller",
     features: [
       "27g complete plant protein",
@@ -94,7 +95,7 @@ export const PRODUCTS: BrandProduct[] = [
     flavorColor: "oklch(0.55 0.16 25)",
     rating: 4.8,
     reviewCount: 894,
-    inStock: true,
+    inStock: true, stockCount: 23,
     badge: "New",
     features: [
       "22g protein + 500mg curcumin",
@@ -138,7 +139,7 @@ export const PRODUCTS: BrandProduct[] = [
     flavorColor: "oklch(0.62 0.18 35)",
     rating: 4.7,
     reviewCount: 612,
-    inStock: true,
+    inStock: true, stockCount: 8,
     features: [
       "180mg natural caffeine",
       "6g L-Citrulline",
@@ -181,7 +182,7 @@ export const PRODUCTS: BrandProduct[] = [
     flavorColor: "oklch(0.65 0.10 150)",
     rating: 4.6,
     reviewCount: 1102,
-    inStock: true,
+    inStock: true, stockCount: 31,
     badge: "Clean Label",
     features: [
       "21 superfoods",
@@ -225,7 +226,7 @@ export const PRODUCTS: BrandProduct[] = [
     flavorColor: "oklch(0.70 0.10 65)",
     rating: 4.8,
     reviewCount: 3274,
-    inStock: true,
+    inStock: true, stockCount: 12,
     badge: "Bestseller",
     features: [
       "20g protein per bar",
@@ -269,7 +270,7 @@ export const PRODUCTS: BrandProduct[] = [
     flavorColor: "oklch(0.55 0.06 90)",
     rating: 4.7,
     reviewCount: 487,
-    inStock: true,
+    inStock: true, stockCount: 54,
     features: [
       "300mg DHA from algae",
       "Cold-pressed flax + chia",

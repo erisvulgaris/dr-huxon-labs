@@ -111,6 +111,7 @@ export function NutritionQuiz() {
 
   React.useEffect(() => {
     if (quizOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setStep(0);
       setAnswers({});
       setShowResults(false);

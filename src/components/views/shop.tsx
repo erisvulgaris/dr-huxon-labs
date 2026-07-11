@@ -218,6 +218,12 @@ function ShopCard({
         <div className="absolute left-2 top-2 flex flex-col gap-1">
           {product.badge ? <Pill tone="gold">{product.badge}</Pill> : null}
           {discount > 0 ? <Pill tone="green">−{discount}%</Pill> : null}
+          {product.stockCount !== undefined && product.stockCount < 15 && (
+            <Pill tone="red">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[oklch(0.72_0.18_25)]" />
+              Only {product.stockCount} left
+            </Pill>
+          )}
         </div>
         {/* Favorite */}
         <button

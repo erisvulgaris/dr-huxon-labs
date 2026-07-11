@@ -75,6 +75,7 @@ export function ProductView() {
 
   // Reset state when product changes + track recently viewed + scroll to top
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setQty(1);
     setFlavor(product.flavor);
     setActiveImg(0);

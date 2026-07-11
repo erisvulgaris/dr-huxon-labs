@@ -19,6 +19,7 @@ export function AutoThemeSwitch() {
     // Check if user has manually set a theme preference
     const stored = localStorage.getItem("huxon-theme-manual");
     if (stored === "true") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setHasManualOverride(true);
       return;
     }

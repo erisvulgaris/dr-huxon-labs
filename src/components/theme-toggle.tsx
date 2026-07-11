@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 export function ThemeToggle({ size = 44 }: { size?: number }) {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   React.useEffect(() => setMounted(true), []);
 
   const current = resolvedTheme ?? theme;

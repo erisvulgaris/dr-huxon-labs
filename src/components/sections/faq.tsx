@@ -4,15 +4,26 @@ import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FAQS } from "@/lib/catalog";
 import { SectionHeader, Reveal } from "@/components/primitives";
-import { IconChevronDown } from "@/components/icons";
+import { IconChevronDown, IconSearch } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
 /**
  * Section 10 — FAQ.
- * Beautiful expanding accordion cards with smooth animations.
+ * Beautiful expanding accordion cards with smooth animations + search.
  */
 export function FAQSection() {
   const [open, setOpen] = React.useState<string | null>("f1");
+  const [query, setQuery] = React.useState("");
+
+  const filtered = React.useMemo(() => {
+    if (!query.trim()) return FAQS;
+    const q = query.toLowerCase();
+    return FAQS.filter(
+      (f) =>
+        f.q.toLowerCase().includes(q) ||
+        f.a.toLowerCase().includes(q)
+    );
+  }, [query]);
 
   return (
     <section className="relative px-4 py-12">
@@ -26,8 +37,26 @@ export function FAQSection() {
         subtitle="No marketing fluff. The real questions, answered honestly."
       />
 
-      <Reveal className="mt-7 space-y-3">
-        {FAQS.map((faq) => {
+      {/* Search */}
+      <div className="mt-5 mb-4">
+        <div className="relative">
+          <IconSearch size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search questions..."
+            className="w-full rounded-full bg-[oklch(var(--glass-tint)/0.06)] py-2.5 pl-9 pr-4 text-[13px] placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-[oklch(var(--gold)/40%)]"
+          />
+        </div>
+      </div>
+
+      <Reveal className="space-y-3">
+        {filtered.length === 0 ? (
+          <div className="py-8 text-center text-[13px] text-muted-foreground">
+            No questions match "{query}". Try different keywords.
+          </div>
+        ) : null}
+        {filtered.map((faq) => {
           const isOpen = open === faq.id;
           return (
             <div

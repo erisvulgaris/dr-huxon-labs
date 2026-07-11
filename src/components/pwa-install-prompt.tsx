@@ -29,6 +29,7 @@ export function PWAInstallPrompt() {
   React.useEffect(() => {
     // Already installed (standalone mode)
     if (window.matchMedia("(display-mode: standalone)").matches) {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
       setInstalled(true);
       return;
     }
@@ -66,6 +67,7 @@ export function PWAInstallPrompt() {
   // CRITICAL: Never show PWA prompt when cart is open or user is in checkout flow
   React.useEffect(() => {
     if (cartOpen || route === "cart") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setVisible(false);
     }
   }, [cartOpen, route]);

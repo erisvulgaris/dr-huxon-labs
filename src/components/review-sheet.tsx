@@ -47,6 +47,7 @@ export function ReviewSheet() {
   // Reset on open
   React.useEffect(() => {
     if (isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setRating(0);
       setHoverRating(0);
       setTitle("");

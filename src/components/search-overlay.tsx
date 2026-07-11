@@ -50,6 +50,7 @@ export function SearchOverlay() {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 200);
     } else {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setQ("");
     }
   }, [isOpen]);

@@ -37,6 +37,8 @@ const AutoThemeSwitch = React.lazy(() => import("@/components/auto-theme-switch"
 const NotificationsPanel = React.lazy(() => import("@/components/notifications-panel").then(m => ({ default: m.NotificationsPanel })));
 const ExitIntentModal = React.lazy(() => import("@/components/exit-intent-modal").then(m => ({ default: m.ExitIntentModal })));
 const AbandonedCartRecovery = React.lazy(() => import("@/components/abandoned-cart-recovery").then(m => ({ default: m.AbandonedCartRecovery })));
+const SocialProofToast = React.lazy(() => import("@/components/social-proof-toast").then(m => ({ default: m.SocialProofToast })));
+const CookieConsent = React.lazy(() => import("@/components/cookie-consent").then(m => ({ default: m.CookieConsent })));
 
 const LazyFallback = () => (
   <div className="flex min-h-[60dvh] items-center justify-center">
@@ -90,6 +92,8 @@ export default function Home() {
       <React.Suspense fallback={null}><NotificationsPanel /></React.Suspense>
       <React.Suspense fallback={null}><ExitIntentModal /></React.Suspense>
       <React.Suspense fallback={null}><AbandonedCartRecovery /></React.Suspense>
+      <React.Suspense fallback={null}><SocialProofToast /></React.Suspense>
+      <React.Suspense fallback={null}><CookieConsent /></React.Suspense>
     </AppShell>
   );
 }
