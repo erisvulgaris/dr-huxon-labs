@@ -67,6 +67,7 @@ import {
 import { AnimatedNumber, Reveal } from "@/components/primitives";
 import { PRODUCTS, formatINR } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
+import { useSettings } from "@/lib/store";
 
 /* ============================================================
    Types
@@ -1621,6 +1622,8 @@ function MarketingSection() {
    Settings Section
    ============================================================ */
 function SettingsSection() {
+  const { socialProofInterval, setSocialProofInterval, socialProofEnabled, setSocialProofEnabled } = useSettings();
+
   return (
     <div>
       <SectionHeader
@@ -1689,6 +1692,41 @@ function SettingsSection() {
             <IntegrationRow name="WhatsApp Business" desc="Transactional messaging" status="connected" />
           </div>
         </GlassCard>
+
+        <GlassCard>
+          <div className="mb-4">
+            <div className="text-[10px] uppercase tracking-[0.2em] text-text-gold">CRO & Popups</div>
+            <h3 className="mt-1 font-display text-lg font-semibold">Social Proof Popups</h3>
+          </div>
+          <div className="space-y-4">
+            <ToggleRow
+              label="Enable Social Proof Toast"
+              enabled={socialProofEnabled}
+              onChange={setSocialProofEnabled}
+            />
+            <div>
+              <div className="mb-1.5 flex justify-between text-[12px] text-muted-foreground">
+                <span>Display Interval</span>
+                <span className="font-semibold text-text-gold">{socialProofInterval} seconds</span>
+              </div>
+              <input
+                type="range"
+                min={5}
+                max={120}
+                step={5}
+                value={socialProofInterval}
+                onChange={(e) => setSocialProofInterval(Number(e.target.value))}
+                className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-[oklch(var(--glass-tint)/0.1)] accent-[oklch(0.78_0.13_75)]"
+              />
+              <div className="mt-1 flex justify-between text-[9px] text-muted-foreground">
+                <span>5s</span>
+                <span>30s</span>
+                <span>60s</span>
+                <span>120s</span>
+              </div>
+            </div>
+          </div>
+        </GlassCard>
       </div>
     </div>
   );
@@ -1712,13 +1750,32 @@ function SettingRow({ label, value, tone = "default" }: { label: string; value: 
   );
 }
 
-function ToggleRow({ label, enabled: initialEnabled }: { label: string; enabled: boolean }) {
-  const [on, setOn] = React.useState(initialEnabled);
+function ToggleRow({
+  label,
+  enabled: propEnabled,
+  onChange,
+}: {
+  label: string;
+  enabled: boolean;
+  onChange?: (v: boolean) => void;
+}) {
+  const [localOn, setLocalOn] = React.useState(propEnabled);
+  const isControlled = onChange !== undefined;
+  const on = isControlled ? propEnabled : localOn;
+
+  const handleToggle = () => {
+    if (isControlled) {
+      onChange(!propEnabled);
+    } else {
+      setLocalOn(!localOn);
+    }
+  };
+
   return (
     <div className="flex items-center justify-between rounded-lg border border-border/50 bg-[oklch(var(--glass-tint)/0.03)] px-3 py-2.5">
       <span className="text-[12px] text-muted-foreground">{label}</span>
       <button
-        onClick={() => setOn((v) => !v)}
+        onClick={handleToggle}
         className={cn(
           "relative h-5 w-9 rounded-full transition-colors",
           on ? "bg-[oklch(0.78_0.13_75)]" : "bg-[oklch(var(--glass-tint)/0.18)]"

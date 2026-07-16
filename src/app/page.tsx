@@ -61,8 +61,8 @@ export default function Home() {
         >
           {route === "home" && <HomeView />}
           {route === "shop" && <ShopView />}
-          {route === "explore" && <React.Suspense fallback={<LazyFallback />}><ExploreView /></React.Suspense>}
-          {route === "rewards" && <React.Suspense fallback={<LazyFallback />}><RewardsView /></React.Suspense>}
+          {route === "explore" && <React.Suspense fallback={<LazyFallback />}><ProfileView /></React.Suspense>}
+          {route === "rewards" && <React.Suspense fallback={<LazyFallback />}><ProfileView /></React.Suspense>}
           {route === "cart" && <React.Suspense fallback={<LazyFallback />}><CartView /></React.Suspense>}
           {route === "profile" && <React.Suspense fallback={<LazyFallback />}><ProfileView /></React.Suspense>}
           {route === "product" && <React.Suspense fallback={<LazyFallback />}><ProductView /></React.Suspense>}
@@ -84,16 +84,13 @@ export default function Home() {
       <CompareBar />
       <React.Suspense fallback={null}><ShareSheet /></React.Suspense>
       <React.Suspense fallback={null}><ReviewSheet /></React.Suspense>
-      <React.Suspense fallback={null}><OnboardingTour /></React.Suspense>
       <React.Suspense fallback={null}><NutritionQuiz /></React.Suspense>
       <React.Suspense fallback={null}><ChatWidget /></React.Suspense>
-      <React.Suspense fallback={null}><PWAInstallPrompt /></React.Suspense>
       <React.Suspense fallback={null}><AutoThemeSwitch /></React.Suspense>
       <React.Suspense fallback={null}><NotificationsPanel /></React.Suspense>
       <React.Suspense fallback={null}><ExitIntentModal /></React.Suspense>
       <React.Suspense fallback={null}><AbandonedCartRecovery /></React.Suspense>
       <React.Suspense fallback={null}><SocialProofToast /></React.Suspense>
-      <React.Suspense fallback={null}><CookieConsent /></React.Suspense>
     </AppShell>
   );
 }

@@ -22,8 +22,6 @@ import { cn } from "@/lib/utils";
 const TABS: { id: Route; label: string; Icon: React.FC<any> }[] = [
   { id: "home", label: "Home", Icon: IconHome },
   { id: "shop", label: "Shop", Icon: IconShop },
-  { id: "explore", label: "Explore", Icon: IconExplore },
-  { id: "rewards", label: "Rewards", Icon: IconRewards },
   { id: "cart", label: "Cart", Icon: IconCart },
   { id: "profile", label: "Profile", Icon: IconProfile },
 ];
@@ -37,8 +35,23 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     setScrolled(v > 80);
   });
 
+  React.useEffect(() => {
+    // Add overflow hidden to html and body to prevent viewport scroll conflicts on mobile storefront
+    document.documentElement.style.overflow = "hidden";
+    document.documentElement.style.height = "100%";
+    document.body.style.overflow = "hidden";
+    document.body.style.height = "100%";
+    
+    return () => {
+      document.documentElement.style.overflow = "";
+      document.documentElement.style.height = "";
+      document.body.style.overflow = "";
+      document.body.style.height = "";
+    };
+  }, []);
+
   return (
-    <div className="relative mx-auto flex min-h-[100dvh] w-full max-w-[460px] flex-col bg-background">
+    <div className="relative mx-auto flex h-[100dvh] w-full max-w-[460px] flex-col bg-background">
       {/* Skip to content for keyboard/screen reader users */}
       <a href="#main-content" className="skip-link">Skip to content</a>
       {/* Top nav — sticky, logo morphs to compact icon as user scrolls */}

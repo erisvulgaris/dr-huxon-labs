@@ -15,41 +15,47 @@ const NOTIFICATIONS = [
   { name: "Arjun from Jaipur", product: "Omega Plant 3-6-9", time: "25 min ago" },
 ];
 
+import { useSettings } from "@/lib/store";
+
 /**
  * SocialProofToast — rotating "someone just bought" notifications.
- * Appears at bottom of screen, rotates every 8 seconds, dismissible.
+ * Appears at bottom of screen, rotates every configurable interval, dismissible.
  */
 export function SocialProofToast() {
+  const { socialProofInterval, socialProofEnabled } = useSettings();
   const [index, setIndex] = React.useState(0);
   const [visible, setVisible] = React.useState(false);
   const [dismissed, setDismissed] = React.useState(false);
 
   React.useEffect(() => {
-    if (dismissed) return;
+    if (dismissed || !socialProofEnabled) {
+      return;
+    }
 
     // Show first notification after 5 seconds
     const initialTimer = setTimeout(() => setVisible(true), 5000);
 
-    // Rotate every 8 seconds
+    // Rotate every socialProofInterval seconds
     const interval = setInterval(() => {
       setVisible(false);
       setTimeout(() => {
         setIndex((i) => (i + 1) % NOTIFICATIONS.length);
         setVisible(true);
       }, 500);
-    }, 8000);
+    }, socialProofInterval * 1000);
 
     return () => {
       clearTimeout(initialTimer);
       clearInterval(interval);
     };
-  }, [dismissed]);
+  }, [dismissed, socialProofEnabled, socialProofInterval]);
 
   const current = NOTIFICATIONS[index];
+  const show = visible && !dismissed && socialProofEnabled;
 
   return (
     <AnimatePresence>
-      {visible && !dismissed && (
+      {show && (
         <motion.div
           initial={{ y: 80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}

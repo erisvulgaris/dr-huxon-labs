@@ -114,7 +114,7 @@ export function HeroSection() {
           transition={{ delay: 0.5, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           onPointerMove={onPointer}
           onPointerLeave={resetPointer}
-          className="relative my-8 h-[320px] w-full touch-none select-none"
+          className="relative my-8 h-[320px] w-full touch-pan-y select-none"
         >
           <ProductShowcase
             image={product.heroImage}

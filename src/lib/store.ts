@@ -569,3 +569,29 @@ export const useChallenge = create<ChallengeState>()(
     }
   )
 );
+
+/* ============================================================
+   Settings store — persisted client-side configuration
+   ============================================================ */
+type SettingsState = {
+  socialProofInterval: number; // in seconds
+  setSocialProofInterval: (val: number) => void;
+  socialProofEnabled: boolean;
+  setSocialProofEnabled: (val: boolean) => void;
+};
+
+export const useSettings = create<SettingsState>()(
+  persist(
+    (set) => ({
+      socialProofInterval: 30, // default to 30 seconds
+      setSocialProofInterval: (val) => set({ socialProofInterval: val }),
+      socialProofEnabled: true,
+      setSocialProofEnabled: (val) => set({ socialProofEnabled: val }),
+    }),
+    {
+      name: "huxon-settings",
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);
+
