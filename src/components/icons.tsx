@@ -241,6 +241,15 @@ export function IconArrowDown({ size = 24, active, ...p }: IconProps) {
   );
 }
 
+export function IconDownload({ size = 24, active, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+
 export function IconCompare({ size = 24, active, ...p }: IconProps) {
   return (
     <svg {...base(size)} {...p}>

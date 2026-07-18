@@ -139,7 +139,7 @@ export function NutritionQuiz() {
       const opt = q.options.find((o) => o.id === aid);
       if (opt?.weight) {
         Object.entries(opt.weight).forEach(([pid, w]) => {
-          s[pid] = (s[pid] || 0) + w;
+          s[pid] = (s[pid] || 0) + (w ?? 0);
         });
       }
     });

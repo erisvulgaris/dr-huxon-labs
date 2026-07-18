@@ -15,7 +15,7 @@ const NOTIFICATIONS = [
   { name: "Arjun from Jaipur", product: "Omega Plant 3-6-9", time: "25 min ago" },
 ];
 
-import { useSettings } from "@/lib/store";
+import { useSettings, useNav } from "@/lib/store";
 
 /**
  * SocialProofToast — rotating "someone just bought" notifications.
@@ -23,6 +23,7 @@ import { useSettings } from "@/lib/store";
  */
 export function SocialProofToast() {
   const { socialProofInterval, socialProofEnabled } = useSettings();
+  const { route } = useNav();
   const [index, setIndex] = React.useState(0);
   const [visible, setVisible] = React.useState(false);
   const [dismissed, setDismissed] = React.useState(false);
@@ -61,7 +62,11 @@ export function SocialProofToast() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 80, opacity: 0 }}
           transition={{ type: "spring", stiffness: 260, damping: 26 }}
-          className="fixed bottom-[calc(env(safe-area-inset-bottom)+100px)] left-1/2 z-30 w-full max-w-[420px] -translate-x-1/2 px-4"
+          className={`fixed left-1/2 z-30 w-full max-w-[420px] -translate-x-1/2 px-4 transition-all duration-300 ${
+            route === "product"
+              ? "bottom-[calc(env(safe-area-inset-bottom)+180px)]"
+              : "bottom-[calc(env(safe-area-inset-bottom)+100px)]"
+          }`}
         >
           <div className="glass-dark flex items-center gap-2.5 rounded-2xl border border-[oklch(var(--gold)/0.2)] p-2.5 shadow-premium">
             {/* Check icon */}

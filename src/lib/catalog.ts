@@ -1262,8 +1262,8 @@ export const SLEEP_FACTORS = [
 ];
 
 export const RECOVERY_FACTORS = [
-  { label: "Muscle soreness", value: 25, unit: "%", target: 0, invert: true },
-  { label: "Energy level", value: 82, unit: "%", target: 100 },
-  { label: "Hydration", value: 75, unit: "%", target: 100 },
-  { label: "Protein intake", value: 92, unit: "%", target: 100 },
+  { label: "Muscle soreness", value: 25, unit: "%", target: 0, icon: "dumbbell", invert: true },
+  { label: "Energy level", value: 82, unit: "%", target: 100, icon: "bolt" },
+  { label: "Hydration", value: 75, unit: "%", target: 100, icon: "drop" },
+  { label: "Protein intake", value: 92, unit: "%", target: 100, icon: "flask" },
 ];

@@ -454,7 +454,7 @@ function StatusDonut() {
     return [...acc, { status: d.status, color: d.color, dash: frac * c, offset }];
   }, []);
   return (
-    <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-center sm:gap-7">
+    <div className="flex flex-col items-center gap-5">
       <div className="relative grid place-items-center" style={{ width: size, height: size }}>
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90">
           <circle
@@ -494,9 +494,9 @@ function StatusDonut() {
           </div>
         </div>
       </div>
-      <div className="grid w-full grid-cols-2 gap-2.5">
+      <div className="grid w-full grid-cols-2 gap-2">
         {ORDER_STATUS_DIST.map((d) => (
-          <div key={d.status} className="flex items-center justify-between gap-2 rounded-lg border border-border/50 bg-[oklch(var(--glass-tint)/0.03)] px-3 py-2">
+          <div key={d.status} className="flex items-center justify-between gap-2 rounded-lg border border-border/50 bg-[oklch(var(--glass-tint)/0.03)] px-3 py-1.5">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full" style={{ backgroundColor: d.color }} />
               <span className="text-[11px] text-muted-foreground">
